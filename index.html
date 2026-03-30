@@ -677,7 +677,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 // ══════════════════════════════════════════════════
 // CONFIG — вставте ваш Apps Script URL
 // ══════════════════════════════════════════════════
-const API = 'https://script.google.com/macros/s/AKfycbxG5oRSFeP0Ev_31qSEoIMb00y3_DE1J3ihQmbto1-kezeyPAvb1JDOK4_LpJvo0AE/exec';
+const API = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
 
 const RANKS=['Співбесіда','Студент','Інтерн','Парамедик','Фельдшер','Терапевт','Хірург','Спеціаліст','Заст.зав.відділу','Завідувач відділу','Заст.голов.лікаря'];
 const ALBL={hired:'✅ Прийнято на роботу',transfer:'🔄 Переведено',fired:'❌ Звільнено'};
@@ -1102,64 +1102,6 @@ function toast(msg,type='ok'){
   tt=setTimeout(()=>t.className='',3200);
 }
 function esc(s){return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-</script>
-  <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbxG5oRSFeP0Ev_31qSEoIMb00y3_DE1J3ihQmbto1-kezeyPAvb1JDOK4_LpJvo0AE/exec";
-
-async function sendAudit() {
-  const initNick = document.getElementById('selInit').value;
-  const initSid  = document.getElementById('initSid').value;
-  const empNick  = document.getElementById('empNick').value;
-  const empSid   = document.getElementById('empSid').value;
-  const prevRank = document.getElementById('prevRank').value;
-  const newRank  = document.getElementById('newRank').value;
-  const reason   = document.getElementById('reason').value;
-
-  // твоя дія (hired / transfer / fired)
-  const act = window.currentAct || "hired";
-
-  const params = new URLSearchParams({
-    action: 'submit',
-    initNick,
-    initSid,
-    empNick,
-    empSid,
-    act,
-    prevRank,
-    newRank,
-    reason
-  });
-
-  const url = API_URL + "?" + params.toString();
-
-  const btn = document.getElementById('subBtn');
-  btn.disabled = true;
-
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (data.success) {
-      showToast("Успішно відправлено!");
-    } else {
-      showToast("Помилка: " + data.error, true);
-    }
-  } catch (err) {
-    showToast("Помилка з'єднання", true);
-  }
-  btn.disabled = false;
-}
-// ПІДМІНЯЄМО ТВОЮ ФУНКЦІЮ ПІДТВЕРДЖЕННЯ
-function openConfirmModal() {
-  sendAudit();
-}
-// ТВОЯ ФУНКЦІЯ ТОСТА
-function showToast(msg, err=false) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.className = err ? "show err" : "show ok";
-  setTimeout(()=>t.className="", 3000);
-}
 </script>
 </body>
 </html>
