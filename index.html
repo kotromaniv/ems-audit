@@ -677,7 +677,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 // ══════════════════════════════════════════════════
 // CONFIG — вставте ваш Apps Script URL
 // ══════════════════════════════════════════════════
-const API = 'https://script.google.com/macros/s/AKfycbxOvsWC8hPpdBfX2SZLhvBqFYmu1PUiQm2VJpUX2DT9kahbc1rERfYa26U5W6V7E74/exec';
+const API = 'https://script.google.com/macros/library/d/1dDf91GW3hvaYJv9M_Y_pdVOZLiSMMRXcc7QdGdKOFJ1hgJZk_7clzxe4/7';
 
 const RANKS=['Співбесіда','Студент','Інтерн','Парамедик','Фельдшер','Терапевт','Хірург','Спеціаліст','Заст.зав.відділу','Завідувач відділу','Заст.голов.лікаря'];
 const ALBL={hired:'✅ Прийнято на роботу',transfer:'🔄 Переведено',fired:'❌ Звільнено'};
@@ -691,6 +691,11 @@ let allR=[], filtR=[], curRF='all';
 let allRH=[], filtRH=[], curRHPg=1;
 let delTicket=null, curPlayer=null;
 const PER=15;
+const LOCAL_USERS=[
+  {login:'admin',nick:'Адміністратор',staticId:'0000',isAdmin:true,isArchiveAdmin:true},
+  {login:'kevin_m',nick:'Kevin Maccalister',staticId:'248',isAdmin:false,isArchiveAdmin:false},
+  {login:'sofia_m',nick:'Sofia Mitman',staticId:'30904',isAdmin:true,isArchiveAdmin:false}
+];
 
 // ══════════════════════════════════════════════════
 // LOGIN
@@ -704,20 +709,38 @@ async function doLogin(){
   try{
     const r=await call('login',{login});
     if(r.success){
-      me=r.user;
-      document.getElementById('loginScreen').style.display='none';
-      document.getElementById('sideNick').textContent=me.nick||me.login;
-      document.getElementById('sideAv').textContent=(me.nick||me.login)[0].toUpperCase();
-      document.getElementById('sideRole').textContent=me.isAdmin?'Адміністратор':'Співробітник';
-      loadPlayers();
+      enterSession(r.user,false);
     } else {
       showLoginErr(r.error||'Невірний логін');
     }
-  }catch(e){showLoginErr(humanizeApiError(e));}
+  }catch(e){
+    const localUser=getLocalUser(login);
+    if(localUser){
+      enterSession(localUser,true);
+      toast('Вхід у локальному режимі (без Apps Script)','ok');
+    } else {
+      showLoginErr(humanizeApiError(e));
+    }
+  }
   btn.disabled=false;
   btn.innerHTML='<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Увійти';
 }
 function showLoginErr(m){const e=document.getElementById('loginErr');e.textContent=m;e.style.display='block';}
+
+function enterSession(user,isLocal=false){
+  me={...user,isLocal};
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('sideNick').textContent=me.nick||me.login;
+  document.getElementById('sideAv').textContent=(me.nick||me.login)[0].toUpperCase();
+  document.getElementById('sideRole').textContent=isLocal?'Локальний режим':(me.isAdmin?'Адміністратор':'Співробітник');
+  loadPlayers();
+}
+
+function getLocalUser(login){
+  const norm=(login||'').trim().toLowerCase();
+  return LOCAL_USERS.find(u=>u.login.toLowerCase()===norm)||null;
+}
+
 
 // ══════════════════════════════════════════════════
 // NAVIGATION
@@ -755,7 +778,21 @@ async function loadPlayers(){
         document.getElementById('initSid').value=myPlayer.staticId;
       }
     }
-  }catch(e){toast('Не вдалось завантажити список','err');}
+  }catch(e){
+    players=LOCAL_USERS;
+    const sel=document.getElementById('selInit');
+    sel.innerHTML='<option value="">— Оберіть себе —</option>'+
+      players.map(p=>`<option value="${esc(p.nick)}" data-id="${esc(p.staticId)}">${p.nick} | ${p.staticId}</option>`).join('');
+    sel.disabled=false;
+    if(me){
+      const myPlayer=players.find(p=>p.login===me.login||p.nick===me.nick);
+      if(myPlayer){
+        sel.value=myPlayer.nick;
+        document.getElementById('initSid').value=myPlayer.staticId;
+      }
+    }
+    toast('Список ініціаторів завантажено локально','ok');
+  }
 }
 function pickInit(){
   const s=document.getElementById('selInit');
