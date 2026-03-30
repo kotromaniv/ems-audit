@@ -689,7 +689,7 @@ let me=null; // {nick, staticId, login, isAdmin, isArchiveAdmin}
 let players=[], allH=[], filtH=[], curHF='all', curHPg=1;
 let allR=[], filtR=[], curRF='all';
 let allRH=[], filtRH=[], curRHPg=1;
-let delId=null, curPlayer=null;
+let delTicket=null, curPlayer=null;
 const PER=15;
 
 // ══════════════════════════════════════════════════
@@ -856,7 +856,7 @@ async function loadHistory(){
   document.getElementById('hWrap').style.display='none';
   try{
     const r=await call('getHistory');
-    allH=r.records||[];
+    allH=(r.records||r.history||[]).map(normalizeHistoryRecord);
     document.getElementById('hCnt').textContent=`${allH.length} записів знайдено`;
     filterH();
     document.getElementById('hLoad').style.display='none';
@@ -884,7 +884,7 @@ function renderH(){
       <td class="tmono">${r.empSid||'—'}</td><td>${badge}</td><td class="tmono" style="font-size:11px;">${rs}</td>
       <td class="racts">
         <button class="rbtn" onclick='viewH(${JSON.stringify(r)})' title="Деталі"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        ${me&&me.isArchiveAdmin?`<button class="rbtn del" onclick="askDel('${r.id}')" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>`:''}
+        ${me&&me.isArchiveAdmin?`<button class="rbtn del" onclick="askDel('${r.ticket||r.id||''}')" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>`:''}
       </td></tr>`;
   }).join('');
   const tot=Math.ceil(filtH.length/PER);
@@ -910,8 +910,8 @@ function viewH(r){
 // ══════════════════════════════════════════════════
 // DELETE
 // ══════════════════════════════════════════════════
-function askDel(id){
-  delId=id;
+function askDel(ticket){
+  delTicket=ticket;
   document.getElementById('dLogin').value='';
   document.getElementById('dErr').style.display='none';
   openM('delOv');
@@ -920,7 +920,7 @@ async function confirmDel(){
   const login=document.getElementById('dLogin').value.trim();
   if(!login){showDE('Введіть логін архіву');return;}
   try{
-    const r=await call('delete',{id:delId,archiveLogin:login});
+    const r=await call('delete',{ticket:delTicket,archiveLogin:login});
     if(r.success){closeM('delOv');toast('Запис видалено','ok');loadHistory();}
     else showDE(r.error||'Невірний логін');
   }catch(e){showDE('Помилка з\'єднання');}
@@ -935,12 +935,15 @@ async function loadStats(){
     const r=await call('getStats');
     const s=r.stats||{};
     document.getElementById('stTotal').textContent=s.total??'—';
-    document.getElementById('stHW').textContent=s.hiredWeek??'—';
-    document.getElementById('stFW').textContent=s.firedWeek??'—';
-    document.getElementById('wH').textContent=s.hiredWeek??'—';
-    document.getElementById('wF').textContent=s.firedWeek??'—';
-    document.getElementById('wT').textContent=s.transferWeek??'—';
-    document.getElementById('wAll').textContent=(s.hiredWeek||0)+(s.firedWeek||0)+(s.transferWeek||0);
+    const hiredWeek=s.hiredWeek??s.hired??0;
+    const firedWeek=s.firedWeek??s.fired??0;
+    const transferWeek=s.transferWeek??s.transfer??0;
+    document.getElementById('stHW').textContent=hiredWeek;
+    document.getElementById('stFW').textContent=firedWeek;
+    document.getElementById('wH').textContent=hiredWeek;
+    document.getElementById('wF').textContent=firedWeek;
+    document.getElementById('wT').textContent=transferWeek;
+    document.getElementById('wAll').textContent=(hiredWeek||0)+(firedWeek||0)+(transferWeek||0);
     const lb=s.leaderboard||[];
     const cls=['ln1','ln2','ln3','lnx'];
     document.getElementById('lb').innerHTML=lb.length
@@ -958,7 +961,7 @@ async function loadRoster(){
   document.getElementById('rEmpty').style.display='none';
   try{
     const r=await call('getRoster');
-    allR=r.roster||[];
+    allR=(r.roster||[]).map(normalizeRosterPlayer);
     document.getElementById('rCnt').textContent=`${allR.length} гравців у фракції`;
     filterR();
     document.getElementById('rLoad').style.display='none';
@@ -1023,7 +1026,7 @@ async function saveNote(){
   const text=document.getElementById('noteText').value.trim();
   if(!text) return toast('Введіть текст нотатки','err');
   try{
-    const r=await call('saveNote',{nick:curPlayer.nick,note:text,author:me.nick||me.login});
+    const r=await call('saveNote',{nick:curPlayer.nick,sid:curPlayer.staticId,note:text,author:me.nick||me.login});
     if(r.success){toast('Нотатку збережено','ok');openPlayer(curPlayer.nick);loadRoster();}
     else toast(r.error||'Помилка','err');
   }catch(e){toast('Помилка з\'єднання','err');}
@@ -1037,7 +1040,7 @@ async function loadRHistory(){
   document.getElementById('rhWrap').style.display='none';
   try{
     const r=await call('getRosterHistory');
-    allRH=r.records||[];
+    allRH=(r.records||r.history||[]).map(normalizeRosterHistoryRecord);
     document.getElementById('rhCnt').textContent=`${allRH.length} записів`;
     filterRH();
     document.getElementById('rhLoad').style.display='none';
@@ -1046,7 +1049,7 @@ async function loadRHistory(){
 }
 function filterRH(){
   const q=(document.getElementById('rhSearch').value||'').toLowerCase();
-  filtRH=allRH.filter(r=>!q||r.nick?.toLowerCase().includes(q)||r.initiator?.toLowerCase().includes(q)||r.change?.toLowerCase().includes(q));
+  filtRH=allRH.filter(r=>!q||r.nick?.toLowerCase().includes(q)||r.initiator?.toLowerCase().includes(q)||r.change?.toLowerCase().includes(q)||r.details?.toLowerCase().includes(q));
   renderRH();
 }
 function renderRH(){
@@ -1069,9 +1072,40 @@ function goRHP(p){curRHPg=p;renderRH();}
 // ══════════════════════════════════════════════════
 // CSV
 // ══════════════════════════════════════════════════
+
+function normalizeHistoryRecord(r){
+  if(!r) return {};
+  return {
+    ...r,
+    action:r.action||r.act||'',
+    id:r.id||r.ticket||'',
+    ticket:r.ticket||r.id||''
+  };
+}
+
+function normalizeRosterPlayer(p){
+  if(!p) return {};
+  return {
+    ...p,
+    staticId:p.staticId??p.sid??'',
+    warnings:p.warnings??p.warns??0,
+    dep:p.dep??p.department??''
+  };
+}
+
+function normalizeRosterHistoryRecord(r){
+  if(!r) return {};
+  return {
+    ...r,
+    initiator:r.initiator||r.author||'Система',
+    change:r.change||'📝 Нотатка',
+    details:r.details||r.note||''
+  };
+}
+
 function exportCSV(){
   const rows=[['ID','Дата','Ініціатор','Ініціатор SID','Співробітник','SID','Дія','Стара посада','Нова посада','Пояснення']];
-  filtH.forEach(r=>rows.push([r.id,r.date,r.initNick,r.initSid,r.empNick,r.empSid,
+  filtH.forEach(r=>rows.push([r.ticket||'',r.date,r.initNick,r.initSid,r.empNick,r.empSid,
     ALBL[r.action]||r.action,
     r.prevRank!=null&&r.prevRank!==''?`[${r.prevRank}] ${RANKS[r.prevRank]||''}`:'',
     r.newRank !=null&&r.newRank !==''?`[${r.newRank}] ${RANKS[r.newRank ]||''}`:'',
@@ -1088,6 +1122,7 @@ function exportCSV(){
 async function call(action,params={}){
   const q=new URLSearchParams({action,...params});
   const r=await fetch(API+'?'+q.toString());
+  if(!r.ok) throw new Error('HTTP '+r.status);
   return r.json();
 }
 function openM(id){document.getElementById(id).classList.add('open');}
