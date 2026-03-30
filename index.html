@@ -1,356 +1,161 @@
-// ═══════════════════════════════════════════════════════════
-// EMS Система управління — Google Apps Script Backend
-// ═══════════════════════════════════════════════════════════
+<script>
+// ══════════════════════════════════════════════════
+// CONFIG — ОБОВ'ЯЗКОВО заміни на своє реальне посилання!
+const API = 'https://script.google.com/macros/s/ТВОЄ_ПОВНЕ_ПОСИЛАННЯ/exec';
+// Приклад: 'https://script.google.com/macros/s/AKfycbw123456789/exec'
 
-const SPREADSHEET_ID  = '1S0V-qrcFb5izgzYB29BcXjCEkqiwXJRpnMC_B5aO8xg';
-const DISCORD_WEBHOOK = 'YOUR_DISCORD_WEBHOOK_URL'; // або '' щоб вимкнути
+const RANKS = ['Співбесіда','Студент','Інтерн','Парамедик','Фельдшер','Терапевт','Хірург','Спеціаліст','Заст.зав.відділу','Завідувач відділу','Заст.голов.лікаря'];
+const ALBL = {hired:'✅ Прийнято на роботу', transfer:'🔄 Переведено', fired:'❌ Звільнено'};
+const ABCL = {hired:'bh', transfer:'bt', fired:'bf'};
 
-// ── Назви аркушів ──
-const SH_USERS   = 'users';    // login | nick | staticId | isAdmin | isArchiveAdmin
-const SH_REPORTS = 'reports';  // записи аудиту
-const SH_ROSTER  = 'roster';   // nick | staticId | rank | dep | warnings | sanctions | notes(JSON)
-const SH_RHISTORY= 'roster_history'; // журнал змін планшету
+// ── STATE ──
+let me = null;
+let players = [], allH = [], filtH = [], curHF = 'all', curHPg = 1;
+let allR = [], filtR = [], curRF = 'all';
+let allRH = [], filtRH = [], curRHPg = 1;
+let delId = null, curPlayer = null;
+const PER = 15;
 
-const RANKS = ['Співбесіда','Студент','Інтерн','Парамедик','Фельдшер','Терапевт',
-               'Хірург','Спеціаліст','Заст.зав.відділу','Завідувач відділу','Заст.голов.лікаря'];
-
-const ACTION_UA    = {hired:'✅ ПРИЙНЯТО НА РОБОТУ',transfer:'🔄 ПЕРЕВЕДЕНО',fired:'❌ ЗВІЛЬНЕНО'};
-const ACTION_COLOR = {hired:0x00e676,transfer:0x00d2ff,fired:0xff4757};
-
-// ── CORS ──────────────────────────────────────────────────
-function doOptions(){
-  return ContentService.createTextOutput('').setHeader('Access-Control-Allow-Origin','*');
-}
-function doGet(e){
-  const p=e.parameter, a=p.action;
-  let result;
-  try{
-    switch(a){
-      case 'login':           result=login(p);          break;
-      case 'getPlayers':      result=getPlayers();       break;
-      case 'submit':          result=submit(p);          break;
-      case 'getHistory':      result=getHistory();       break;
-      case 'delete':          result=del(p);             break;
-      case 'getStats':        result=getStats();         break;
-      case 'getRoster':       result=getRoster();        break;
-      case 'updateRoster':    result=updateRoster(p);    break;
-      case 'saveNote':        result=saveNote(p);        break;
-      case 'getRosterHistory':result=getRosterHistory(); break;
-      default: result={error:'Unknown action'};
-    }
-  }catch(err){result={error:err.message};}
-  return ContentService
-    .createTextOutput(JSON.stringify(result))
-    .setMimeType(ContentService.MimeType.JSON)
-    .setHeader('Access-Control-Allow-Origin','*');
-}
-
-// ── LOGIN ─────────────────────────────────────────────────
-function login(p){
-  const {login}=p;
-  const ss=SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sh=ss.getSheetByName(SH_USERS);
-  if(!sh) return{success:false,error:'Аркуш users не знайдено'};
-  const data=sh.getDataRange().getValues();
-  // Колонки: A=login | B=nick | C=staticId | D=isAdmin | E=isArchiveAdmin
-  for(let i=1;i<data.length;i++){
-    if(String(data[i][0]).trim().toLowerCase()===login.trim().toLowerCase()){
-      return{success:true,user:{
-        login:String(data[i][0]).trim(),
-        nick:String(data[i][1]).trim(),
-        staticId:String(data[i][2]).trim(),
-        isAdmin:String(data[i][3]).toLowerCase()==='true'||String(data[i][3])==='1',
-        isArchiveAdmin:String(data[i][4]).toLowerCase()==='true'||String(data[i][4])==='1'
-      }};
+// ══════════════════════════════════════════════════
+// ОСНОВНА ФУНКЦІЯ ЗАПИТІВ (GET)
+// ══════════════════════════════════════════════════
+async function call(action, params = {}) {
+  // Додаємо action до параметрів
+  const allParams = { action, ...params };
+  
+  // Створюємо URLSearchParams
+  const query = new URLSearchParams();
+  for (const key in allParams) {
+    if (allParams[key] !== undefined && allParams[key] !== null) {
+      query.append(key, allParams[key]);
     }
   }
-  return{success:false,error:'Логін не знайдено. Зверніться до адміністратора.'};
-}
 
-// ── GET PLAYERS ───────────────────────────────────────────
-// Повертає список гравців для дропдауну (з аркушу users)
-function getPlayers(){
-  const ss=SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sh=ss.getSheetByName(SH_USERS);
-  if(!sh) return{players:[]};
-  const data=sh.getDataRange().getValues();
-  const players=[];
-  for(let i=1;i<data.length;i++){
-    const login=String(data[i][0]).trim();
-    const nick=String(data[i][1]).trim();
-    const staticId=String(data[i][2]).trim();
-    if(nick) players.push({login,nick,staticId});
-  }
-  return{players};
-}
+  const url = API + '?' + query.toString();
 
-// ── SUBMIT AUDIT ──────────────────────────────────────────
-function submit(p){
-  const{initNick,initSid,initLogin,empNick,empSid,act,prevRank,newRank,reason}=p;
+  try {
+    console.log(`[API] Запит: ${action}`); // для дебагу
 
-  // Перевірка: логін відповідає ніку ініціатора
-  const ss=SpreadsheetApp.openById(SPREADSHEET_ID);
-  const ush=ss.getSheetByName(SH_USERS);
-  const udata=ush.getDataRange().getValues();
-  let verified=false;
-  for(let i=1;i<udata.length;i++){
-    const rowLogin=String(udata[i][0]).trim().toLowerCase();
-    const rowNick =String(udata[i][1]).trim();
-    if(rowLogin===initLogin.trim().toLowerCase()&&rowNick===initNick.trim()){
-      verified=true; break;
-    }
-  }
-  if(!verified) return{success:false,error:'Логін не відповідає обраному нікнейму. Використовуйте власний логін.'};
-
-  // Записати в reports
-  const rsh=ss.getSheetByName(SH_REPORTS);
-  const id=Date.now().toString();
-  const date=new Date().toISOString();
-  // id|date|initNick|initSid|empNick|empSid|action|prevRank|newRank|reason
-  rsh.appendRow([id,date,initNick,initSid,empNick,empSid,act,prevRank||'',newRank||'',reason]);
-
-  // Автоматично оновити планшет
-  autoUpdateRoster(ss,empNick,empSid,act,newRank,prevRank,initNick);
-
-  // Discord
-  if(DISCORD_WEBHOOK&&DISCORD_WEBHOOK!=='YOUR_DISCORD_WEBHOOK_URL'){
-    sendDiscord(id,{initNick,initSid,empNick,empSid,act,prevRank,newRank,reason});
-  }
-
-  return{success:true,id};
-}
-
-// ── AUTO UPDATE ROSTER ────────────────────────────────────
-function autoUpdateRoster(ss,empNick,empSid,act,newRank,prevRank,initiator){
-  const sh=ss.getSheetByName(SH_ROSTER);
-  if(!sh) return;
-  const data=sh.getDataRange().getValues();
-  // Колонки: A=nick|B=staticId|C=rank|D=dep|E=warnings|F=sanctions|G=notes(JSON)
-
-  let rowIdx=-1;
-  for(let i=1;i<data.length;i++){
-    if(String(data[i][0]).trim()===empNick.trim()) {rowIdx=i+1;break;}
-  }
-
-  const date=new Date().toISOString();
-
-  if(act==='hired'){
-    // Додати нового гравця якщо немає
-    if(rowIdx===-1){
-      sh.appendRow([empNick,empSid,newRank||0,'','0','0','[]']);
-      logRosterChange(ss,initiator,empNick,'Прийнято',`Посада: [${newRank}] ${RANKS[newRank]||''}`);
-    } else {
-      sh.getRange(rowIdx,3).setValue(newRank||0);
-      sh.getRange(rowIdx,2).setValue(empSid);
-      logRosterChange(ss,initiator,empNick,'Прийнято (оновлено)',`Посада: [${newRank}] ${RANKS[newRank]||''}`);
-    }
-  } else if(act==='transfer'){
-    if(rowIdx!==-1){
-      sh.getRange(rowIdx,3).setValue(newRank);
-      logRosterChange(ss,initiator,empNick,'Переведено',`[${prevRank}] → [${newRank}] ${RANKS[newRank]||''}`);
-    }
-  } else if(act==='fired'){
-    if(rowIdx!==-1){
-      sh.deleteRow(rowIdx);
-      logRosterChange(ss,initiator,empNick,'Звільнено',`Остання посада: [${prevRank}] ${RANKS[prevRank]||''}`);
-    }
-  }
-}
-
-function logRosterChange(ss,initiator,nick,change,details){
-  const sh=ss.getSheetByName(SH_RHISTORY);
-  if(!sh) return;
-  sh.appendRow([new Date().toISOString(),initiator,nick,change,details]);
-}
-
-// ── GET HISTORY ───────────────────────────────────────────
-function getHistory(){
-  const ss=SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sh=ss.getSheetByName(SH_REPORTS);
-  const data=sh.getDataRange().getValues();
-  const records=[];
-  for(let i=1;i<data.length;i++){
-    const r=data[i];
-    if(!r[0]) continue;
-    records.push({id:String(r[0]),date:r[1],initNick:r[2],initSid:r[3],
-      empNick:r[4],empSid:r[5],action:r[6],prevRank:r[7],newRank:r[8],reason:r[9]});
-  }
-  records.reverse();
-  return{records};
-}
-
-// ── DELETE ────────────────────────────────────────────────
-function del(p){
-  const{id,archiveLogin}=p;
-  // Перевірка: тільки isArchiveAdmin=true
-  const ss=SpreadsheetApp.openById(SPREADSHEET_ID);
-  const ush=ss.getSheetByName(SH_USERS);
-  const udata=ush.getDataRange().getValues();
-  let allowed=false;
-  for(let i=1;i<udata.length;i++){
-    if(String(udata[i][0]).trim().toLowerCase()===archiveLogin.trim().toLowerCase()&&
-       (String(udata[i][4]).toLowerCase()==='true'||String(udata[i][4])==='1')){
-      allowed=true;break;
-    }
-  }
-  if(!allowed) return{success:false,error:'Недостатньо прав. Потрібен логін архіву.'};
-
-  const sh=ss.getSheetByName(SH_REPORTS);
-  const data=sh.getDataRange().getValues();
-  for(let i=1;i<data.length;i++){
-    if(String(data[i][0])===String(id)){sh.deleteRow(i+1);return{success:true};}
-  }
-  return{success:false,error:'Запис не знайдено'};
-}
-
-// ── GET STATS ─────────────────────────────────────────────
-function getStats(){
-  const ss=SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sh=ss.getSheetByName(SH_REPORTS);
-  const data=sh.getDataRange().getValues();
-  const rsh=ss.getSheetByName(SH_ROSTER);
-  const rdata=rsh?rsh.getDataRange().getValues():[];
-  const total=Math.max(0,rdata.length-1);
-
-  const now=new Date(), weekAgo=new Date(now-7*24*60*60*1000);
-  let hiredWeek=0,firedWeek=0,transferWeek=0;
-  const cnt={};
-  for(let i=1;i<data.length;i++){
-    const r=data[i];
-    if(!r[0]) continue;
-    const act=r[6],date=new Date(r[1]),nick=r[2];
-    if(date>=weekAgo){
-      if(act==='hired')    hiredWeek++;
-      if(act==='fired')    firedWeek++;
-      if(act==='transfer') transferWeek++;
-    }
-    if(nick) cnt[nick]=(cnt[nick]||0)+1;
-  }
-  const leaderboard=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([name,count])=>({name,count}));
-  return{stats:{total,hiredWeek,firedWeek,transferWeek,leaderboard}};
-}
-
-// ── GET ROSTER ────────────────────────────────────────────
-function getRoster(){
-  const ss=SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sh=ss.getSheetByName(SH_ROSTER);
-  if(!sh) return{roster:[]};
-  const data=sh.getDataRange().getValues();
-  const roster=[];
-  for(let i=1;i<data.length;i++){
-    const r=data[i];
-    if(!r[0]) continue;
-    let notes=[];
-    try{notes=JSON.parse(r[6]||'[]');}catch(e){notes=[];}
-    roster.push({
-      nick:String(r[0]),staticId:String(r[1]),
-      rank:r[2]!==''?parseInt(r[2]):null,
-      dep:String(r[3]||''),
-      warnings:parseInt(r[4])||0,
-      sanctions:parseInt(r[5])||0,
-      notes
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      },
+      // mode: 'no-cors' — НЕ використовувати! (заважає читати відповідь)
     });
-  }
-  return{roster};
-}
 
-// ── UPDATE ROSTER (ручне редагування адміном) ─────────────
-function updateRoster(p){
-  const{nick,field,value,initiator}=p;
-  const ss=SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sh=ss.getSheetByName(SH_ROSTER);
-  const data=sh.getDataRange().getValues();
-  const colMap={rank:3,dep:4,warnings:5,sanctions:6};
-  const col=colMap[field];
-  if(!col) return{success:false,error:'Невідоме поле'};
-  for(let i=1;i<data.length;i++){
-    if(String(data[i][0]).trim()===nick.trim()){
-      sh.getRange(i+1,col).setValue(value);
-      logRosterChange(ss,initiator,nick,`Змінено ${field}`,`${field}: ${value}`);
-      return{success:true};
+    if (!response.ok) {
+      console.error(`HTTP Error: ${response.status} ${response.statusText}`);
+      throw new Error(`Сервер повернув статус ${response.status}`);
     }
-  }
-  return{success:false,error:'Гравця не знайдено'};
-}
 
-// ── SAVE NOTE ─────────────────────────────────────────────
-function saveNote(p){
-  const{nick,note,author}=p;
-  const ss=SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sh=ss.getSheetByName(SH_ROSTER);
-  const data=sh.getDataRange().getValues();
-  for(let i=1;i<data.length;i++){
-    if(String(data[i][0]).trim()===nick.trim()){
-      let notes=[];
-      try{notes=JSON.parse(data[i][6]||'[]');}catch(e){notes=[];}
-      notes.unshift({
-        text:note,
-        author:author||'—',
-        date:Utilities.formatDate(new Date(),'Europe/Kiev','dd.MM.yyyy HH:mm')
-      });
-      // Зберігати максимум 20 нотаток
-      if(notes.length>20) notes=notes.slice(0,20);
-      sh.getRange(i+1,7).setValue(JSON.stringify(notes));
-      return{success:true};
+    const text = await response.text();
+    
+    // Захист від порожньої відповіді або HTML помилки від Google
+    if (!text || text.trim() === '') {
+      throw new Error('Сервер повернув порожню відповідь');
     }
+
+    let json;
+    try {
+      json = JSON.parse(text);
+    } catch (e) {
+      console.error("Не валідний JSON від сервера:", text.substring(0, 300));
+      throw new Error('Сервер повернув невалідну відповідь (не JSON)');
+    }
+
+    if (json.error) {
+      console.warn(`API Error: ${json.error}`);
+    }
+
+    return json;
+
+  } catch (e) {
+    console.error(`Помилка запиту ${action}:`, e);
+    throw e; // щоб catch у doLogin / submitAudit спрацював
   }
-  return{success:false,error:'Гравця не знайдено'};
 }
 
-// ── GET ROSTER HISTORY ────────────────────────────────────
-function getRosterHistory(){
-  const ss=SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sh=ss.getSheetByName(SH_RHISTORY);
-  if(!sh) return{records:[]};
-  const data=sh.getDataRange().getValues();
-  const records=[];
-  for(let i=1;i<data.length;i++){
-    const r=data[i];
-    if(!r[0]) continue;
-    records.push({date:r[0],initiator:r[1],nick:r[2],change:r[3],details:r[4]});
+// ══════════════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════════════
+async function doLogin(){
+  const login = document.getElementById('loginInp').value.trim();
+  if(!login) return showLoginErr('Введіть логін');
+
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Перевірка...';
+
+  try {
+    const r = await call('login', {login});
+    
+    if(r.success){
+      me = r.user;
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('sideNick').textContent = me.nick || me.login;
+      document.getElementById('sideAv').textContent = (me.nick || me.login)[0].toUpperCase();
+      document.getElementById('sideRole').textContent = me.isAdmin ? 'Адміністратор' : 'Співробітник';
+      loadPlayers();
+    } else {
+      showLoginErr(r.error || 'Невірний логін');
+    }
+  } catch(e) {
+    console.error(e);
+    showLoginErr('Помилка з\'єднання з сервером. Перевір консоль (F12)');
   }
-  records.reverse();
-  return{records};
+
+  btn.disabled = false;
+  btn.innerHTML = `<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Увійти`;
 }
 
-// ── DISCORD ───────────────────────────────────────────────
-function sendDiscord(ticketRaw,data){
-  const{initNick,initSid,empNick,empSid,act,prevRank,newRank,reason}=data;
-  const ticket=String(ticketRaw).slice(-4).padStart(4,'0');
-  const color=ACTION_COLOR[act]||0x00d2ff;
-  const label=ACTION_UA[act]||act;
+function showLoginErr(m){
+  const e = document.getElementById('loginErr');
+  e.textContent = m;
+  e.style.display = 'block';
+}
 
-  const pR=prevRank!==''&&prevRank!=null?`[${prevRank}] ${RANKS[prevRank]||''}`:null;
-  const nR=newRank !==''&&newRank !=null?`[${newRank}] ${RANKS[newRank ]||''}`:null;
-  const rankChange=pR&&nR?`${pR}  →  ${nR}`:nR||pR||'—';
+// ... (весь інший код залишається без змін — від NAVIGATION до кінця)
 
-  const rn=parseInt(newRank!==''?newRank:prevRank)||0;
-  const pct=Math.round(rn/10*100);
-  const bar='█'.repeat(Math.round(pct/10))+'░'.repeat(10-Math.round(pct/10));
-  const next=RANKS[rn+1]?`[${rn+1}] ${RANKS[rn+1]}`:'✅ Максимальний';
-  const dateStr=Utilities.formatDate(new Date(),'Europe/Kiev','dd.MM.yyyy HH:mm')+' (UTC+3)';
+// ══════════════════════════════════════════════════
+// UTILS (залишаємо тільки необхідне)
+// ══════════════════════════════════════════════════
+function openM(id){ document.getElementById(id).classList.add('open'); }
+function closeM(id){ document.getElementById(id).classList.remove('open'); }
 
-  const embed={
-    color,
-    author:{name:'🏥 EMS · Кадровий відділ'},
-    title:`${label}  ·  #${ticket}`,
-    fields:[
-      {name:'👤 Ініціатор',   value:`${initNick} | ${initSid}`,inline:true},
-      {name:'🎯 Співробітник',value:`${empNick} | ${empSid}`,  inline:true},
-      {name:'\u200B',value:'\u200B',inline:false},
-      {name:'🔄 Зміна посади', value:rankChange,inline:false},
-      {name:'📊 Прогрес рангу',value:`${bar}  ${pct}% · Ранг ${rn}/10`,inline:false},
-      {name:'💬 Пояснення',   value:reason||'—',inline:false},
-      {name:'🕐 Заявку подано',value:dateStr,inline:true},
-      {name:'⏳ Наступне',    value:next,inline:true}
-    ],
-    footer:{text:`EMS Medical System · Ticket #${ticket} · ${Utilities.formatDate(new Date(),'Europe/Kiev','dd.MM.yyyy')}`},
-    timestamp:new Date().toISOString()
-  };
-
-  UrlFetchApp.fetch(DISCORD_WEBHOOK,{
-    method:'POST',contentType:'application/json',
-    payload:JSON.stringify({embeds:[embed]}),
-    muteHttpExceptions:true
+document.querySelectorAll('.overlay').forEach(o => {
+  o.addEventListener('click', e => {
+    if(e.target === o) o.classList.remove('open');
   });
+});
+
+let tt;
+function toast(msg, type = 'ok'){
+  const t = document.getElementById('toast');
+  document.getElementById('tIco').textContent = type === 'ok' ? '✅' : '❌';
+  document.getElementById('tMsg').textContent = msg;
+  t.className = `show ${type}`;
+  clearTimeout(tt);
+  tt = setTimeout(() => t.className = '', 3200);
 }
+
+function esc(s){
+  return String(s || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// Ініціалізація навігації (залишається як було)
+document.querySelectorAll('.snav').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.snav').forEach(x => x.classList.remove('on'));
+    document.querySelectorAll('.page').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    const pg = document.getElementById('page-' + b.dataset.p);
+    if(pg) pg.classList.add('on');
+
+    if(b.dataset.p === 'history') loadHistory();
+    if(b.dataset.p === 'stats') loadStats();
+    if(b.dataset.p === 'roster') loadRoster();
+    if(b.dataset.p === 'rhistory') loadRHistory();
+  });
+});
+</script>
