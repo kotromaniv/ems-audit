@@ -677,7 +677,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 // ══════════════════════════════════════════════════
 // CONFIG — вставте ваш Apps Script URL
 // ══════════════════════════════════════════════════
-const API = 'https://script.google.com/macros/s/AKfycbxOvsWC8hPpdBfX2SZLhvBqFYmu1PUiQm2VJpUX2DT9kahbc1rERfYa26U5W6V7E74/exec';
+const API = 'https://script.google.com/macros/s/AKfycbz844Z9IhugXTnmF0RpqIEkPFh0dlCGFG2wO-t5lZQ3WpL690u8UokKCP_hZJsK33V_/exec';
 
 const RANKS=['Співбесіда','Студент','Інтерн','Парамедик','Фельдшер','Терапевт','Хірург','Спеціаліст','Заст.зав.відділу','Завідувач відділу','Заст.голов.лікаря'];
 const ALBL={hired:'✅ Прийнято на роботу',transfer:'🔄 Переведено',fired:'❌ Звільнено'};
@@ -713,7 +713,7 @@ async function doLogin(){
     } else {
       showLoginErr(r.error||'Невірний логін');
     }
-  }catch(e){showLoginErr('Помилка з\'єднання з сервером');}
+  }catch(e){showLoginErr(humanizeApiError(e));}
   btn.disabled=false;
   btn.innerHTML='<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Увійти';
 }
@@ -1121,9 +1121,42 @@ function exportCSV(){
 // ══════════════════════════════════════════════════
 async function call(action,params={}){
   const q=new URLSearchParams({action,...params});
-  const r=await fetch(API+'?'+q.toString());
-  if(!r.ok) throw new Error('HTTP '+r.status);
-  return r.json();
+  const url=API+'?'+q.toString();
+  const r=await fetch(url,{method:'GET',headers:{'Accept':'application/json'}});
+
+  if(!r.ok){
+    const body=await r.text();
+    throw new Error(`HTTP ${r.status}: ${body.slice(0,160)}`);
+  }
+
+  const ct=(r.headers.get('content-type')||'').toLowerCase();
+  if(!ct.includes('application/json')){
+    const body=await r.text();
+    throw new Error(`NON_JSON_RESPONSE: ${body.slice(0,160)}`);
+  }
+
+  const data=await r.json();
+  if(data&&data.success===false&&data.error){
+    throw new Error(data.error);
+  }
+  return data;
+}
+
+function humanizeApiError(e){
+  const msg=String(e&&e.message?e.message:e||'');
+  if(msg.includes('Failed to fetch')||msg.includes('NetworkError')){
+    return 'Немає доступу до Apps Script URL. Перевір Deploy: Web app → Anyone.';
+  }
+  if(msg.includes('NON_JSON_RESPONSE')){
+    return 'Сервер повернув не JSON. Найчастіше це невірний Deploy URL або доступ не "Anyone".';
+  }
+  if(msg.includes('HTTP 401')||msg.includes('HTTP 403')){
+    return 'Доступ до Apps Script заборонений. Виставте доступ "Anyone" і передеплойте.';
+  }
+  if(msg.includes('HTTP 404')){
+    return 'Apps Script URL не знайдено. Перевірте /exec посилання.';
+  }
+  return "Помилка з'єднання: "+msg.slice(0,120);
 }
 function openM(id){document.getElementById(id).classList.add('open');}
 function closeM(id){document.getElementById(id).classList.remove('open');}
