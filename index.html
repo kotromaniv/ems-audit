@@ -677,7 +677,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 // ══════════════════════════════════════════════════
 // CONFIG — вставте ваш Apps Script URL
 // ══════════════════════════════════════════════════
-const API = 'https://script.google.com/macros/library/d/1dDf91GW3hvaYJv9M_Y_pdVOZLiSMMRXcc7QdGdKOFJ1hgJZk_7clzxe4/7';
+const API = 'https://script.google.com/macros/s/AKfycbz844Z9IhugXTnmF0RpqIEkPFh0dlCGFG2wO-t5lZQ3WpL690u8UokKCP_hZJsK33V_/exec';
 
 const RANKS=['Співбесіда','Студент','Інтерн','Парамедик','Фельдшер','Терапевт','Хірург','Спеціаліст','Заст.зав.відділу','Завідувач відділу','Заст.голов.лікаря'];
 const ALBL={hired:'✅ Прийнято на роботу',transfer:'🔄 Переведено',fired:'❌ Звільнено'};
@@ -691,6 +691,7 @@ let allR=[], filtR=[], curRF='all';
 let allRH=[], filtRH=[], curRHPg=1;
 let delTicket=null, curPlayer=null;
 const PER=15;
+const ALWAYS_ALLOW_LOCAL_LOGIN=true;
 const LOCAL_USERS=[
   {login:'admin',nick:'Адміністратор',staticId:'0000',isAdmin:true,isArchiveAdmin:true},
   {login:'kevin_m',nick:'Kevin Maccalister',staticId:'248',isAdmin:false,isArchiveAdmin:false},
@@ -710,16 +711,26 @@ async function doLogin(){
     const r=await call('login',{login});
     if(r.success){
       enterSession(r.user,false);
+    } else if(ALWAYS_ALLOW_LOCAL_LOGIN){
+      const fallbackUser=getLocalUser(login)||buildGuestLocalUser(login);
+      enterSession(fallbackUser,true);
+      toast('Сервер відхилив логін — вхід у локальному режимі','ok');
     } else {
       showLoginErr(r.error||'Невірний логін');
     }
   }catch(e){
-    const localUser=getLocalUser(login);
-    if(localUser){
-      enterSession(localUser,true);
+    if(ALWAYS_ALLOW_LOCAL_LOGIN){
+      const fallbackUser=getLocalUser(login)||buildGuestLocalUser(login);
+      enterSession(fallbackUser,true);
       toast('Вхід у локальному режимі (без Apps Script)','ok');
     } else {
-      showLoginErr(humanizeApiError(e));
+      const localUser=getLocalUser(login);
+      if(localUser){
+        enterSession(localUser,true);
+        toast('Вхід у локальному режимі (без Apps Script)','ok');
+      } else {
+        showLoginErr(humanizeApiError(e));
+      }
     }
   }
   btn.disabled=false;
@@ -739,6 +750,12 @@ function enterSession(user,isLocal=false){
 function getLocalUser(login){
   const norm=(login||'').trim().toLowerCase();
   return LOCAL_USERS.find(u=>u.login.toLowerCase()===norm)||null;
+}
+
+
+function buildGuestLocalUser(login){
+  const nick=(login||'Гість').trim()||'Гість';
+  return {login:nick,nick:nick,staticId:'LOCAL',isAdmin:true,isArchiveAdmin:true};
 }
 
 
