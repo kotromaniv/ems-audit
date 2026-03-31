@@ -185,7 +185,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 
 /* DOTS FIX — маленькі круглі */
 .dots-wrap{display:flex;gap:3px;align-items:center;line-height:1;}
-.dot-c{display:inline-block;width:6px;height:6px;border-radius:50%;flex-shrink:0;vertical-align:middle;}
+.dot-c{display:inline-block;width:10px;height:10px;border-radius:50%;flex-shrink:0;vertical-align:middle;}
 .dot-warn-fill{background:var(--o);}
 .dot-warn-empty{background:transparent;border:1px solid rgba(255,165,2,.4);}
 .dot-sanc-fill{background:var(--r);}
@@ -237,6 +237,26 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 @keyframes rot{to{transform:rotate(360deg)}}
 .loading{text-align:center;padding:36px;color:var(--txt2);font-size:12px;}
 .loading .spin{width:20px;height:20px;margin-bottom:8px;}
+
+
+.player-tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.player-tab{padding:7px 12px;border-radius:999px;border:1px solid var(--b);background:var(--bg3);color:var(--txt2);font:600 11px/1 'Inter',sans-serif;cursor:pointer;transition:.15s;}
+.player-tab.on{border-color:var(--b2);color:var(--c);background:var(--cdim);}
+.player-pane{display:none;}
+.player-pane.on{display:block;}
+
+.mobile-nav{display:none;}
+@media(max-width:900px){
+  .page{padding:18px 14px 90px;}
+  .topbar{flex-wrap:wrap;}
+  .ibtn{width:36px;height:36px;}
+  .roster-row{grid-template-columns:1.4fr .9fr 1.2fr 62px 62px .9fr 50px;}
+  .rcell{padding:8px 7px;font-size:11px;}
+  .modal{padding:16px;}
+  .mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--bg2);border-top:1px solid var(--b);z-index:50;overflow-x:auto;}
+  .mnav{flex:1;min-width:92px;padding:10px 8px;border:none;background:transparent;color:var(--txt2);font:600 11px/1.1 'Inter',sans-serif;}
+  .mnav.on{color:var(--c);background:var(--cdim);}
+}
 
 /* PLAYER MODAL */
 .player-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
@@ -335,10 +355,12 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
   <div class="card">
     <div class="clbl">Співробітник</div>
     <div class="g2">
-      <div class="field"><label>Нікнейм</label><input class="inp" id="empNick" placeholder="Введіть нікнейм..."></div>
-      <div class="field"><label>Static ID</label><input class="inp" id="empSid" placeholder="#0000"></div>
+      <div class="field"><label>Нікнейм</label><input class="inp" id="empNick" list="empNickList" placeholder="Введіть нікнейм..." oninput="onEmpNickInput()"></div>
+      <div class="field"><label>Static ID</label><input class="inp" id="empSid" list="empSidList" placeholder="#0000" oninput="onEmpSidInput()"></div>
     </div>
   </div>
+  <datalist id="empNickList"></datalist>
+  <datalist id="empSidList"></datalist>
   <div class="card">
     <div class="clbl">Дія</div>
     <div class="apills">
@@ -473,6 +495,14 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 </div>
 </main>
 
+<div class="mobile-nav" id="mobileNav">
+  <button class="mnav on" data-p="audit">Аудит</button>
+  <button class="mnav" data-p="history">Історія</button>
+  <button class="mnav" data-p="stats">Статистика</button>
+  <button class="mnav" data-p="roster">Планшет</button>
+  <button class="mnav" data-p="rhistory">Журнал</button>
+</div>
+
 <!-- MODAL: Підтвердження аудиту -->
 <div class="overlay" id="confirmOv">
   <div class="modal sm">
@@ -588,15 +618,27 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
         </div>
       </div>
       <div>
-        <div class="clbl">Нотатки</div>
-        <div id="noteHistory" class="note-history"></div>
-        <div id="noteEditWrap" style="display:none;">
-          <div class="field" style="margin-top:8px;">
-            <label>Додати нотатку</label>
-            <textarea class="ta" id="noteText" placeholder="Введіть нотатку..." style="min-height:56px;"></textarea>
-            <button class="btn btn-p btn-sm" style="margin-top:6px;align-self:flex-end;" onclick="saveNote()">
-              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:12px;height:12px"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Зберегти
-            </button>
+        <div class="player-tabs">
+          <button class="player-tab on" data-pane="pInfo" onclick="switchPlayerPane('pInfo',this)">Профіль</button>
+          <button class="player-tab" data-pane="pNotes" onclick="switchPlayerPane('pNotes',this)">Нотатки</button>
+        </div>
+        <div id="pInfo" class="player-pane on">
+          <div class="warn-box" style="margin:0;">
+            <div class="warn-title">Підказка</div>
+            <div class="warn-desc" style="margin:0;">Історія гравця відкривається окремою кнопкою «Історія» зверху — без перекриття нотатками.</div>
+          </div>
+        </div>
+        <div id="pNotes" class="player-pane">
+          <div class="clbl">Нотатки</div>
+          <div id="noteHistory" class="note-history"></div>
+          <div id="noteEditWrap" style="display:none;">
+            <div class="field" style="margin-top:8px;">
+              <label>Додати нотатку</label>
+              <textarea class="ta" id="noteText" placeholder="Введіть нотатку..." style="min-height:56px;"></textarea>
+              <button class="btn btn-p btn-sm" style="margin-top:6px;align-self:flex-end;" onclick="saveNote()">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:12px;height:12px"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Зберегти
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -640,6 +682,9 @@ let me=null,players=[],allH=[],filtH=[],curHF='all',curHPg=1;
 let allR=[],filtR=[],curRF='all';
 let allRH=[],filtRH=[],curRHPg=1;
 let delTicket=null,delRHIdx=null,curPlayer=null,editedWarnings=0,editedSanctions=0;
+const CACHE_TTL=20000;
+const cache={roster:{at:0,data:null},rh:{at:0,data:null},history:{at:0,data:null}};
+const pendingCounter={warnings:false,sanctions:false};
 const PER=15;
 
 // ── LOGIN ──
@@ -668,18 +713,21 @@ function enterSession(user){
 
 // ── NAV ──
 document.querySelectorAll('.snav').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.snav').forEach(x=>x.classList.remove('on'));
-    document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    const pg=document.getElementById('page-'+b.dataset.p);
-    if(pg) pg.classList.add('on');
-    if(b.dataset.p==='history') loadHistory();
-    if(b.dataset.p==='stats')   loadStats();
-    if(b.dataset.p==='roster')  loadRoster();
-    if(b.dataset.p==='rhistory')loadRHistory();
-  });
+  b.addEventListener('click',()=>goPage(b.dataset.p));
 });
+
+document.querySelectorAll('.mnav').forEach(b=>b.addEventListener('click',()=>goPage(b.dataset.p)));
+function goPage(page){
+  document.querySelectorAll('.snav,.mnav').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll(`.snav[data-p="${page}"],.mnav[data-p="${page}"]`).forEach(x=>x.classList.add('on'));
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+  const pg=document.getElementById('page-'+page);
+  if(pg) pg.classList.add('on');
+  if(page==='history') loadHistory();
+  if(page==='stats') loadStats();
+  if(page==='roster') loadRoster();
+  if(page==='rhistory') loadRHistory();
+}
 
 // ── PLAYERS ──
 async function loadPlayers(){
@@ -694,11 +742,30 @@ async function loadPlayers(){
       const my=players.find(p=>p.login===me.login||p.nick===me.nick);
       if(my){sel.value=my.nick;document.getElementById('initSid').value=my.staticId;}
     }
+    buildEmpSuggestions();
   }catch(e){toast('Не вдалось завантажити список гравців','err');}
 }
 function pickInit(){
   const s=document.getElementById('selInit');
   document.getElementById('initSid').value=s.options[s.selectedIndex]?.dataset.id||'';
+}
+
+function buildEmpSuggestions(){
+  const nl=document.getElementById('empNickList');
+  const sl=document.getElementById('empSidList');
+  if(!nl||!sl) return;
+  nl.innerHTML=players.map(p=>`<option value="${esc(p.nick)}">${p.staticId||''}</option>`).join('');
+  sl.innerHTML=players.map(p=>`<option value="${esc(String(p.staticId||''))}">${p.nick||''}</option>`).join('');
+}
+function onEmpNickInput(){
+  const nick=(document.getElementById('empNick').value||'').trim().toLowerCase();
+  const p=players.find(x=>(x.nick||'').toLowerCase()===nick);
+  if(p) document.getElementById('empSid').value=p.staticId||'';
+}
+function onEmpSidInput(){
+  const sid=(document.getElementById('empSid').value||'').trim();
+  const p=players.find(x=>String(x.staticId||'')===sid);
+  if(p) document.getElementById('empNick').value=p.nick||'';
 }
 
 // ── AUDIT ──
@@ -722,7 +789,7 @@ function getPromoInfo(newRankVal){
   const hours=PROMO_HOURS[nr];
   if(hours===undefined) return null;
   const now=new Date();
-  const kyivNow=new Date(now.toLocaleString('en-US',{timeZone:'Europe/Kiev'}));
+  const kyivNow=new Date(now.toLocaleString('en-US',{timeZone:'Europe/Kyiv'}));
   const availableAt=new Date(kyivNow.getTime()+hours*3600000);
   return {hours,rankFrom:RANKS[nr-1]||'',rankTo:RANKS[nr]||'',availableAt};
 }
@@ -782,7 +849,7 @@ async function submitAudit(){
   btn.disabled=true;btn.innerHTML='<span class="spin"></span> Відправлення...';
   try{
     const r=await call('submit',{initNick,initSid,initLogin:me.login,empNick,empSid,act:curAct,prevRank,newRank,reason});
-    if(r.success){closeM('confirmOv');toast('Заявку успішно відправлено! ✅','ok');resetAudit();}
+    if(r.success){cache.history.at=0;closeM('confirmOv');toast('Заявку успішно відправлено! ✅','ok');resetAudit();}
     else toast(r.error||'Помилка','err');
   }catch(e){toast('Помилка з\'єднання','err');}
   btn.disabled=false;
@@ -794,12 +861,15 @@ function resetAudit(){
 }
 
 // ── HISTORY ──
-async function loadHistory(){
+async function loadHistory(force=false){
   document.getElementById('hLoad').style.display='block';
   document.getElementById('hWrap').style.display='none';
   try{
-    const r=await call('getHistory');
+    curHPg=1;
+    const canCache=!force&&cache.history.data&&Date.now()-cache.history.at<CACHE_TTL;
+    const r=canCache?{records:cache.history.data}:await call('getHistory');
     allH=(r.records||[]).map(x=>({...x,action:x.action||x.act||'',ticket:x.ticket||x.id||''}));
+    cache.history={at:Date.now(),data:allH};
     document.getElementById('hCnt').textContent=`${allH.length} записів знайдено`;
     filterH();
     document.getElementById('hLoad').style.display='none';
@@ -912,13 +982,15 @@ async function loadStats(){
 }
 
 // ── ROSTER ──
-async function loadRoster(){
+async function loadRoster(force=false){
   document.getElementById('rLoad').style.display='block';
   document.getElementById('rBody').innerHTML='';
   document.getElementById('rEmpty').style.display='none';
   try{
-    const r=await call('getRoster');
+    const canCache=!force&&cache.roster.data&&Date.now()-cache.roster.at<CACHE_TTL;
+    const r=canCache?{roster:cache.roster.data}:await call('getRoster');
     allR=(r.roster||[]).map(p=>({...p,staticId:p.staticId??p.sid??'',warnings:p.warnings??0,sanctions:p.sanctions??0,dep:p.dep??'',notes:p.notes||[]}));
+    cache.roster={at:Date.now(),data:allR};
     document.getElementById('rCnt').textContent=`${allR.length} гравців у фракції`;
     filterR();
     document.getElementById('rLoad').style.display='none';
@@ -979,6 +1051,8 @@ function openPlayer(nick){
   renderNotes(p.notes||[]);
   document.getElementById('noteEditWrap').style.display=me&&me.isAdmin?'block':'none';
   document.getElementById('noteText').value='';
+  const defaultTab=document.querySelector('.player-tab[data-pane="pInfo"]');
+  switchPlayerPane('pInfo',defaultTab);
   openM('playerOv');
 }
 function renderNotes(notes){
@@ -1002,6 +1076,8 @@ function changeCounter(field,delta){
   }
 }
 async function saveCounterField(field,value){
+  if(pendingCounter[field]) return;
+  pendingCounter[field]=true;
   try{
     const r=await call('updateRoster',{nick:curPlayer.nick,sid:curPlayer.staticId,field,value,initiator:me.nick||me.login});
     if(r.success){
@@ -1009,10 +1085,12 @@ async function saveCounterField(field,value){
       if(p) p[field]=value;
       if(field==='warnings') document.getElementById('pmWarn').textContent=`${value}/2`;
       else document.getElementById('pmSanc').textContent=`${value}/3`;
+      cache.roster.at=0; cache.rh.at=0;
       filterR();
       toast(`${field==='warnings'?'Попередження':'Догани'} оновлено`,'ok');
     } else toast(r.error||'Помилка','err');
-  }catch(e){toast('Помилка з\'єднання','err');}
+  }catch(e){toast(humanizeErr(e),'err');}
+  finally{pendingCounter[field]=false;}
 }
 async function saveEditDep(){
   const dep=document.getElementById('editDep').value;
@@ -1035,9 +1113,12 @@ async function saveNote(){
     if(r.success){
       toast('Нотатку збережено','ok');
       document.getElementById('noteText').value='';
-      await loadRoster();
-      const updated=allR.find(x=>x.nick===curPlayer.nick);
-      if(updated){curPlayer=updated;renderNotes(updated.notes||[]);}
+      const p=allR.find(x=>x.nick===curPlayer.nick);
+      const notes=(r.notes||p?.notes||[]);
+      if(p) p.notes=notes;
+      curPlayer={...curPlayer,notes};
+      cache.roster.at=0; cache.rh.at=0;
+      renderNotes(notes);
     } else toast(r.error||'Помилка','err');
   }catch(e){toast('Помилка з\'єднання','err');}
 }
@@ -1047,16 +1128,20 @@ async function deleteNote(idx){
     const r=await call('deleteNote',{nick:curPlayer.nick,noteIndex:idx,archiveLogin:me.login});
     if(r.success){
       toast('Нотатку видалено','ok');
-      await loadRoster();
-      const updated=allR.find(x=>x.nick===curPlayer.nick);
-      if(updated){curPlayer=updated;renderNotes(updated.notes||[]);}
+      const p=allR.find(x=>x.nick===curPlayer.nick);
+      const notes=(r.notes||p?.notes||[]);
+      if(p) p.notes=notes;
+      curPlayer={...curPlayer,notes};
+      cache.roster.at=0; cache.rh.at=0;
+      renderNotes(notes);
     } else toast(r.error||'Помилка','err');
   }catch(e){toast('Помилка з\'єднання','err');}
 }
 
 // ── PLAYER HISTORY ──
-function openPlayerHistory(){
+async function openPlayerHistory(){
   if(!curPlayer) return;
+  if(!allRH.length) await loadRHistory();
   const nick=curPlayer.nick;
   document.getElementById('phTitle').textContent=`Історія: ${nick}`;
   // Фільтруємо журнал змін по ніку
@@ -1078,12 +1163,15 @@ function openPlayerHistory(){
 }
 
 // ── ROSTER HISTORY ──
-async function loadRHistory(){
+async function loadRHistory(force=false){
   document.getElementById('rhLoad').style.display='block';
   document.getElementById('rhWrap').style.display='none';
   try{
-    const r=await call('getRosterHistory');
+    curRHPg=1;
+    const canCache=!force&&cache.rh.data&&Date.now()-cache.rh.at<CACHE_TTL;
+    const r=canCache?{records:cache.rh.data}:await call('getRosterHistory');
     allRH=(r.records||[]).map((x,i)=>({...x,_idx:i,initiator:x.initiator||'Система',change:x.change||'Зміна',details:x.details||''}));
+    cache.rh={at:Date.now(),data:allRH};
     document.getElementById('rhCnt').textContent=`${allRH.length} записів`;
     filterRH();
     document.getElementById('rhLoad').style.display='none';
@@ -1129,16 +1217,33 @@ function exportCSV(){
   a.download=`EMS_audit_${new Date().toISOString().slice(0,10)}.csv`;a.click();
 }
 
+function switchPlayerPane(id,btn){
+  document.querySelectorAll('.player-tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.player-pane').forEach(x=>x.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  const pane=document.getElementById(id); if(pane) pane.classList.add('on');
+}
+
 // ── UTILS ──
 async function call(action,params={}){
   const q=new URLSearchParams({action,...params});
-  const r=await fetch(API+'?'+q.toString(),{method:'GET',headers:{'Accept':'application/json'}});
-  if(!r.ok){const b=await r.text();throw new Error(`HTTP ${r.status}: ${b.slice(0,120)}`);}
-  const ct=(r.headers.get('content-type')||'').toLowerCase();
-  if(!ct.includes('application/json')){const b=await r.text();throw new Error(`NON_JSON: ${b.slice(0,120)}`);}
-  const data=await r.json();
-  if(data&&data.success===false&&data.error) throw new Error(data.error);
-  return data;
+  const url=API+'?'+q.toString();
+  let err;
+  for(let attempt=0;attempt<2;attempt++){
+    const ctl=new AbortController();
+    const t=setTimeout(()=>ctl.abort(),12000);
+    try{
+      const r=await fetch(url,{method:'GET',headers:{'Accept':'application/json'},signal:ctl.signal,cache:'no-store'});
+      clearTimeout(t);
+      if(!r.ok){const b=await r.text();throw new Error(`HTTP ${r.status}: ${b.slice(0,120)}`);}
+      const ct=(r.headers.get('content-type')||'').toLowerCase();
+      if(!ct.includes('application/json')){const b=await r.text();throw new Error(`NON_JSON: ${b.slice(0,120)}`);}
+      const data=await r.json();
+      if(data&&data.success===false&&data.error) throw new Error(data.error);
+      return data;
+    }catch(e){ err=e; if(attempt===0) await new Promise(r=>setTimeout(r,300)); }
+  }
+  throw err;
 }
 function humanizeErr(e){
   const m=String(e?.message||e||'');
@@ -1150,10 +1255,10 @@ function humanizeErr(e){
 
 // Київський час
 function fmtKyiv(d){
-  return d.toLocaleString('uk-UA',{timeZone:'Europe/Kiev',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  return d.toLocaleString('uk-UA',{timeZone:'Europe/Kyiv',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 }
 function fmtKyivLong(d){
-  return d.toLocaleString('uk-UA',{timeZone:'Europe/Kiev',dateStyle:'long',timeStyle:'short'});
+  return d.toLocaleString('uk-UA',{timeZone:'Europe/Kyiv',dateStyle:'long',timeStyle:'short'});
 }
 
 function openM(id){document.getElementById(id).classList.add('open');}
