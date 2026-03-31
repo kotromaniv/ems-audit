@@ -8,13 +8,13 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --bg:#080d18;--bg2:#0c1422;--bg3:#101a2c;--bg4:#162035;
-  --b:rgba(255,255,255,.06);--b2:rgba(0,210,255,.22);--b3:rgba(255,255,255,.12);
-  --c:#00d2ff;--cdim:rgba(0,210,255,.1);
-  --g:#00e676;--gdim:rgba(0,230,118,.1);
-  --r:#ff4757;--rdim:rgba(255,71,87,.1);
-  --o:#ffa502;--odim:rgba(255,165,2,.1);
-  --txt:#dde8f8;--txt2:#6b84a0;--txt3:#304055;
+  --bg:#eef2f8;--bg2:#ffffff;--bg3:#f6f8fc;--bg4:#eef1f7;
+  --b:rgba(23,31,56,.10);--b2:rgba(201,20,53,.35);--b3:rgba(23,31,56,.2);
+  --c:#c91435;--cdim:rgba(201,20,53,.08);
+  --g:#1aa458;--gdim:rgba(26,164,88,.1);
+  --r:#c91435;--rdim:rgba(201,20,53,.1);
+  --o:#d08a17;--odim:rgba(208,138,23,.1);
+  --txt:#1a2236;--txt2:#5f6f86;--txt3:#9aa7bb;
   --rad:10px;--rad2:7px;
 }
 html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;}
@@ -297,6 +297,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 .ph-badge{flex-shrink:0;}
 .ph-detail{flex:1;color:var(--txt2);}
 .ph-init{font-size:10px;color:var(--txt3);}
+.ph-actions{display:flex;align-items:center;}
 
 @media(max-width:900px){
   aside{display:none;}main{margin-left:0;}
@@ -1391,7 +1392,9 @@ async function openPlayerHistory(){
     date:r.date,
     change:r.change||'Зміна',
     details:r.details||'—',
-    initiator:r.initiator||'Система'
+    initiator:r.initiator||'Система',
+    kind:'roster',
+    rowIndex:r._idx
   }));
   const ev2=allH
     .filter(r=>r.empNick===nick||String(r.empSid||'')===sid)
@@ -1402,7 +1405,9 @@ async function openPlayerHistory(){
         date:r.date,
         change:ALBL[r.action]||r.action||'Аудит',
         details:`${pR&&nR?`${pR} → ${nR}`:nR||pR||'—'} · ${r.reason||'без пояснення'}`,
-        initiator:r.initNick||'—'
+        initiator:r.initNick||'—',
+        kind:'audit',
+        ticket:r.ticket||r.id||''
       };
     });
   const events=[...ev1,...ev2].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
@@ -1415,7 +1420,8 @@ async function openPlayerHistory(){
       return `<div class="ph-row">
         <div class="ph-date">${dt}</div>
         <div class="ph-badge"><span class="badge ${badgeCls}">${r.change}</span></div>
-        <div><div class="ph-detail">${r.details||'—'}</div><div class="ph-init">Ініціатор: ${r.initiator||'—'}</div></div>
+        <div style="flex:1"><div class="ph-detail">${r.details||'—'}</div><div class="ph-init">Ініціатор: ${r.initiator||'—'}</div></div>
+        <div class="ph-actions">${r.kind==='audit'&&r.ticket?`<button class="rbtn del" onclick="askDel('${r.ticket}',null)" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>`:''}${r.kind==='roster'&&r.rowIndex!=null?`<button class="rbtn del" onclick="askDel(null,${r.rowIndex})" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>`:''}</div>
       </div>`;
     }).join('');
   }
