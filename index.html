@@ -18,7 +18,6 @@
   --rad:10px;--rad2:7px;
 }
 html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;}
-
 /* SIDEBAR */
 aside{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--bg2);border-right:1px solid var(--b);display:flex;flex-direction:column;z-index:40;}
 .side-top{padding:20px 16px 16px;border-bottom:1px solid var(--b);}
@@ -37,7 +36,6 @@ aside{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--bg2);bor
 .user-av{width:28px;height:28px;border-radius:7px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--c);flex-shrink:0;}
 .user-info .un{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .user-info .ur{font-size:10px;color:var(--txt2);}
-
 /* MAIN */
 main{margin-left:220px;min-height:100vh;}
 .page{display:none;padding:40px 32px 80px;}
@@ -45,19 +43,16 @@ main{margin-left:220px;min-height:100vh;}
 .ptitle{margin-bottom:28px;}
 .ptitle h2{font-size:26px;font-weight:800;color:var(--c);letter-spacing:-.5px;}
 .ptitle p{font-size:13px;color:var(--txt2);margin-top:5px;}
-
 /* LOGIN */
 #loginScreen{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;align-items:center;justify-content:center;}
 .login-box{background:var(--bg2);border:1px solid var(--b);border-radius:16px;padding:36px;width:360px;}
 .login-box .llogo{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
 .login-box h2{font-size:20px;font-weight:700;margin-bottom:6px;}
 .login-box p{font-size:13px;color:var(--txt2);margin-bottom:24px;}
-
 /* CARDS */
 .card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--rad);padding:22px;margin-bottom:14px;}
 .clbl{font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
 .clbl::before{content:'';width:3px;height:11px;background:var(--c);border-radius:2px;display:block;}
-
 /* FORM */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
@@ -71,7 +66,6 @@ main{margin-left:220px;min-height:100vh;}
 .sel{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%236b84a0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:32px;}
 .sel option{background:var(--bg2);}
 .ta{resize:vertical;min-height:72px;line-height:1.5;}
-
 /* ACTION PILLS */
 .apills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px;}
 .apill{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:22px;border:1px solid var(--b);background:transparent;color:var(--txt2);font:600 12px/1 'Inter',sans-serif;cursor:pointer;transition:.15s;}
@@ -83,13 +77,11 @@ main{margin-left:220px;min-height:100vh;}
 .apill[data-a=transfer].on .dot{background:var(--c);box-shadow:0 0 5px var(--c);}
 .apill[data-a=fired].on{border-color:var(--r);color:var(--r);}
 .apill[data-a=fired].on .dot{background:var(--r);box-shadow:0 0 5px var(--r);}
-
 /* SUBMIT BAR */
 .sbar{display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border:1px solid var(--b);border-radius:var(--rad);padding:16px 20px;}
 .sbar-lbl{font-size:11px;color:var(--txt2);}
 .sbar-val{font-size:14px;font-weight:700;color:var(--c);margin-top:2px;}
 .btns{display:flex;gap:8px;}
-
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:var(--rad2);font:700 12px/1 'Inter',sans-serif;border:none;cursor:pointer;transition:.15s;outline:none;}
 .btn svg{width:13px;height:13px;flex-shrink:0;}
@@ -103,7 +95,6 @@ main{margin-left:220px;min-height:100vh;}
 .btn-o{background:transparent;border:1px solid var(--o);color:var(--o);}
 .btn-o:hover{background:var(--odim);}
 .btn-sm{padding:7px 14px;font-size:11px;}
-
 /* TABLE */
 .topbar{display:flex;gap:8px;margin-bottom:14px;}
 .sw{flex:1;position:relative;}
@@ -143,7 +134,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 .pager{display:flex;gap:4px;justify-content:center;padding:12px;}
 .pgb{width:30px;height:30px;border-radius:5px;background:var(--bg3);border:1px solid var(--b);color:var(--txt2);font:600 11px/1 'Inter',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.12s;}
 .pgb:hover,.pgb.on{border-color:var(--b2);color:var(--c);}
-
 /* STATS */
 .stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
 .sbox{background:var(--bg2);border:1px solid var(--b);border-radius:var(--rad);padding:20px;}
@@ -166,7 +156,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 .lnx{background:var(--bg3);color:var(--txt2);}
 .lbname{flex:1;font-weight:600;font-size:13px;}
 .lbcnt{font-size:12px;color:var(--c);font-weight:700;}
-
 /* ROSTER — FIXED dots */
 .roster-row{display:grid;grid-template-columns:1.8fr 1fr 1.4fr 80px 80px 1fr 60px;gap:0;align-items:center;border-bottom:1px solid rgba(255,255,255,.025);transition:background .12s;}
 .roster-row:hover{background:rgba(255,255,255,.02);}
@@ -182,15 +171,13 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 .dep-AK{background:rgba(148,103,255,.1);color:#9467ff;}
 .rank-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:12px;background:var(--bg3);border:1px solid var(--b);font-size:11px;font-weight:600;}
 .rank-num{font-size:10px;color:var(--txt2);font-family:monospace;}
-
-/* DOTS FIX — маленькі круглі */
-.dots-wrap{display:flex;gap:3px;align-items:center;line-height:1;}
-.dot-c{display:inline-block;width:6px;height:6px;border-radius:50%;flex-shrink:0;vertical-align:middle;}
+/* DOTS FIX — більші круглі */
+.dots-wrap{display:flex;gap:4px;align-items:center;line-height:1;}
+.dot-c{display:inline-block;width:10px;height:10px;border-radius:50%;flex-shrink:0;vertical-align:middle;}
 .dot-warn-fill{background:var(--o);}
 .dot-warn-empty{background:transparent;border:1px solid rgba(255,165,2,.4);}
 .dot-sanc-fill{background:var(--r);}
 .dot-sanc-empty{background:transparent;border:1px solid rgba(255,71,87,.4);}
-
 /* MODAL */
 .overlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;}
 .overlay.open{display:flex;}
@@ -208,7 +195,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 .drow:last-child{border-bottom:none;}
 .dlbl{color:var(--txt2);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;flex-shrink:0;padding-top:1px;}
 .dval{font-weight:600;text-align:right;word-break:break-word;}
-
 /* WARN BOX */
 .warn-box{background:var(--bg3);border:1px solid rgba(0,210,255,.2);border-radius:var(--rad);padding:18px;margin-bottom:14px;}
 .warn-title{font-size:14px;font-weight:700;color:var(--c);margin-bottom:6px;display:flex;align-items:center;gap:8px;}
@@ -219,25 +205,21 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 .wd-row:last-child{border-bottom:none;}
 .wd-lbl{color:var(--txt2);}
 .wd-val{font-weight:600;}
-
 /* PROMOTION INFO BOX */
 .promo-box{background:rgba(255,165,2,.06);border:1px solid rgba(255,165,2,.2);border-radius:var(--rad2);padding:12px 14px;margin-top:10px;}
 .promo-box .pi-title{font-size:11px;font-weight:700;color:var(--o);margin-bottom:6px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.8px;}
 .promo-box .pi-text{font-size:12px;color:var(--txt2);line-height:1.6;}
 .promo-box .pi-text strong{color:var(--txt);}
-
 /* TOAST */
 #toast{position:fixed;bottom:20px;right:20px;z-index:300;background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:13px 17px;display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;max-width:300px;transform:translateY(60px);opacity:0;transition:.25s ease;pointer-events:none;}
 #toast.show{transform:none;opacity:1;}
 #toast.ok{border-color:var(--g);}
 #toast.err{border-color:var(--r);}
-
 /* SPIN */
 .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,210,255,.2);border-top-color:var(--c);border-radius:50%;animation:rot .6s linear infinite;}
 @keyframes rot{to{transform:rotate(360deg)}}
 .loading{text-align:center;padding:36px;color:var(--txt2);font-size:12px;}
 .loading .spin{width:20px;height:20px;margin-bottom:8px;}
-
 /* PLAYER MODAL */
 .player-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
 .player-actions{margin-top:14px;}
@@ -250,9 +232,8 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 .cbtn.plus:hover{border-color:var(--g);color:var(--g);}
 .cbtn.minus:hover{border-color:var(--r);color:var(--r);}
 .divider{border:none;border-top:1px solid var(--b);margin:12px 0;}
-
-/* NOTES */
-.note-history{max-height:160px;overflow-y:auto;margin-bottom:8px;}
+/* NOTES — покращено */
+.note-history{max-height:240px;overflow-y:auto;margin-bottom:8px;border:1px solid var(--b);border-radius:var(--rad2);padding:8px;background:var(--bg3);}
 .note-entry{padding:8px 0;border-bottom:1px solid var(--b);font-size:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
 .note-entry:last-child{border-bottom:none;}
 .note-left{flex:1;}
@@ -261,7 +242,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 .note-del{width:18px;height:18px;border-radius:4px;border:none;background:transparent;color:var(--txt3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.12s;flex-shrink:0;padding:0;}
 .note-del:hover{color:var(--r);}
 .note-del svg{width:10px;height:10px;}
-
 /* PLAYER HISTORY TABLE */
 .ph-row{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--b);font-size:12px;align-items:flex-start;}
 .ph-row:last-child{border-bottom:none;}
@@ -269,15 +249,26 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 .ph-badge{flex-shrink:0;}
 .ph-detail{flex:1;color:var(--txt2);}
 .ph-init{font-size:10px;color:var(--txt3);}
-
+/* MOBILE OPTIMIZATION */
 @media(max-width:900px){
   aside{display:none;}main{margin-left:0;}
   .g2,.g3,.g4,.stat3,.player-grid{grid-template-columns:1fr;}
+  .roster-row{grid-template-columns:1.6fr 1fr 1.2fr 65px 65px 1fr 50px;gap:2px;}
+  .rcell{padding:9px 8px;font-size:11.5px;}
+  .roster-row.header .rcell{font-size:9.5px;}
+  .btn{padding:12px 20px;font-size:13px;}
+  .modal{width:95% !important;max-width:none !important;}
+  .modal.lg{max-width:98% !important;}
+  .note-history{max-height:280px;}
+  .topbar{gap:6px;}
+  .sinp{font-size:14px;padding:12px 13px 12px 40px;}
+  .ibtn{width:44px;height:44px;}
+  .tbl-wrap table{font-size:12.5px;}
+  .player-grid{gap:16px;}
 }
 </style>
 </head>
 <body>
-
 <!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
@@ -294,7 +285,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     </button>
   </div>
 </div>
-
 <!-- SIDEBAR -->
 <aside>
   <div class="side-top">
@@ -319,9 +309,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     </div>
   </div>
 </aside>
-
 <main>
-
 <!-- AUDIT -->
 <div class="page on" id="page-audit">
   <div class="ptitle"><h2>Кадровий аудит</h2><p>Оберіть учасників — дані підтягнуться автоматично</p></div>
@@ -338,6 +326,9 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
       <div class="field"><label>Нікнейм</label><input class="inp" id="empNick" placeholder="Введіть нікнейм..."></div>
       <div class="field"><label>Static ID</label><input class="inp" id="empSid" placeholder="#0000"></div>
     </div>
+    <!-- ДАТАЛИСТИ ДЛЯ АВТОПІДКАЗОК -->
+    <datalist id="playerNicks"></datalist>
+    <datalist id="playerSids"></datalist>
   </div>
   <div class="card">
     <div class="clbl">Дія</div>
@@ -374,7 +365,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     </div>
   </div>
 </div>
-
 <!-- HISTORY -->
 <div class="page" id="page-history">
   <div class="ptitle"><h2>Історія аудитів</h2><p id="hCnt">Завантаження...</p></div>
@@ -401,7 +391,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     </div>
   </div>
 </div>
-
 <!-- STATS -->
 <div class="page" id="page-stats">
   <div class="ptitle" style="display:flex;justify-content:space-between;align-items:flex-start;">
@@ -425,7 +414,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
   <div class="clbl" style="margin-bottom:10px;">Топ-10 активних ініціаторів</div>
   <div class="card"><div id="lb"><div class="loading"><div class="spin"></div><br>Завантаження...</div></div></div>
 </div>
-
 <!-- ROSTER -->
 <div class="page" id="page-roster">
   <div class="ptitle"><h2>Планшет фракції</h2><p id="rCnt">Завантаження...</p></div>
@@ -451,7 +439,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     <div id="rEmpty" class="empty" style="display:none;"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Гравців не знайдено</div>
   </div>
 </div>
-
 <!-- ROSTER HISTORY -->
 <div class="page" id="page-rhistory">
   <div class="ptitle"><h2>Журнал змін</h2><p id="rhCnt">Завантаження...</p></div>
@@ -472,7 +459,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
   </div>
 </div>
 </main>
-
 <!-- MODAL: Підтвердження аудиту -->
 <div class="overlay" id="confirmOv">
   <div class="modal sm">
@@ -491,7 +477,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     </div>
   </div>
 </div>
-
 <!-- MODAL: Деталі аудиту -->
 <div class="overlay" id="detOv">
   <div class="modal sm">
@@ -499,7 +484,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     <div id="detBody"></div>
   </div>
 </div>
-
 <!-- MODAL: Видалення -->
 <div class="overlay" id="delOv">
   <div class="modal sm">
@@ -516,7 +500,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     </div>
   </div>
 </div>
-
 <!-- MODAL: Скидання статистики -->
 <div class="overlay" id="resetStatsOv">
   <div class="modal sm">
@@ -533,7 +516,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     </div>
   </div>
 </div>
-
 <!-- MODAL: Картка гравця -->
 <div class="overlay" id="playerOv">
   <div class="modal lg">
@@ -603,7 +585,6 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     </div>
   </div>
 </div>
-
 <!-- MODAL: Історія гравця у фракції -->
 <div class="overlay" id="playerHistOv">
   <div class="modal md">
@@ -614,34 +595,28 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     <div id="phBody" style="max-height:400px;overflow-y:auto;"></div>
   </div>
 </div>
-
 <div id="toast"><span id="tIco"></span><span id="tMsg"></span></div>
-
 <script>
 const API='https://script.google.com/macros/s/AKfycbxCxiJnwm1yuh7gfSsJRhb1ZnrYzHCE8MKa17G3qg3AYghuVpX-gr83OphnDVo9uchK/exec';
 const RANKS=['Співбесіда','Студент','Інтерн','Парамедик','Фельдшер','Терапевт','Хірург','Спеціаліст','Заст.зав.відділу','Завідувач відділу','Заст.голов.лікаря'];
 const ALBL={hired:'✅ Прийнято на роботу',transfer:'🔄 Переведено',fired:'❌ Звільнено'};
 const ABCL={hired:'bh',transfer:'bt',fired:'bf'};
-
 // Час до підвищення в годинах (від ранг → ранг+1)
-// Ключ = номер ранга ПІСЛЯ якого підвищення
 const PROMO_HOURS={
-  1:0,   // Студент→Інтерн: без обмеження
-  2:24,  // Інтерн→Парамедик: 24г
-  3:24,  // Парамедик→Фельдшер: 24г
-  4:48,  // Фельдшер→Терапевт: 48г
-  5:48,  // Терапевт→Хірург: 48г
-  6:72,  // Хірург→Спеціаліст: 72г
-  7:96,  // Спеціаліст→Заст.зав.: 96г
-  8:96   // Заст.зав.→Завідувач: 96г
+  1:0, // Студент→Інтерн: без обмеження
+  2:24, // Інтерн→Парамедик: 24г
+  3:24, // Парамедик→Фельдшер: 24г
+  4:48, // Фельдшер→Терапевт: 48г
+  5:48, // Терапевт→Хірург: 48г
+  6:72, // Хірург→Спеціаліст: 72г
+  7:96, // Спеціаліст→Заст.зав.: 96г
+  8:96 // Заст.зав.→Завідувач: 96г
 };
-
 let me=null,players=[],allH=[],filtH=[],curHF='all',curHPg=1;
 let allR=[],filtR=[],curRF='all';
 let allRH=[],filtRH=[],curRHPg=1;
 let delTicket=null,delRHIdx=null,curPlayer=null,editedWarnings=0,editedSanctions=0;
 const PER=15;
-
 // ── LOGIN ──
 async function doLogin(){
   const login=document.getElementById('loginInp').value.trim();
@@ -657,15 +632,19 @@ async function doLogin(){
   btn.innerHTML='<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Увійти';
 }
 function showLoginErr(m){const e=document.getElementById('loginErr');e.textContent=m;e.style.display='block';}
-function enterSession(user){
+async function enterSession(user){
   me=user;
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('sideNick').textContent=me.nick||me.login;
   document.getElementById('sideAv').textContent=(me.nick||me.login)[0].toUpperCase();
   document.getElementById('sideRole').textContent=me.isAdmin?'Адміністратор':'Співробітник';
-  loadPlayers();
+  
+  // ПРЕДЗАВАНТАЖЕННЯ ВСІХ ДАНИХ ДЛЯ ПЛАНШЕТУ (щоб історія та профілі працювали відразу)
+  await loadPlayers();
+  loadRoster();
+  loadRHistory();
+  loadStats();
 }
-
 // ── NAV ──
 document.querySelectorAll('.snav').forEach(b=>{
   b.addEventListener('click',()=>{
@@ -675,13 +654,12 @@ document.querySelectorAll('.snav').forEach(b=>{
     const pg=document.getElementById('page-'+b.dataset.p);
     if(pg) pg.classList.add('on');
     if(b.dataset.p==='history') loadHistory();
-    if(b.dataset.p==='stats')   loadStats();
-    if(b.dataset.p==='roster')  loadRoster();
+    if(b.dataset.p==='stats') loadStats();
+    if(b.dataset.p==='roster') loadRoster();
     if(b.dataset.p==='rhistory')loadRHistory();
   });
 });
-
-// ── PLAYERS ──
+// ── PLAYERS + АВТОПІДКАЗКИ В АУДИТІ ──
 async function loadPlayers(){
   try{
     const r=await call('getPlayers');
@@ -694,13 +672,42 @@ async function loadPlayers(){
       const my=players.find(p=>p.login===me.login||p.nick===me.nick);
       if(my){sel.value=my.nick;document.getElementById('initSid').value=my.staticId;}
     }
+    
+    // АВТОПІДКАЗКИ ДЛЯ СПІВРОБІТНИКА В АУДИТІ
+    const nickList = document.getElementById('playerNicks');
+    const sidList = document.getElementById('playerSids');
+    if(nickList && sidList){
+      nickList.innerHTML = players.map(p => `<option value="${esc(p.nick)}" data-sid="${esc(String(p.staticId))}"></option>`).join('');
+      sidList.innerHTML = players.map(p => `<option value="${esc(String(p.staticId))}" data-nick="${esc(p.nick)}"></option>`).join('');
+    }
+    const empNick = document.getElementById('empNick');
+    const empSid = document.getElementById('empSid');
+    if(empNick && empSid){
+      empNick.setAttribute('list','playerNicks');
+      empSid.setAttribute('list','playerSids');
+      
+      const fillFromNick = () => {
+        const val = empNick.value.trim();
+        const found = players.find(pl => pl.nick === val);
+        if(found) empSid.value = found.staticId || '';
+      };
+      const fillFromSid = () => {
+        const val = empSid.value.trim();
+        const found = players.find(pl => String(pl.staticId) === val);
+        if(found) empNick.value = found.nick || '';
+      };
+      
+      empNick.addEventListener('input', fillFromNick);
+      empNick.addEventListener('change', fillFromNick);
+      empSid.addEventListener('input', fillFromSid);
+      empSid.addEventListener('change', fillFromSid);
+    }
   }catch(e){toast('Не вдалось завантажити список гравців','err');}
 }
 function pickInit(){
   const s=document.getElementById('selInit');
   document.getElementById('initSid').value=s.options[s.selectedIndex]?.dataset.id||'';
 }
-
 // ── AUDIT ──
 let curAct='hired';
 function setAct(a,el){
@@ -713,7 +720,6 @@ function setAct(a,el){
   nw.style.display=a==='fired'?'none':'flex';
 }
 document.getElementById('prevWrap').style.display='none';
-
 // Вирахувати час до підвищення
 function getPromoInfo(newRankVal){
   if(newRankVal===''||newRankVal===null||newRankVal===undefined) return null;
@@ -722,11 +728,10 @@ function getPromoInfo(newRankVal){
   const hours=PROMO_HOURS[nr];
   if(hours===undefined) return null;
   const now=new Date();
-  const kyivNow=new Date(now.toLocaleString('en-US',{timeZone:'Europe/Kiev'}));
+  const kyivNow=new Date(now.toLocaleString('en-US',{timeZone:'Europe/Kyiv'}));
   const availableAt=new Date(kyivNow.getTime()+hours*3600000);
   return {hours,rankFrom:RANKS[nr-1]||'',rankTo:RANKS[nr]||'',availableAt};
 }
-
 function openConfirmModal(){
   const initNick=document.getElementById('selInit').value;
   const initSid=document.getElementById('initSid').value;
@@ -735,14 +740,12 @@ function openConfirmModal(){
   const prevRank=document.getElementById('prevRank').value;
   const newRank=document.getElementById('newRank').value;
   const reason=document.getElementById('reason').value.trim();
-
   if(!initNick) return toast('Оберіть себе зі списку','err');
-  if(!empNick)  return toast('Введіть нікнейм співробітника','err');
-  if(!empSid)   return toast('Введіть Static ID співробітника','err');
+  if(!empNick) return toast('Введіть нікнейм співробітника','err');
+  if(!empSid) return toast('Введіть Static ID співробітника','err');
   if(curAct!=='fired'&&!newRank) return toast('Оберіть нову посаду','err');
   if(curAct==='transfer'&&!prevRank) return toast('Оберіть попередню посаду','err');
   if(!reason) return toast('Вкажіть пояснення','err');
-
   const pR=prevRank!==''?`[${prevRank}] ${RANKS[prevRank]||''}`:null;
   const nR=newRank!==''?`[${newRank}] ${RANKS[newRank]||''}`:null;
   document.getElementById('confirmDetail').innerHTML=`
@@ -751,7 +754,6 @@ function openConfirmModal(){
     <div class="wd-row"><span class="wd-lbl">Дія</span><span class="wd-val">${ALBL[curAct]}</span></div>
     <div class="wd-row"><span class="wd-lbl">Зміна посади</span><span class="wd-val">${pR&&nR?`${pR} → ${nR}`:nR||pR||'—'}</span></div>
     <div class="wd-row" style="border:none"><span class="wd-lbl">Пояснення</span><span class="wd-val">${reason}</span></div>`;
-
   // Промо-інфо
   const pi=document.getElementById('promoInfo');
   if(curAct==='transfer'&&newRank!==''){
@@ -766,10 +768,8 @@ function openConfirmModal(){
       pi.style.display='block';
     } else pi.style.display='none';
   } else pi.style.display='none';
-
   openM('confirmOv');
 }
-
 async function submitAudit(){
   const initNick=document.getElementById('selInit').value;
   const initSid=document.getElementById('initSid').value;
@@ -792,7 +792,6 @@ function resetAudit(){
   ['empNick','empSid','prevRank','newRank','reason'].forEach(id=>document.getElementById(id).value='');
   setAct('hired',document.querySelector('[data-a=hired]'));
 }
-
 // ── HISTORY ──
 async function loadHistory(){
   document.getElementById('hLoad').style.display='block';
@@ -850,7 +849,6 @@ function viewH(r){
     <div class="drow" style="border:none"><span class="dlbl">Пояснення</span><span class="dval" style="max-width:220px;text-align:right;">${r.reason||'—'}</span></div>`;
   openM('detOv');
 }
-
 // ── DELETE ──
 function askDel(ticket,rhIdx){
   delTicket=ticket;delRHIdx=rhIdx;
@@ -875,7 +873,6 @@ async function confirmDel(){
   }catch(e){showDE('Помилка з\'єднання');}
 }
 function showDE(m){const e=document.getElementById('dErr');e.textContent=m;e.style.display='block';}
-
 // ── RESET STATS ──
 function openResetStats(){
   document.getElementById('rsLogin').value='';
@@ -891,7 +888,6 @@ async function confirmResetStats(){
     else{document.getElementById('rsErr').textContent=r.error||'Невірний логін';document.getElementById('rsErr').style.display='block';}
   }catch(e){document.getElementById('rsErr').textContent='Помилка з\'єднання';document.getElementById('rsErr').style.display='block';}
 }
-
 // ── STATS ──
 async function loadStats(){
   try{
@@ -910,7 +906,6 @@ async function loadStats(){
       :'<div class="empty">Дані відсутні</div>';
   }catch(e){toast('Помилка статистики','err');}
 }
-
 // ── ROSTER ──
 async function loadRoster(){
   document.getElementById('rLoad').style.display='block';
@@ -936,7 +931,6 @@ function renderR(){
   document.getElementById('rBody').innerHTML=filtR.map(p=>{
     const rankStr=p.rank!=null?`<span class="rank-badge"><span class="rank-num">[${p.rank}]</span> ${RANKS[p.rank]||''}</span>`:'—';
     const dep=p.dep?`<span class="dep-badge dep-${p.dep.replace('.','')}">${p.dep}</span>`:'—';
-    // FIX: маленькі крапки через span з фіксованим розміром
     const warns=Array.from({length:2},(_,i)=>`<span class="dot-c ${i<(p.warnings||0)?'dot-warn-fill':'dot-warn-empty'}"></span>`).join('');
     const sancs=Array.from({length:3},(_,i)=>`<span class="dot-c ${i<(p.sanctions||0)?'dot-sanc-fill':'dot-sanc-empty'}"></span>`).join('');
     return `<div class="roster-row">
@@ -954,8 +948,7 @@ function renderR(){
     </div>`;
   }).join('');
 }
-
-// ── PLAYER MODAL ──
+// ── PLAYER MODAL — ПЕРЕРОБЛЕНА МЕХАНІКА ПЛАНШЕТУ ──
 function openPlayer(nick){
   const p=allR.find(x=>x.nick===nick);
   if(!p) return;
@@ -983,7 +976,7 @@ function openPlayer(nick){
 }
 function renderNotes(notes){
   const el=document.getElementById('noteHistory');
-  if(!notes.length){el.innerHTML='<div style="color:var(--txt3);font-size:12px;padding:8px 0;">Нотаток ще немає</div>';return;}
+  if(!notes.length){el.innerHTML='<div style="color:var(--txt3);font-size:12px;padding:12px;text-align:center;">Нотаток ще немає</div>';return;}
   el.innerHTML=notes.map((n,i)=>`
     <div class="note-entry">
       <div class="note-left"><div class="note-meta">${n.date||''} · ${n.author||''}</div><div class="note-text">${n.text||''}</div></div>
@@ -1009,10 +1002,10 @@ async function saveCounterField(field,value){
       if(p) p[field]=value;
       if(field==='warnings') document.getElementById('pmWarn').textContent=`${value}/2`;
       else document.getElementById('pmSanc').textContent=`${value}/3`;
-      filterR();
-      toast(`${field==='warnings'?'Попередження':'Догани'} оновлено`,'ok');
-    } else toast(r.error||'Помилка','err');
-  }catch(e){toast('Помилка з\'єднання','err');}
+      filterR(); // оновлюємо планшет
+      toast(`${field==='warnings'?'Попередження':'Догани'} успішно оновлено`,'ok');
+    } else toast(r.error||'Помилка оновлення','err');
+  }catch(e){toast('Помилка з\'єднання — перевірте інтернет','err');}
 }
 async function saveEditDep(){
   const dep=document.getElementById('editDep').value;
@@ -1035,7 +1028,7 @@ async function saveNote(){
     if(r.success){
       toast('Нотатку збережено','ok');
       document.getElementById('noteText').value='';
-      await loadRoster();
+      await loadRoster(); // оновлюємо дані
       const updated=allR.find(x=>x.nick===curPlayer.nick);
       if(updated){curPlayer=updated;renderNotes(updated.notes||[]);}
     } else toast(r.error||'Помилка','err');
@@ -1053,13 +1046,11 @@ async function deleteNote(idx){
     } else toast(r.error||'Помилка','err');
   }catch(e){toast('Помилка з\'єднання','err');}
 }
-
 // ── PLAYER HISTORY ──
 function openPlayerHistory(){
   if(!curPlayer) return;
   const nick=curPlayer.nick;
   document.getElementById('phTitle').textContent=`Історія: ${nick}`;
-  // Фільтруємо журнал змін по ніку
   const events=allRH.filter(r=>r.nick===nick);
   if(!events.length){
     document.getElementById('phBody').innerHTML='<div class="empty" style="padding:24px;"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="width:28px;height:28px;margin:0 auto 8px;display:block;opacity:.25;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Подій не знайдено</div>';
@@ -1076,7 +1067,6 @@ function openPlayerHistory(){
   }
   openM('playerHistOv');
 }
-
 // ── ROSTER HISTORY ──
 async function loadRHistory(){
   document.getElementById('rhLoad').style.display='block';
@@ -1116,7 +1106,6 @@ function renderRH(){
     `<button class="pgb${i+1===curRHPg?' on':''}" onclick="goRHP(${i+1})">${i+1}</button>`).join('');
 }
 function goRHP(p){curRHPg=p;renderRH();}
-
 // ── CSV ──
 function exportCSV(){
   const rows=[['ID','Дата','Ініціатор','Ініціатор SID','Співробітник','SID','Дія','Стара посада','Нова посада','Пояснення']];
@@ -1128,7 +1117,6 @@ function exportCSV(){
   a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
   a.download=`EMS_audit_${new Date().toISOString().slice(0,10)}.csv`;a.click();
 }
-
 // ── UTILS ──
 async function call(action,params={}){
   const q=new URLSearchParams({action,...params});
@@ -1147,15 +1135,13 @@ function humanizeErr(e){
   if(m.includes('HTTP 401')||m.includes('HTTP 403')) return 'Доступ заборонено. Виставте "Anyone" і передеплойте.';
   return 'Помилка: '+m.slice(0,100);
 }
-
-// Київський час
+// Київський час (виправлено)
 function fmtKyiv(d){
-  return d.toLocaleString('uk-UA',{timeZone:'Europe/Kiev',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  return d.toLocaleString('uk-UA',{timeZone:'Europe/Kyiv',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 }
 function fmtKyivLong(d){
-  return d.toLocaleString('uk-UA',{timeZone:'Europe/Kiev',dateStyle:'long',timeStyle:'short'});
+  return d.toLocaleString('uk-UA',{timeZone:'Europe/Kyiv',dateStyle:'long',timeStyle:'short'});
 }
-
 function openM(id){document.getElementById(id).classList.add('open');}
 function closeM(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
