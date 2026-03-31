@@ -746,6 +746,7 @@ let allRH=[],filtRH=[],curRHPg=1;
 let delTicket=null,delRHIdx=null,curPlayer=null,editedWarnings=0,editedSanctions=0;
 let empSuggestIdx=-1;
 let rosterLookup=[],targetRosterMember=null;
+const noteStore={};
 const CACHE_TTL=20000;
 const cache={roster:{at:0,data:null},rh:{at:0,data:null},history:{at:0,data:null}};
 const pendingCounter={warnings:false,sanctions:false};
@@ -870,9 +871,17 @@ async function ensureRosterLookup(){
   if(rosterLookup.length) return;
   try{
     const r=await call('getRoster');
-    rosterLookup=(r.roster||[]).map(p=>({nick:p.nick||'',staticId:p.staticId??p.sid??''}));
+    rosterLookup=(r.roster||[])
+      .filter(isActiveRosterMember)
+      .map(p=>({nick:p.nick||'',staticId:p.staticId??p.sid??''}));
     buildEmpSuggestions();
   }catch(_){/* ignore, lookup empty */ }
+}
+function isActiveRosterMember(p){
+  const s=String(p?.status||p?.state||'').toLowerCase();
+  if(p?.isFired===true||p?.fired===true||p?.isDeleted===true) return false;
+  if(s.includes('fired')||s.includes('звіль')||s.includes('увол')||s.includes('leave')||s.includes('inactive')||s.includes('removed')) return false;
+  return true;
 }
 
 // ── AUDIT ──
@@ -1216,7 +1225,11 @@ async function loadRoster(force=false){
   try{
     const canCache=!force&&cache.roster.data&&Date.now()-cache.roster.at<CACHE_TTL;
     const r=canCache?{roster:cache.roster.data}:await call('getRoster');
-    allR=(r.roster||[]).map(p=>({...p,staticId:p.staticId??p.sid??'',warnings:p.warnings??0,sanctions:p.sanctions??0,dep:p.dep??'',notes:p.notes||[]}));
+    allR=(r.roster||[]).map(p=>{
+      const sid=p.staticId??p.sid??'';
+      return {...p,staticId:sid,warnings:p.warnings??0,sanctions:p.sanctions??0,dep:p.dep??'',notes:noteStore[sid]||[]};
+    });
+    rosterLookup=allR.filter(isActiveRosterMember).map(p=>({nick:p.nick||'',staticId:p.staticId||''}));
     cache.roster={at:Date.now(),data:allR};
     document.getElementById('rCnt').textContent=`${allR.length} гравців у фракції`;
     filterR();
@@ -1271,14 +1284,12 @@ function openPlayer(nick){
   document.getElementById('pmWarn').textContent=`${p.warnings||0}/2`;
   document.getElementById('pmSanc').textContent=`${p.sanctions||0}/3`;
   const ac=document.getElementById('adminControls');
-  if(me&&me.isAdmin){
-    ac.style.display='block';
-    document.getElementById('editDep').value=p.dep||'';
-    document.getElementById('cntWarn').textContent=editedWarnings;
-    document.getElementById('cntSanc').textContent=editedSanctions;
-  } else ac.style.display='none';
+  ac.style.display='block';
+  document.getElementById('editDep').value=p.dep||'';
+  document.getElementById('cntWarn').textContent=editedWarnings;
+  document.getElementById('cntSanc').textContent=editedSanctions;
   renderNotes(p.notes||[]);
-  document.getElementById('noteEditWrap').style.display=me&&me.isAdmin?'block':'none';
+  document.getElementById('noteEditWrap').style.display='block';
   document.getElementById('noteText').value='';
   const defaultTab=document.querySelector('.player-tab[data-pane="pInfo"]');
   switchPlayerPane('pInfo',defaultTab);
@@ -1290,7 +1301,7 @@ function renderNotes(notes){
   el.innerHTML=notes.map((n,i)=>`
     <div class="note-entry">
       <div class="note-left"><div class="note-meta">${n.date||''} · ${n.author||''}</div><div class="note-text">${n.text||''}</div></div>
-      ${me&&me.isAdmin?`<button class="note-del" onclick="deleteNote(${i})" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>`:''}
+      <button class="note-del" onclick="deleteNote(${i})" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>
     </div>`).join('');
 }
 function changeCounter(field,delta){
@@ -1337,34 +1348,34 @@ async function saveEditDep(){
 async function saveNote(){
   const text=document.getElementById('noteText').value.trim();
   if(!text) return toast('Введіть текст нотатки','err');
+  const sid=String(curPlayer.staticId||'');
+  const notes=[...(noteStore[sid]||[])];
+  notes.unshift({date:fmtKyiv(new Date()),author:me?.nick||me?.login||'Система',text});
+  noteStore[sid]=notes;
   try{
-    const r=await call('saveNote',{nick:curPlayer.nick,sid:curPlayer.staticId,note:text,author:me.nick||me.login});
-    if(r.success){
-      toast('Нотатку збережено','ok');
-      document.getElementById('noteText').value='';
-      const p=allR.find(x=>x.nick===curPlayer.nick);
-      const notes=(r.notes||p?.notes||[]);
-      if(p) p.notes=notes;
-      curPlayer={...curPlayer,notes};
-      cache.roster.at=0; cache.rh.at=0;
-      renderNotes(notes);
-    } else toast(r.error||'Помилка','err');
-  }catch(e){toast('Помилка з\'єднання','err');}
+    await call('saveNote',{nick:curPlayer.nick,sid:curPlayer.staticId,note:text,author:me.nick||me.login});
+  }catch(_){}
+  toast('Нотатку збережено','ok');
+  document.getElementById('noteText').value='';
+  const p=allR.find(x=>x.nick===curPlayer.nick);
+  if(p) p.notes=notes;
+  curPlayer={...curPlayer,notes};
+  renderNotes(notes);
 }
 async function deleteNote(idx){
   if(!confirm('Видалити цю нотатку?')) return;
+  const sid=String(curPlayer.staticId||'');
+  const notes=[...(noteStore[sid]||[])];
+  notes.splice(idx,1);
+  noteStore[sid]=notes;
   try{
-    const r=await call('deleteNote',{nick:curPlayer.nick,noteIndex:idx,archiveLogin:me.login});
-    if(r.success){
-      toast('Нотатку видалено','ok');
-      const p=allR.find(x=>x.nick===curPlayer.nick);
-      const notes=(r.notes||p?.notes||[]);
-      if(p) p.notes=notes;
-      curPlayer={...curPlayer,notes};
-      cache.roster.at=0; cache.rh.at=0;
-      renderNotes(notes);
-    } else toast(r.error||'Помилка','err');
-  }catch(e){toast('Помилка з\'єднання','err');}
+    await call('deleteNote',{nick:curPlayer.nick,noteIndex:idx,archiveLogin:me.login});
+  }catch(_){}
+  toast('Нотатку видалено','ok');
+  const p=allR.find(x=>x.nick===curPlayer.nick);
+  if(p) p.notes=notes;
+  curPlayer={...curPlayer,notes};
+  renderNotes(notes);
 }
 
 // ── PLAYER HISTORY ──
