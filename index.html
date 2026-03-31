@@ -8,7 +8,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --bg:#FFC0CB;--bg2:#ffd7df;--bg3:#ffe5ea;--bg4:#fff1f4;
+  --bg:#FFF0F5;--bg2:#ffd7df;--bg3:#ffe5ea;--bg4:#fff1f4;
   --b:rgba(220,20,60,.24);--b2:rgba(220,20,60,.45);--b3:rgba(220,20,60,.35);
   --c:#DC143C;--cdim:rgba(220,20,60,.12);
   --g:#2d9d5b;--gdim:rgba(45,157,91,.1);
@@ -17,7 +17,7 @@
   --txt:#111111;--txt2:#8e3046;--txt3:#d88a9a;
   --rad:10px;--rad2:7px;
 }
-html,body{height:100%;font-family:'Inter',sans-serif;background:linear-gradient(180deg,#ffd1da 0%, #ffc0cb 45%, #ffb0c2 100%);color:var(--txt);font-size:14px;}
+html,body{height:100%;font-family:'Inter',sans-serif;background:#FFF0F5;color:var(--txt);font-size:14px;}
 
 /* SIDEBAR */
 aside{position:fixed;left:14px;top:14px;bottom:14px;width:232px;background:var(--bg2);border:1px solid var(--b);border-radius:18px;display:flex;flex-direction:column;z-index:40;box-shadow:0 16px 36px rgba(220,20,60,.12);}
@@ -385,6 +385,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     <div class="g2">
       <div class="field" id="prevWrap"><label>Попередня посада</label>
         <select class="sel" id="prevRank"><option value="">— Оберіть —</option>
+          <option value="0" id="prevRankZero" hidden>[0] Співбесіда</option>
           <option value="1">[1] Студент</option><option value="2">[2] Інтерн</option>
           <option value="3">[3] Парамедик</option><option value="4">[4] Фельдшер</option><option value="5">[5] Терапевт</option>
           <option value="6">[6] Хірург</option><option value="7">[7] Спеціаліст</option><option value="8">[8] Заст.зав.відділу</option>
@@ -898,8 +899,13 @@ function setAct(a,el){
   el.classList.add('on');
   document.getElementById('actLabel').textContent=ALBL[a];
   const pw=document.getElementById('prevWrap'),nw=document.getElementById('newWrap');
+  const prevZero=document.getElementById('prevRankZero');
   pw.style.display=a==='hired'?'none':'flex';
   nw.style.display=a==='fired'?'none':'flex';
+  if(prevZero){
+    prevZero.hidden=a!=='fired';
+    if(a!=='fired' && document.getElementById('prevRank').value==='0') document.getElementById('prevRank').value='';
+  }
 }
 document.getElementById('prevWrap').style.display='none';
 
