@@ -459,7 +459,10 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 
 <!-- ROSTER -->
 <div class="page" id="page-roster">
-  <div class="ptitle"><h2>Планшет фракції</h2><p id="rCnt">Завантаження...</p></div>
+  <div class="ptitle" style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+    <div><h2>Планшет фракції</h2><p id="rCnt">Завантаження...</p></div>
+    <button class="btn btn-d btn-sm" onclick="openDisbandRoster()" style="margin-top:6px;">Розформувати планшет</button>
+  </div>
   <div class="topbar">
     <div class="sw"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="sinp" id="rSearch" placeholder="Пошук за ніком або Static ID..." oninput="filterR()"></div>
     <button class="ibtn" onclick="loadRoster()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></button>
@@ -641,6 +644,10 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
               <button class="cbtn plus" onclick="changeCounter('sanctions',1)">+</button>
             </div>
           </div>
+          <div class="action-row" style="margin-top:10px;">
+            <label>Учасник</label>
+            <button class="btn btn-d btn-sm" onclick="openRemoveRosterMember()">Видалити з планшету</button>
+          </div>
         </div>
       </div>
       <div>
@@ -683,6 +690,34 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
   </div>
 </div>
 
+<!-- MODAL: Видалити учасника з планшету -->
+<div class="overlay" id="removeRosterOv">
+  <div class="modal sm">
+    <div class="mh"><h3>Видалити учасника</h3><button class="mx" onclick="closeM('removeRosterOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="warn-box" style="border-color:rgba(255,71,87,.25);"><div class="warn-desc" style="margin:0;">Підтвердіть видалення звичайним логіном.</div></div>
+    <div class="field" style="margin-bottom:12px;"><label>Логін</label><input class="inp" id="rrLogin" placeholder="Введіть ваш логін..."></div>
+    <p id="rrErr" style="color:var(--r);font-size:11px;display:none;margin-bottom:10px;"></p>
+    <div class="btns">
+      <button class="btn btn-g" style="flex:1" onclick="closeM('removeRosterOv')">Скасувати</button>
+      <button class="btn btn-d" style="flex:1" onclick="confirmRemoveRosterMember()">Видалити</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Розформування планшету -->
+<div class="overlay" id="disbandRosterOv">
+  <div class="modal sm">
+    <div class="mh"><h3>Розформувати планшет</h3><button class="mx" onclick="closeM('disbandRosterOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="warn-box" style="border-color:rgba(255,71,87,.25);"><div class="warn-desc" style="margin:0;">Видалить всіх учасників з планшету. Потрібен спец-логін.</div></div>
+    <div class="field" style="margin-bottom:12px;"><label>Спец-логін</label><input class="inp" id="drLogin" placeholder="Введіть спец-логін..."></div>
+    <p id="drErr" style="color:var(--r);font-size:11px;display:none;margin-bottom:10px;"></p>
+    <div class="btns">
+      <button class="btn btn-g" style="flex:1" onclick="closeM('disbandRosterOv')">Скасувати</button>
+      <button class="btn btn-d" style="flex:1" onclick="confirmDisbandRoster()">Розформувати</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"><span id="tIco"></span><span id="tMsg"></span></div>
 
 <script>
@@ -709,6 +744,7 @@ let allR=[],filtR=[],curRF='all';
 let allRH=[],filtRH=[],curRHPg=1;
 let delTicket=null,delRHIdx=null,curPlayer=null,editedWarnings=0,editedSanctions=0;
 let empSuggestIdx=-1;
+let rosterLookup=[],targetRosterMember=null;
 const CACHE_TTL=20000;
 const cache={roster:{at:0,data:null},rh:{at:0,data:null},history:{at:0,data:null}};
 const pendingCounter={warnings:false,sanctions:false};
@@ -757,6 +793,7 @@ function goPage(page){
 }
 document.getElementById('empNick').addEventListener('keydown',e=>{
   const box=document.getElementById('empNickSuggest');
+  if(!box) return;
   const items=[...box.querySelectorAll('.ac-item')];
   if(!items.length) return;
   const q=(document.getElementById('empNick').value||'').trim().toLowerCase();
@@ -782,7 +819,6 @@ async function loadPlayers(){
       const my=players.find(p=>p.login===me.login||p.nick===me.nick);
       if(my){sel.value=my.nick;document.getElementById('initSid').value=my.staticId;}
     }
-    buildEmpSuggestions();
   }catch(e){toast('Не вдалось завантажити список гравців','err');}
 }
 function pickInit(){
@@ -794,18 +830,20 @@ function buildEmpSuggestions(){
   const nl=document.getElementById('empNickList');
   const sl=document.getElementById('empSidList');
   if(!nl||!sl) return;
-  nl.innerHTML=players.map(p=>`<option value="${esc(p.nick)}">${p.staticId||''}</option>`).join('');
-  sl.innerHTML=players.map(p=>`<option value="${esc(String(p.staticId||''))}">${p.nick||''}</option>`).join('');
+  nl.innerHTML='';
+  sl.innerHTML='';
 }
-function onEmpNickInput(){
+async function onEmpNickInput(){
+  await ensureRosterLookup();
   const nick=(document.getElementById('empNick').value||'').trim().toLowerCase();
   renderEmpNickSuggest(nick,true);
-  const p=players.find(x=>(x.nick||'').toLowerCase()===nick);
+  const p=rosterLookup.find(x=>(x.nick||'').toLowerCase()===nick);
   if(p) document.getElementById('empSid').value=p.staticId||'';
 }
 function onEmpSidInput(){
+  if(!rosterLookup.length) return;
   const sid=(document.getElementById('empSid').value||'').trim();
-  const p=players.find(x=>String(x.staticId||'')===sid);
+  const p=rosterLookup.find(x=>String(x.staticId||'')===sid);
   if(p) document.getElementById('empNick').value=p.nick||'';
 }
 function renderEmpNickSuggest(q,reset=false){
@@ -813,19 +851,27 @@ function renderEmpNickSuggest(q,reset=false){
   if(!box) return;
   if(reset) empSuggestIdx=-1;
   if(!q){box.style.display='none';box.innerHTML='';empSuggestIdx=-1;return;}
-  const byPrefix=players.filter(p=>(p.nick||'').toLowerCase().startsWith(q));
-  const byPart=players.filter(p=>!byPrefix.includes(p)&&(p.nick||'').toLowerCase().includes(q));
+  const byPrefix=rosterLookup.filter(p=>(p.nick||'').toLowerCase().startsWith(q));
+  const byPart=rosterLookup.filter(p=>!byPrefix.includes(p)&&(p.nick||'').toLowerCase().includes(q));
   const res=[...byPrefix,...byPart].slice(0,8);
   if(!res.length){box.style.display='none';box.innerHTML='';empSuggestIdx=-1;return;}
   box.innerHTML=res.map((p,i)=>`<div class="ac-item${i===empSuggestIdx?' on':''}" onmousedown="pickEmpNick('${esc(p.nick)}')"><span>${p.nick}</span><span class="ac-meta">${p.staticId||''}</span></div>`).join('');
   box.style.display='block';
 }
 function pickEmpNick(nick){
-  const p=players.find(x=>x.nick===nick);
+  const p=rosterLookup.find(x=>x.nick===nick);
   document.getElementById('empNick').value=nick;
   if(p) document.getElementById('empSid').value=p.staticId||'';
   const box=document.getElementById('empNickSuggest');
   if(box){box.style.display='none';box.innerHTML='';}
+}
+async function ensureRosterLookup(){
+  if(rosterLookup.length) return;
+  try{
+    const r=await call('getRoster');
+    rosterLookup=(r.roster||[]).map(p=>({nick:p.nick||'',staticId:p.staticId??p.sid??''}));
+    buildEmpSuggestions();
+  }catch(_){/* ignore, lookup empty */ }
 }
 
 // ── AUDIT ──
@@ -910,8 +956,8 @@ async function submitAudit(){
   try{
     const r=await call('submit',{initNick,initSid,initLogin:me.login,empNick,empSid,act:curAct,prevRank,newRank,reason,autoDep:curAct==='hired'?'Академія':''});
     if(r.success){
-      if(curAct==='hired') await ensureAcademyDep(empNick,empSid);
       cache.history.at=0;closeM('confirmOv');toast('Заявку успішно відправлено! ✅','ok');resetAudit();
+      if(curAct==='hired') ensureAcademyDep(empNick,empSid);
     }
     else toast(r.error||'Помилка','err');
   }catch(e){toast('Помилка з\'єднання','err');}
@@ -1053,6 +1099,56 @@ async function confirmClearHistory(){
   }catch(e){
     document.getElementById('chErr').textContent=humanizeErr(e);
     document.getElementById('chErr').style.display='block';
+  }
+}
+
+function openRemoveRosterMember(){
+  if(!curPlayer) return;
+  targetRosterMember={nick:curPlayer.nick,sid:curPlayer.staticId};
+  document.getElementById('rrLogin').value='';
+  document.getElementById('rrErr').style.display='none';
+  openM('removeRosterOv');
+}
+async function confirmRemoveRosterMember(){
+  const login=document.getElementById('rrLogin').value.trim();
+  if(!login){document.getElementById('rrErr').textContent='Введіть логін';document.getElementById('rrErr').style.display='block';return;}
+  try{
+    let r;
+    try{ r=await call('removeRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,login}); }
+    catch(_){ r=await call('deleteRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,login}); }
+    if(r.success){
+      closeM('removeRosterOv'); closeM('playerOv');
+      cache.roster.at=0; cache.rh.at=0;
+      toast('Учасника видалено з планшету','ok');
+      await loadRoster(true);
+    } else { document.getElementById('rrErr').textContent=r.error||'Невірний логін';document.getElementById('rrErr').style.display='block';}
+  }catch(e){
+    document.getElementById('rrErr').textContent=humanizeErr(e);
+    document.getElementById('rrErr').style.display='block';
+  }
+}
+function openDisbandRoster(){
+  document.getElementById('drLogin').value='';
+  document.getElementById('drErr').style.display='none';
+  openM('disbandRosterOv');
+}
+async function confirmDisbandRoster(){
+  const login=document.getElementById('drLogin').value.trim();
+  if(!login){document.getElementById('drErr').textContent='Введіть спец-логін';document.getElementById('drErr').style.display='block';return;}
+  try{
+    let r;
+    try{ r=await call('disbandRoster',{archiveLogin:login}); }
+    catch(_){ r=await call('clearRoster',{archiveLogin:login}); }
+    if(r.success){
+      closeM('disbandRosterOv');
+      cache.roster.at=0; cache.rh.at=0;
+      toast('Планшет розформовано','ok');
+      await loadRoster(true);
+      await loadRHistory(true);
+    } else { document.getElementById('drErr').textContent=r.error||'Невірний логін';document.getElementById('drErr').style.display='block';}
+  }catch(e){
+    document.getElementById('drErr').textContent=humanizeErr(e);
+    document.getElementById('drErr').style.display='block';
   }
 }
 
@@ -1238,7 +1334,7 @@ async function openPlayerHistory(){
   const nick=curPlayer.nick;
   document.getElementById('phBody').innerHTML='<div class="loading"><div class="spin"></div><br>Завантаження історії...</div>';
   openM('playerHistOv');
-  await Promise.all([loadRHistory(true),loadHistory()]);
+  if(!allRH.length) await loadRHistory(true);
   document.getElementById('phTitle').textContent=`Історія: ${nick}`;
   const sid=String(curPlayer.staticId||'');
   const ev1=allRH.filter(r=>r.nick===nick||String(r.sid||'')===sid).map(r=>({
