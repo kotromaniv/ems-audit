@@ -256,6 +256,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
   .mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--bg2);border-top:1px solid var(--b);z-index:50;overflow-x:auto;}
   .mnav{flex:1;min-width:92px;padding:10px 8px;border:none;background:transparent;color:var(--txt2);font:600 11px/1.1 'Inter',sans-serif;}
   .mnav.on{color:var(--c);background:var(--cdim);}
+  .ac-list{position:fixed;left:14px;right:14px;}
 }
 
 /* PLAYER MODAL */
@@ -281,6 +282,13 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 .note-del{width:18px;height:18px;border-radius:4px;border:none;background:transparent;color:var(--txt3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.12s;flex-shrink:0;padding:0;}
 .note-del:hover{color:var(--r);}
 .note-del svg{width:10px;height:10px;}
+
+/* AUDIT AUTOCOMPLETE */
+.ac-wrap{position:relative;}
+.ac-list{position:absolute;top:100%;left:0;right:0;z-index:25;background:var(--bg2);border:1px solid var(--b2);border-radius:8px;max-height:180px;overflow:auto;margin-top:4px;display:none;}
+.ac-item{padding:8px 10px;font-size:12px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;}
+.ac-item:hover,.ac-item.on{background:var(--bg3);}
+.ac-meta{color:var(--txt2);font-size:11px;}
 
 /* PLAYER HISTORY TABLE */
 .ph-row{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--b);font-size:12px;align-items:flex-start;}
@@ -355,7 +363,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
   <div class="card">
     <div class="clbl">Співробітник</div>
     <div class="g2">
-      <div class="field"><label>Нікнейм</label><input class="inp" id="empNick" list="empNickList" placeholder="Введіть нікнейм..." oninput="onEmpNickInput()"></div>
+      <div class="field ac-wrap"><label>Нікнейм</label><input class="inp" id="empNick" list="empNickList" placeholder="Введіть нікнейм..." oninput="onEmpNickInput()" onfocus="onEmpNickInput()" autocomplete="off"><div id="empNickSuggest" class="ac-list"></div></div>
       <div class="field"><label>Static ID</label><input class="inp" id="empSid" list="empSidList" placeholder="#0000" oninput="onEmpSidInput()"></div>
     </div>
   </div>
@@ -404,6 +412,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     <div class="sw"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="sinp" id="hSearch" placeholder="Пошук за ніком або Static ID..." oninput="filterH()"></div>
     <button class="ibtn" onclick="loadHistory()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></button>
     <button class="ibtn" onclick="exportCSV()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+    <button class="ibtn" onclick="openClearHistory()" title="Видалити всю історію"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>
   </div>
   <div class="frow">
     <button class="fp on" onclick="setHF('all',this)">Всі</button>
@@ -564,6 +573,23 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
   </div>
 </div>
 
+<!-- MODAL: Очистити історію аудиту -->
+<div class="overlay" id="clearHistoryOv">
+  <div class="modal sm">
+    <div class="mh"><h3>🗑️ Очистити історію</h3><button class="mx" onclick="closeM('clearHistoryOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="warn-box" style="border-color:rgba(255,71,87,.25);">
+      <div class="warn-title" style="color:var(--r);">Дія видалить усю історію кадрового аудиту</div>
+      <div class="warn-desc">Потрібен спец-логін архіву для підтвердження.</div>
+    </div>
+    <div class="field" style="margin-bottom:12px;"><label>Логін архіву</label><input class="inp" id="chLogin" placeholder="Введіть логін архіву..."></div>
+    <p id="chErr" style="color:var(--r);font-size:11px;display:none;margin-bottom:10px;"></p>
+    <div class="btns">
+      <button class="btn btn-g" style="flex:1" onclick="closeM('clearHistoryOv')">Скасувати</button>
+      <button class="btn btn-d" style="flex:1" onclick="confirmClearHistory()">Очистити історію</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL: Картка гравця -->
 <div class="overlay" id="playerOv">
   <div class="modal lg">
@@ -682,6 +708,7 @@ let me=null,players=[],allH=[],filtH=[],curHF='all',curHPg=1;
 let allR=[],filtR=[],curRF='all';
 let allRH=[],filtRH=[],curRHPg=1;
 let delTicket=null,delRHIdx=null,curPlayer=null,editedWarnings=0,editedSanctions=0;
+let empSuggestIdx=-1;
 const CACHE_TTL=20000;
 const cache={roster:{at:0,data:null},rh:{at:0,data:null},history:{at:0,data:null}};
 const pendingCounter={warnings:false,sanctions:false};
@@ -728,6 +755,19 @@ function goPage(page){
   if(page==='roster') loadRoster();
   if(page==='rhistory') loadRHistory();
 }
+document.getElementById('empNick').addEventListener('keydown',e=>{
+  const box=document.getElementById('empNickSuggest');
+  const items=[...box.querySelectorAll('.ac-item')];
+  if(!items.length) return;
+  const q=(document.getElementById('empNick').value||'').trim().toLowerCase();
+  if(e.key==='ArrowDown'){e.preventDefault();empSuggestIdx=Math.min(items.length-1,empSuggestIdx+1);renderEmpNickSuggest(q,false);}
+  if(e.key==='ArrowUp'){e.preventDefault();empSuggestIdx=Math.max(0,empSuggestIdx-1);renderEmpNickSuggest(q,false);}
+  if(e.key==='Enter'&&empSuggestIdx>=0){e.preventDefault();items[empSuggestIdx].dispatchEvent(new MouseEvent('mousedown'));}
+});
+document.getElementById('empNick').addEventListener('blur',()=>setTimeout(()=>{
+  const box=document.getElementById('empNickSuggest');
+  if(box){box.style.display='none';box.innerHTML='';empSuggestIdx=-1;}
+},120));
 
 // ── PLAYERS ──
 async function loadPlayers(){
@@ -759,6 +799,7 @@ function buildEmpSuggestions(){
 }
 function onEmpNickInput(){
   const nick=(document.getElementById('empNick').value||'').trim().toLowerCase();
+  renderEmpNickSuggest(nick,true);
   const p=players.find(x=>(x.nick||'').toLowerCase()===nick);
   if(p) document.getElementById('empSid').value=p.staticId||'';
 }
@@ -766,6 +807,25 @@ function onEmpSidInput(){
   const sid=(document.getElementById('empSid').value||'').trim();
   const p=players.find(x=>String(x.staticId||'')===sid);
   if(p) document.getElementById('empNick').value=p.nick||'';
+}
+function renderEmpNickSuggest(q,reset=false){
+  const box=document.getElementById('empNickSuggest');
+  if(!box) return;
+  if(reset) empSuggestIdx=-1;
+  if(!q){box.style.display='none';box.innerHTML='';empSuggestIdx=-1;return;}
+  const byPrefix=players.filter(p=>(p.nick||'').toLowerCase().startsWith(q));
+  const byPart=players.filter(p=>!byPrefix.includes(p)&&(p.nick||'').toLowerCase().includes(q));
+  const res=[...byPrefix,...byPart].slice(0,8);
+  if(!res.length){box.style.display='none';box.innerHTML='';empSuggestIdx=-1;return;}
+  box.innerHTML=res.map((p,i)=>`<div class="ac-item${i===empSuggestIdx?' on':''}" onmousedown="pickEmpNick('${esc(p.nick)}')"><span>${p.nick}</span><span class="ac-meta">${p.staticId||''}</span></div>`).join('');
+  box.style.display='block';
+}
+function pickEmpNick(nick){
+  const p=players.find(x=>x.nick===nick);
+  document.getElementById('empNick').value=nick;
+  if(p) document.getElementById('empSid').value=p.staticId||'';
+  const box=document.getElementById('empNickSuggest');
+  if(box){box.style.display='none';box.innerHTML='';}
 }
 
 // ── AUDIT ──
@@ -848,8 +908,11 @@ async function submitAudit(){
   const btn=document.getElementById('confirmSendBtn');
   btn.disabled=true;btn.innerHTML='<span class="spin"></span> Відправлення...';
   try{
-    const r=await call('submit',{initNick,initSid,initLogin:me.login,empNick,empSid,act:curAct,prevRank,newRank,reason});
-    if(r.success){cache.history.at=0;closeM('confirmOv');toast('Заявку успішно відправлено! ✅','ok');resetAudit();}
+    const r=await call('submit',{initNick,initSid,initLogin:me.login,empNick,empSid,act:curAct,prevRank,newRank,reason,autoDep:curAct==='hired'?'Академія':''});
+    if(r.success){
+      if(curAct==='hired') await ensureAcademyDep(empNick,empSid);
+      cache.history.at=0;closeM('confirmOv');toast('Заявку успішно відправлено! ✅','ok');resetAudit();
+    }
     else toast(r.error||'Помилка','err');
   }catch(e){toast('Помилка з\'єднання','err');}
   btn.disabled=false;
@@ -858,6 +921,10 @@ async function submitAudit(){
 function resetAudit(){
   ['empNick','empSid','prevRank','newRank','reason'].forEach(id=>document.getElementById(id).value='');
   setAct('hired',document.querySelector('[data-a=hired]'));
+}
+async function ensureAcademyDep(empNick,empSid){
+  try{ await call('updateRoster',{nick:empNick,sid:empSid,field:'dep',value:'Академія',initiator:me.nick||me.login}); }
+  catch(_){/* optional post-step */ }
 }
 
 // ── HISTORY ──
@@ -960,6 +1027,33 @@ async function confirmResetStats(){
     if(r.success){closeM('resetStatsOv');toast('Статистику скинуто ✅','ok');loadStats();}
     else{document.getElementById('rsErr').textContent=r.error||'Невірний логін';document.getElementById('rsErr').style.display='block';}
   }catch(e){document.getElementById('rsErr').textContent='Помилка з\'єднання';document.getElementById('rsErr').style.display='block';}
+}
+
+function openClearHistory(){
+  document.getElementById('chLogin').value='';
+  document.getElementById('chErr').style.display='none';
+  openM('clearHistoryOv');
+}
+async function confirmClearHistory(){
+  const login=document.getElementById('chLogin').value.trim();
+  if(!login){document.getElementById('chErr').textContent='Введіть логін архіву';document.getElementById('chErr').style.display='block';return;}
+  try{
+    let r;
+    try{ r=await call('clearHistory',{archiveLogin:login}); }
+    catch(_){ r=await call('resetStats',{archiveLogin:login}); } // fallback для старого backend
+    if(r.success){
+      cache.history.at=0;
+      closeM('clearHistoryOv');
+      toast('Історію очищено','ok');
+      await loadHistory(true);
+    } else {
+      document.getElementById('chErr').textContent=r.error||'Невірний логін';
+      document.getElementById('chErr').style.display='block';
+    }
+  }catch(e){
+    document.getElementById('chErr').textContent=humanizeErr(e);
+    document.getElementById('chErr').style.display='block';
+  }
 }
 
 // ── STATS ──
@@ -1141,11 +1235,31 @@ async function deleteNote(idx){
 // ── PLAYER HISTORY ──
 async function openPlayerHistory(){
   if(!curPlayer) return;
-  if(!allRH.length) await loadRHistory();
   const nick=curPlayer.nick;
+  document.getElementById('phBody').innerHTML='<div class="loading"><div class="spin"></div><br>Завантаження історії...</div>';
+  openM('playerHistOv');
+  await Promise.all([loadRHistory(true),loadHistory()]);
   document.getElementById('phTitle').textContent=`Історія: ${nick}`;
-  // Фільтруємо журнал змін по ніку
-  const events=allRH.filter(r=>r.nick===nick);
+  const sid=String(curPlayer.staticId||'');
+  const ev1=allRH.filter(r=>r.nick===nick||String(r.sid||'')===sid).map(r=>({
+    date:r.date,
+    change:r.change||'Зміна',
+    details:r.details||'—',
+    initiator:r.initiator||'Система'
+  }));
+  const ev2=allH
+    .filter(r=>r.empNick===nick||String(r.empSid||'')===sid)
+    .map(r=>{
+      const pR=r.prevRank!==''&&r.prevRank!=null?`[${r.prevRank}] ${RANKS[r.prevRank]||''}`:null;
+      const nR=r.newRank!==''&&r.newRank!=null?`[${r.newRank}] ${RANKS[r.newRank]||''}`:null;
+      return {
+        date:r.date,
+        change:ALBL[r.action]||r.action||'Аудит',
+        details:`${pR&&nR?`${pR} → ${nR}`:nR||pR||'—'} · ${r.reason||'без пояснення'}`,
+        initiator:r.initNick||'—'
+      };
+    });
+  const events=[...ev1,...ev2].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
   if(!events.length){
     document.getElementById('phBody').innerHTML='<div class="empty" style="padding:24px;"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="width:28px;height:28px;margin:0 auto 8px;display:block;opacity:.25;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Подій не знайдено</div>';
   } else {
@@ -1159,7 +1273,6 @@ async function openPlayerHistory(){
       </div>`;
     }).join('');
   }
-  openM('playerHistOv');
 }
 
 // ── ROSTER HISTORY ──
