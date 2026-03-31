@@ -602,6 +602,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
         <button class="btn btn-o btn-sm" id="playerHistBtn" onclick="openPlayerHistory()">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Історія
         </button>
+        <button class="btn btn-d btn-sm" onclick="openRemoveRosterMember()">Видалити</button>
         <button class="mx" onclick="closeM('playerOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
     </div>
@@ -694,8 +695,8 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 <div class="overlay" id="removeRosterOv">
   <div class="modal sm">
     <div class="mh"><h3>Видалити учасника</h3><button class="mx" onclick="closeM('removeRosterOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-    <div class="warn-box" style="border-color:rgba(255,71,87,.25);"><div class="warn-desc" style="margin:0;">Підтвердіть видалення звичайним логіном.</div></div>
-    <div class="field" style="margin-bottom:12px;"><label>Логін</label><input class="inp" id="rrLogin" placeholder="Введіть ваш логін..."></div>
+    <div class="warn-box" style="border-color:rgba(255,71,87,.25);"><div class="warn-desc" style="margin:0;">Потрібен спец-логін з full admin правами у Google Таблиці.</div></div>
+    <div class="field" style="margin-bottom:12px;"><label>Спец-логін (full admin)</label><input class="inp" id="rrLogin" placeholder="Введіть спец-логін..."></div>
     <p id="rrErr" style="color:var(--r);font-size:11px;display:none;margin-bottom:10px;"></p>
     <div class="btns">
       <button class="btn btn-g" style="flex:1" onclick="closeM('removeRosterOv')">Скасувати</button>
@@ -1110,16 +1111,15 @@ function openRemoveRosterMember(){
   openM('removeRosterOv');
 }
 async function confirmRemoveRosterMember(){
-  const login=document.getElementById('rrLogin').value.trim();
-  if(!login){document.getElementById('rrErr').textContent='Введіть логін';document.getElementById('rrErr').style.display='block';return;}
+  const archiveLogin=document.getElementById('rrLogin').value.trim();
+  if(!archiveLogin){document.getElementById('rrErr').textContent='Введіть спец-логін';document.getElementById('rrErr').style.display='block';return;}
   try{
     const r=await callFirstSuccess([
-      ['removeRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,login}],
-      ['removeRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,archiveLogin:login}],
-      ['deleteRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,login}],
-      ['deleteRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,archiveLogin:login}],
-      ['updateRoster',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,field:'remove',value:1,initiator:me.nick||me.login,archiveLogin:login}],
-      ['updateRoster',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,field:'status',value:'removed',initiator:me.nick||me.login,archiveLogin:login}],
+      ['removeRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,archiveLogin}],
+      ['deleteRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,archiveLogin}],
+      ['removeFromRoster',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,archiveLogin}],
+      ['updateRoster',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,field:'remove',value:1,initiator:me.nick||me.login,archiveLogin}],
+      ['updateRoster',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,field:'status',value:'removed',initiator:me.nick||me.login,archiveLogin}],
     ]);
     if(r.success){
       closeM('removeRosterOv'); closeM('playerOv');
