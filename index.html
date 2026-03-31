@@ -1114,7 +1114,11 @@ async function confirmRemoveRosterMember(){
   const archiveLogin=document.getElementById('rrLogin').value.trim();
   if(!archiveLogin){document.getElementById('rrErr').textContent='Введіть спец-логін';document.getElementById('rrErr').style.display='block';return;}
   try{
+    const auth=await verifyArchiveLogin(archiveLogin);
+    if(!auth.ok){document.getElementById('rrErr').textContent='Логін без full admin прав';document.getElementById('rrErr').style.display='block';return;}
+    const initMeta=getMyInitMeta();
     const r=await callFirstSuccess([
+      ['submit',{initNick:initMeta.nick,initSid:initMeta.sid,initLogin:initMeta.login,empNick:targetRosterMember.nick,empSid:targetRosterMember.sid,act:'fired',prevRank:'',newRank:'',reason:'Видалення з планшету'}],
       ['removeRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,archiveLogin}],
       ['deleteRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,archiveLogin}],
       ['removeFromRoster',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,archiveLogin}],
@@ -1141,6 +1145,16 @@ async function confirmDisbandRoster(){
   const login=document.getElementById('drLogin').value.trim();
   if(!login){document.getElementById('drErr').textContent='Введіть спец-логін';document.getElementById('drErr').style.display='block';return;}
   try{
+    const auth=await verifyArchiveLogin(login);
+    if(!auth.ok){document.getElementById('drErr').textContent='Логін без full admin прав';document.getElementById('drErr').style.display='block';return;}
+    const initMeta=getMyInitMeta();
+    if(allR.length){
+      for(const p of allR){
+        try{
+          await call('submit',{initNick:initMeta.nick,initSid:initMeta.sid,initLogin:initMeta.login,empNick:p.nick,empSid:p.staticId,act:'fired',prevRank:'',newRank:'',reason:'Розформування планшету'});
+        }catch(_){}
+      }
+    }
     const r=await callFirstSuccess([
       ['disbandRoster',{archiveLogin:login}],
       ['disbandRoster',{login}],
@@ -1161,6 +1175,18 @@ async function confirmDisbandRoster(){
     document.getElementById('drErr').textContent=humanizeErr(e);
     document.getElementById('drErr').style.display='block';
   }
+}
+function getMyInitMeta(){
+  const mePlayer=players.find(p=>p.login===me?.login||p.nick===me?.nick)||{};
+  return {nick:me?.nick||me?.login||'Адміністратор',sid:mePlayer.staticId||'',login:me?.login||''};
+}
+async function verifyArchiveLogin(login){
+  try{
+    const r=await call('login',{login});
+    if(!r?.success) return {ok:false};
+    const u=r.user||{};
+    return {ok:!!(u.isArchiveAdmin||u.isAdmin)};
+  }catch(_){ return {ok:false}; }
 }
 
 // ── STATS ──
@@ -1200,7 +1226,9 @@ async function loadRoster(force=false){
 function setRF(f,el){curRF=f;document.querySelectorAll('#depFilters .fp').forEach(p=>p.classList.remove('on'));el.classList.add('on');filterR();}
 function filterR(){
   const q=(document.getElementById('rSearch').value||'').toLowerCase();
-  filtR=allR.filter(p=>(curRF==='all'||p.dep===curRF)&&(!q||p.nick?.toLowerCase().includes(q)||String(p.staticId).includes(q)));
+  filtR=allR
+    .filter(p=>(curRF==='all'||p.dep===curRF)&&(!q||p.nick?.toLowerCase().includes(q)||String(p.staticId).includes(q)))
+    .sort((a,b)=>toRank(b.rank)-toRank(a.rank));
   renderR();
 }
 function renderR(){
@@ -1443,6 +1471,7 @@ function switchPlayerPane(id,btn){
   if(btn) btn.classList.add('on');
   const pane=document.getElementById(id); if(pane) pane.classList.add('on');
 }
+function toRank(v){ const n=parseInt(v,10); return Number.isFinite(n)?n:-1; }
 
 // ── UTILS ──
 async function callFirstSuccess(attempts){
