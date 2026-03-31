@@ -14,7 +14,7 @@
   --g:#2d9d5b;--gdim:rgba(45,157,91,.1);
   --r:#DC143C;--rdim:rgba(220,20,60,.1);
   --o:#b8671e;--odim:rgba(184,103,30,.1);
-  --txt:#DC143C;--txt2:#b14962;--txt3:#d88a9a;
+  --txt:#111111;--txt2:#8e3046;--txt3:#d88a9a;
   --rad:10px;--rad2:7px;
 }
 html,body{height:100%;font-family:'Inter',sans-serif;background:linear-gradient(180deg,#ffd1da 0%, #ffc0cb 45%, #ffb0c2 100%);color:var(--txt);font-size:14px;}
@@ -31,7 +31,8 @@ aside{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--bg2);bor
 .snav{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:var(--rad2);background:transparent;border:none;color:var(--txt2);font:600 13px/1 'Inter',sans-serif;cursor:pointer;transition:.15s;width:100%;text-align:left;}
 .snav svg{width:15px;height:15px;flex-shrink:0;}
 .snav:hover{background:rgba(255,255,255,.04);color:var(--txt);}
-.snav.on{background:var(--cdim);color:var(--c);border:1px solid rgba(0,210,255,.15);}
+.snav.on{background:var(--cdim);color:var(--c);border:1px solid rgba(220,20,60,.2);animation:softPulse 1.8s ease-in-out infinite;}
+@keyframes softPulse{0%,100%{box-shadow:0 0 0 0 rgba(220,20,60,0)}50%{box-shadow:0 0 0 6px rgba(220,20,60,.08)}}
 .side-bottom{padding:12px;border-top:1px solid var(--b);}
 .user-pill{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:var(--rad2);background:var(--bg3);}
 .user-av{width:28px;height:28px;border-radius:7px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--c);flex-shrink:0;}
@@ -54,7 +55,8 @@ main{margin-left:220px;min-height:100vh;}
 .login-box p{font-size:13px;color:var(--txt2);margin-bottom:24px;}
 
 /* CARDS */
-.card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--rad);padding:22px;margin-bottom:14px;box-shadow:0 10px 24px rgba(220,20,60,.08);}
+.card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--rad);padding:22px;margin-bottom:14px;box-shadow:0 10px 24px rgba(220,20,60,.08);animation:fadeUp .35s ease both;}
+@keyframes fadeUp{from{opacity:.5;transform:translateY(8px)}to{opacity:1;transform:none}}
 .clbl{font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
 .clbl::before{content:'';width:3px;height:11px;background:var(--c);border-radius:2px;display:block;}
 
@@ -87,7 +89,7 @@ main{margin-left:220px;min-height:100vh;}
 /* SUBMIT BAR */
 .sbar{display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border:1px solid var(--b);border-radius:var(--rad);padding:16px 20px;}
 .sbar-lbl{font-size:11px;color:var(--txt2);}
-.sbar-val{font-size:14px;font-weight:700;color:var(--c);margin-top:2px;}
+.sbar-val{font-size:14px;font-weight:800;color:#111;margin-top:2px;}
 .btns{display:flex;gap:8px;}
 
 /* BUTTONS */
@@ -208,6 +210,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
 .drow:last-child{border-bottom:none;}
 .dlbl{color:var(--txt2);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;flex-shrink:0;padding-top:1px;}
 .dval{font-weight:600;text-align:right;word-break:break-word;}
+.dval,.tbold,.snum,.rank-badge,.wnum{color:#111;}
 
 /* WARN BOX */
 .warn-box{background:var(--bg3);border:1px solid rgba(0,210,255,.2);border-radius:var(--rad);padding:18px;margin-bottom:14px;}
@@ -380,7 +383,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
     <div class="g2">
       <div class="field" id="prevWrap"><label>Попередня посада</label>
         <select class="sel" id="prevRank"><option value="">— Оберіть —</option>
-          <option value="0">[0] Співбесіда</option><option value="1">[1] Студент</option><option value="2">[2] Інтерн</option>
+          <option value="1">[1] Студент</option><option value="2">[2] Інтерн</option>
           <option value="3">[3] Парамедик</option><option value="4">[4] Фельдшер</option><option value="5">[5] Терапевт</option>
           <option value="6">[6] Хірург</option><option value="7">[7] Спеціаліст</option><option value="8">[8] Заст.зав.відділу</option>
           <option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option>
@@ -388,7 +391,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
       </div>
       <div class="field" id="newWrap"><label>Нова посада</label>
         <select class="sel" id="newRank"><option value="">— Оберіть —</option>
-          <option value="0">[0] Співбесіда</option><option value="1">[1] Студент</option><option value="2">[2] Інтерн</option>
+          <option value="1">[1] Студент</option><option value="2">[2] Інтерн</option>
           <option value="3">[3] Парамедик</option><option value="4">[4] Фельдшер</option><option value="5">[5] Терапевт</option>
           <option value="6">[6] Хірург</option><option value="7">[7] Спеціаліст</option><option value="8">[8] Заст.зав.відділу</option>
           <option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option>
