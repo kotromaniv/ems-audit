@@ -1113,9 +1113,14 @@ async function confirmRemoveRosterMember(){
   const login=document.getElementById('rrLogin').value.trim();
   if(!login){document.getElementById('rrErr').textContent='Введіть логін';document.getElementById('rrErr').style.display='block';return;}
   try{
-    let r;
-    try{ r=await call('removeRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,login}); }
-    catch(_){ r=await call('deleteRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,login}); }
+    const r=await callFirstSuccess([
+      ['removeRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,login}],
+      ['removeRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,archiveLogin:login}],
+      ['deleteRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,login}],
+      ['deleteRosterMember',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,archiveLogin:login}],
+      ['updateRoster',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,field:'remove',value:1,initiator:me.nick||me.login,archiveLogin:login}],
+      ['updateRoster',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,field:'status',value:'removed',initiator:me.nick||me.login,archiveLogin:login}],
+    ]);
     if(r.success){
       closeM('removeRosterOv'); closeM('playerOv');
       cache.roster.at=0; cache.rh.at=0;
@@ -1136,9 +1141,15 @@ async function confirmDisbandRoster(){
   const login=document.getElementById('drLogin').value.trim();
   if(!login){document.getElementById('drErr').textContent='Введіть спец-логін';document.getElementById('drErr').style.display='block';return;}
   try{
-    let r;
-    try{ r=await call('disbandRoster',{archiveLogin:login}); }
-    catch(_){ r=await call('clearRoster',{archiveLogin:login}); }
+    const r=await callFirstSuccess([
+      ['disbandRoster',{archiveLogin:login}],
+      ['disbandRoster',{login}],
+      ['clearRoster',{archiveLogin:login}],
+      ['clearRoster',{login}],
+      ['clearAllRoster',{archiveLogin:login}],
+      ['resetRoster',{archiveLogin:login}],
+      ['updateRoster',{field:'clearAll',value:1,archiveLogin:login,initiator:me.nick||me.login}],
+    ]);
     if(r.success){
       closeM('disbandRosterOv');
       cache.roster.at=0; cache.rh.at=0;
@@ -1434,6 +1445,18 @@ function switchPlayerPane(id,btn){
 }
 
 // ── UTILS ──
+async function callFirstSuccess(attempts){
+  let lastErr=null;
+  for(const [action,params] of attempts){
+    try{
+      const r=await call(action,params);
+      if(r&&r.success) return r;
+      lastErr=new Error(r?.error||'Операцію відхилено');
+    }catch(e){ lastErr=e; }
+  }
+  throw lastErr||new Error('Операція не виконана');
+}
+
 async function call(action,params={}){
   const q=new URLSearchParams({action,...params});
   const url=API+'?'+q.toString();
