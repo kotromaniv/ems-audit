@@ -2,25 +2,31 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>EMS · Система управління</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --bg:#080d18;--bg2:#0c1422;--bg3:#101a2c;--bg4:#162035;
-  --b:rgba(255,255,255,.06);--b2:rgba(0,210,255,.22);--b3:rgba(255,255,255,.12);
-  --c:#00d2ff;--cdim:rgba(0,210,255,.1);
-  --g:#00e676;--gdim:rgba(0,230,118,.1);
-  --r:#ff4757;--rdim:rgba(255,71,87,.1);
-  --o:#ffa502;--odim:rgba(255,165,2,.1);
-  --txt:#dde8f8;--txt2:#6b84a0;--txt3:#304055;
+  --bg:#E6E6FA;--bg2:#F0F0FF;--bg3:#DCDCF5;--bg4:#F8F8FF;
+  --sidebar:#1a0a12;--sidebar2:#2a0f1c;
+  --border:rgba(220,20,60,.15);--border2:rgba(220,20,60,.35);--border3:rgba(220,20,60,.08);
+  --b:var(--border);--b2:var(--border2);--b3:var(--border3);
+  --c:#DC143C;--cdim:rgba(220,20,60,.1);--c2:#b01030;
+  --g:#006400;--g2:#00FF7F;--gdim:rgba(0,100,0,.1);--g2dim:rgba(0,255,127,.12);
+  --p:#FFDAB9;--pdim:rgba(255,218,185,.3);
+  --r:#DC143C;--rdim:rgba(220,20,60,.1);
+  --o:#b8671e;--odim:rgba(184,103,30,.1);
+  --txt:#1a0a12;--txt2:#7a3050;--txt3:#b87090;
+  --txts:#E6E6FA;--txts2:#d4a0b8;
+  --shadow:0 4px 20px rgba(220,20,60,.12);--shadow2:0 8px 32px rgba(220,20,60,.18);
+  --mob-nav-h:58px;
   --rad:10px;--rad2:7px;
 }
 html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;}
 
 /* SIDEBAR */
-aside{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--bg2);border-right:1px solid var(--b);display:flex;flex-direction:column;z-index:40;}
+aside{position:fixed;left:0;top:0;bottom:0;width:230px;background:var(--sidebar);display:flex;flex-direction:column;z-index:40;border-right:1px solid rgba(220,20,60,.2);}
 .side-top{padding:20px 16px 16px;border-bottom:1px solid var(--b);}
 .side-logo{display:flex;align-items:center;gap:10px;}
 .logo-box{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#00d2ff,#0066bb);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#000;flex-shrink:0;}
@@ -39,7 +45,7 @@ aside{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--bg2);bor
 .user-info .ur{font-size:10px;color:var(--txt2);}
 
 /* MAIN */
-main{margin-left:220px;min-height:100vh;}
+main{margin-left:230px;min-height:100vh;}
 .page{display:none;padding:40px 32px 80px;}
 .page.on{display:block;}
 .ptitle{margin-bottom:28px;}
@@ -95,8 +101,8 @@ main{margin-left:220px;min-height:100vh;}
 .btn svg{width:13px;height:13px;flex-shrink:0;}
 .btn-g{background:var(--bg4);border:1px solid var(--b);color:var(--txt2);}
 .btn-g:hover{color:var(--txt);border-color:var(--b3);}
-.btn-p{background:var(--c);color:#000;}
-.btn-p:hover{background:#00bbee;box-shadow:0 4px 16px rgba(0,210,255,.25);transform:translateY(-1px);}
+.btn-p{background:var(--c);color:#fff;}
+.btn-p:hover{background:var(--c2);box-shadow:0 4px 18px rgba(220,20,60,.35);transform:translateY(-1px);}
 .btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
 .btn-d{background:transparent;border:1px solid var(--r);color:var(--r);}
 .btn-d:hover{background:var(--rdim);}
@@ -296,7 +302,7 @@ tbody td{padding:12px 13px;font-size:13px;vertical-align:middle;}
   .roster-row{grid-template-columns:1.4fr .9fr 1.2fr 62px 62px .9fr 50px;}
   .rcell{padding:8px 7px;font-size:11px;}
   .modal{padding:16px;}
-  .mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--bg2);border-top:1px solid var(--b);z-index:50;overflow-x:auto;}
+  .mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--sidebar);border-top:1px solid rgba(220,20,60,.25);z-index:50;overflow-x:auto;height:var(--mob-nav-h);}
   .mnav{flex:1;min-width:92px;padding:10px 8px;border:none;background:transparent;color:var(--txt2);font:600 11px/1.1 'Inter',sans-serif;}
   .mnav.on{color:var(--c);background:var(--cdim);}
   .ac-list{position:fixed;left:14px;right:14px;}
