@@ -82,6 +82,8 @@ main{margin-left:230px;min-height:100vh;}
 .apill[data-a=transfer].on .dot{background:var(--c);box-shadow:0 0 8px var(--c);}
 .apill[data-a=fired].on{border-color:#8b0000;color:#8b0000;background:rgba(139,0,0,.08);}
 .apill[data-a=fired].on .dot{background:#8b0000;box-shadow:0 0 8px rgba(139,0,0,.5);}
+.apill[data-a=leader].on{border-color:#5a2ca0;color:#5a2ca0;background:rgba(90,44,160,.08);}
+.apill[data-a=leader].on .dot{background:#5a2ca0;box-shadow:0 0 8px rgba(90,44,160,.45);}
 
 .sbar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,var(--sidebar),var(--sidebar2));border:1px solid rgba(220,20,60,.3);border-radius:var(--rad);padding:18px 22px;box-shadow:var(--shadow2);flex-wrap:wrap;gap:12px;}
 .sbar-lbl{font-size:11px;color:var(--txts2);} .sbar-val{font-size:15px;font-weight:700;color:#ff8fa3;margin-top:3px;}
@@ -182,7 +184,7 @@ main{margin-left:230px;min-height:100vh;}
   <div class="card">
     <div class="clbl">Співробітник</div>
     <div class="g2">
-      <div class="field ac-wrap"><label>Нікнейм</label><input class="inp" id="empNick" required list="empNickList" placeholder="Введіть нікнейм..." oninput="onEmpNickInput()" onfocus="onEmpNickInput()" autocomplete="off"><div id="empNickSuggest" class="ac-list"></div></div>
+      <div class="field ac-wrap"><label>Нікнейм</label><input class="inp" id="empNick" required list="empNickList" placeholder="Введіть нікнейм..." oninput="sanitizeEmpNick(this);onEmpNickInput()" onfocus="onEmpNickInput()" autocomplete="off"><div id="empNickSuggest" class="ac-list"></div></div>
       <div class="field"><label>Static ID</label><input class="inp" id="empSid" required list="empSidList" placeholder="#0000" inputmode="numeric" pattern="[0-9+\-]*" oninput="onEmpSidInput();sanitizeEmpSid(this)"></div>
     </div>
   </div>
@@ -194,6 +196,7 @@ main{margin-left:230px;min-height:100vh;}
       <button class="apill on" data-a="hired" onclick="setAct('hired',this)"><span class="dot"></span>Прийнято на роботу</button>
       <button class="apill" data-a="transfer" onclick="setAct('transfer',this)"><span class="dot"></span>Переведено</button>
       <button class="apill" data-a="fired" onclick="setAct('fired',this)"><span class="dot"></span>Звільнено</button>
+      <button class="apill" data-a="leader" onclick="setAct('leader',this)"><span class="dot"></span>Призначити лідера</button>
     </div>
     <div class="g2">
       <div class="field" id="prevWrap"><label>Попередня посада</label>
@@ -202,7 +205,7 @@ main{margin-left:230px;min-height:100vh;}
           <option value="1">[1] Студент</option><option value="2">[2] Інтерн</option>
           <option value="3">[3] Парамедик</option><option value="4">[4] Фельдшер</option><option value="5">[5] Терапевт</option>
           <option value="6">[6] Хірург</option><option value="7">[7] Спеціаліст</option><option value="8">[8] Заст.зав.відділу</option>
-          <option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option><option value="11">[11] Головний лікар</option>
+          <option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option>
         </select>
       </div>
       <div class="field" id="newWrap"><label>Нова посада</label>
@@ -211,7 +214,7 @@ main{margin-left:230px;min-height:100vh;}
           <option value="1">[1] Студент</option><option value="2">[2] Інтерн</option>
           <option value="3">[3] Парамедик</option><option value="4">[4] Фельдшер</option><option value="5">[5] Терапевт</option>
           <option value="6">[6] Хірург</option><option value="7">[7] Спеціаліст</option><option value="8">[8] Заст.зав.відділу</option>
-          <option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option><option value="11">[11] Головний лікар</option>
+          <option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option>
         </select>
       </div>
     </div>
@@ -561,12 +564,31 @@ main{margin-left:230px;min-height:100vh;}
   </div>
 </div>
 
+
+<!-- MODAL: Підтвердження призначення лідера -->
+<div class="overlay" id="leaderAuthOv">
+  <div class="modal sm">
+    <div class="mh"><h3>🔐 Призначення лідера</h3><button class="mx" onclick="closeM('leaderAuthOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="warn-box" style="border-color:rgba(90,44,160,.35);">
+      <div class="warn-title" style="color:#5a2ca0;">Підтвердження підвищеного доступу</div>
+      <div class="warn-desc">Для призначення лідера потрібні облікові дані керівника з максимальними правами.</div>
+    </div>
+    <div class="field" style="margin-bottom:8px;"><label>Логін підтвердження</label><input class="inp" id="laLogin" placeholder="Введіть логін..."></div>
+    <div class="field" style="margin-bottom:12px;"><label>Пароль підтвердження</label><input class="inp" id="laPass" type="password" placeholder="Введіть пароль..."></div>
+    <p id="laErr" style="color:var(--r);font-size:11px;display:none;margin-bottom:10px;"></p>
+    <div class="btns">
+      <button class="btn btn-g" style="flex:1" onclick="closeM('leaderAuthOv')">Скасувати</button>
+      <button class="btn btn-p" style="flex:1" onclick="confirmLeaderAssign()">Підтвердити</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"><span id="tIco"></span><span id="tMsg"></span></div>
 
 <script>
 const API='https://script.google.com/macros/s/AKfycbxCxiJnwm1yuh7gfSsJRhb1ZnrYzHCE8MKa17G3qg3AYghuVpX-gr83OphnDVo9uchK/exec';
 const RANKS=['Співбесіда','Студент','Інтерн','Парамедик','Фельдшер','Терапевт','Хірург','Спеціаліст','Заст.зав.відділу','Завідувач відділу','Заст.голов.лікаря','Головний лікар'];
-const ALBL={hired:'✅ Прийнято на роботу',transfer:'🔄 Переведено',fired:'❌ Звільнено'};
+const ALBL={hired:'✅ Прийнято на роботу',transfer:'🔄 Переведено',fired:'❌ Звільнено',leader:'👑 Призначення лідера'};
 const ABCL={hired:'bh',transfer:'bt',fired:'bf'};
 
 // Час до підвищення в годинах (від ранг → ранг+1)
@@ -587,6 +609,7 @@ let me=null,players=[],allH=[],filtH=[],curHF='all',curHPg=1;
 let allR=[],filtR=[],curRF='all';
 let allRH=[],filtRH=[],curRHPg=1;
 let delTicket=null,delRHIdx=null,curPlayer=null,editedWarnings=0,editedSanctions=0;
+let pendingLeaderPayload=null;
 let empSuggestIdx=-1;
 let rosterLookup=[],targetRosterMember=null;
 const noteStore={};
@@ -683,6 +706,9 @@ function buildEmpSuggestions(){
 function sanitizeEmpSid(el){
   el.value=String(el.value||'').replace(/[^0-9+\-]/g,'');
 }
+function sanitizeEmpNick(el){
+  el.value=String(el.value||'').replace(/[^\p{L}\s'_-]/gu,'');
+}
 async function onEmpNickInput(){
   await ensureRosterLookup();
   const nick=(document.getElementById('empNick').value||'').trim().toLowerCase();
@@ -747,7 +773,13 @@ function setAct(a,el){
   if(prevZero){
     prevZero.hidden=true;
   }
-  if(a==='fired'){
+  if(a==='leader'){
+    pw.style.display='none';
+    nw.style.display='none';
+    if(newZero) newZero.hidden=true;
+    document.getElementById('prevRank').value='';
+    document.getElementById('newRank').value='';
+  } else if(a==='fired'){
     [...document.getElementById('prevRank').options].forEach(o=>{ if(o.value==='0') o.hidden=true; });
     [...document.getElementById('newRank').options].forEach(o=>{ o.hidden=o.value!=='0'&&o.value!==''; });
     if(newZero) newZero.hidden=false;
@@ -789,6 +821,7 @@ function openConfirmModal(){
   if(curAct==='hired'&&!newRank) return toast('Оберіть нову посаду','err');
   if(curAct==='transfer'&&(!prevRank||!newRank)) return toast('Оберіть попередню і нову посади','err');
   if(curAct==='fired'&&(!prevRank||newRank!=='0')) return toast('Для звільнення вкажіть попередню посаду та нову [0] Співбесіда','err');
+  if(curAct==='leader' && (!empNick||!empSid)) return toast('Для призначення лідера заповніть нік і Static ID','err');
 
   const pR=prevRank!==''?`[${prevRank}] ${RANKS[prevRank]||''}`:null;
   const nR=newRank!==''?`[${newRank}] ${RANKS[newRank]||''}`:null;
@@ -828,6 +861,14 @@ async function submitAudit(){
   const btn=document.getElementById('confirmSendBtn');
   btn.disabled=true;btn.innerHTML='<span class="spin"></span> Відправлення...';
   try{
+    if(curAct==='leader'){
+      pendingLeaderPayload={initNick,initSid,empNick,empSid,reason:reason||'Призначення лідера'};
+      closeM('confirmOv');
+      openLeaderAuth();
+      btn.disabled=false;
+      btn.innerHTML='<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Підтвердити і відправити';
+      return;
+    }
     const r=await call('submit',{initNick,initSid,initLogin:me.login,empNick,empSid,act:curAct,prevRank,newRank,reason,autoDep:curAct==='hired'?'Академія':''});
     if(r.success){
       cache.history.at=0;closeM('confirmOv');toast('Заявку успішно відправлено! ✅','ok');resetAudit();
@@ -917,6 +958,46 @@ function extractFirstUrl(text){
 function openReasonLink(url){
   if(!url) return;
   window.open(url,'_blank','noopener');
+}
+
+
+function openLeaderAuth(){
+  document.getElementById('laLogin').value='';
+  document.getElementById('laPass').value='';
+  document.getElementById('laErr').style.display='none';
+  openM('leaderAuthOv');
+}
+async function confirmLeaderAssign(){
+  const login=document.getElementById('laLogin').value.trim();
+  const password=document.getElementById('laPass').value;
+  if(!pendingLeaderPayload) return;
+  if(!login||!password){document.getElementById('laErr').textContent='Введіть логін і пароль';document.getElementById('laErr').style.display='block';return;}
+  try{
+    const auth=await callFirstSuccess([
+      ['verifyLeaderAccess',{login,password}],
+      ['login',{login,password}]
+    ]);
+    const user=auth.user||{};
+    if(auth.success!==true||!(user.isArchiveAdmin||user.isSuperAdmin||user.isAdmin)){
+      document.getElementById('laErr').textContent='Недостатньо прав для призначення лідера';
+      document.getElementById('laErr').style.display='block';
+      return;
+    }
+    const p=pendingLeaderPayload;
+    await call('submit',{initNick:p.initNick,initSid:p.initSid,initLogin:me.login,empNick:p.empNick,empSid:p.empSid,act:'transfer',prevRank:'10',newRank:'11',reason:p.reason||'Призначення лідера'});
+    await callFirstSuccess([
+      ['updateRoster',{nick:p.empNick,sid:p.empSid,field:'rank',value:'11',initiator:me.nick||me.login}],
+      ['updateRoster',{nick:p.empNick,sid:p.empSid,field:'newRank',value:'11',initiator:me.nick||me.login}]
+    ]);
+    pendingLeaderPayload=null;
+    closeM('leaderAuthOv');
+    toast('Лідера успішно призначено','ok');
+    cache.roster.at=0;
+    await loadRoster(true);
+  }catch(e){
+    document.getElementById('laErr').textContent=humanizeErr(e);
+    document.getElementById('laErr').style.display='block';
+  }
 }
 
 // ── DELETE ──
