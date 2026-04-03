@@ -107,7 +107,8 @@ main{margin-left:230px;min-height:100vh;}
 
 .overlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(26,10,18,.65);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:12px;} .overlay.open{display:flex;} .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:24px;width:100%;box-shadow:var(--shadow2);animation:mIn .18s ease;max-height:92vh;overflow-y:auto;} .modal.sm{max-width:460px;} .modal.md{max-width:620px;} .modal.lg{max-width:880px;} @keyframes mIn{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:none}} .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:8px;} .mh h3{font-size:16px;font-weight:700;color:var(--txt);} .mx{background:transparent;border:none;color:var(--txt2);cursor:pointer;padding:4px;border-radius:6px;transition:.12s;flex-shrink:0;} .mx:hover{color:var(--c);background:var(--cdim);} .mx svg{width:16px;height:16px;display:block;} .drow{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border3);font-size:12px;gap:10px;} .drow:last-child{border-bottom:none;} .dlbl{color:var(--txt2);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;flex-shrink:0;padding-top:2px;} .dval{font-weight:600;text-align:right;word-break:break-word;color:var(--txt);}
 
-.warn-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad2);padding:16px;margin-bottom:14px;} .warn-title{font-size:14px;font-weight:700;color:var(--c);margin-bottom:6px;display:flex;align-items:center;gap:8px;} .warn-desc{font-size:12px;color:var(--txt2);line-height:1.65;margin-bottom:10px;} .warn-detail{background:var(--bg2);border:1px solid var(--border3);border-radius:var(--rad2);padding:12px;}
+.warn-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad2);padding:16px;margin-bottom:14px;} .warn-title{font-size:14px;font-weight:700;color:var(--c);margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.warn-title svg{width:16px;height:16px;flex-shrink:0;} .warn-desc{font-size:12px;color:var(--txt2);line-height:1.65;margin-bottom:10px;} .warn-detail{background:var(--bg2);border:1px solid var(--border3);border-radius:var(--rad2);padding:12px;}
 .promo-box{background:rgba(0,255,127,.08);border:1.5px solid rgba(0,100,0,.2);border-radius:var(--rad2);padding:12px 14px;margin-top:10px;}
 
 #toast{position:fixed;bottom:22px;right:22px;z-index:300;background:var(--sidebar);border:1px solid rgba(220,20,60,.3);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;max-width:300px;color:var(--txts);transform:translateY(70px);opacity:0;transition:.25s ease;pointer-events:none;box-shadow:var(--shadow2);} #toast.show{transform:none;opacity:1;} #toast.ok{border-color:rgba(0,100,0,.5);} #toast.err{border-color:rgba(220,20,60,.6);}
@@ -174,15 +175,15 @@ main{margin-left:230px;min-height:100vh;}
   <div class="card">
     <div class="clbl">Ініціатор</div>
     <div class="g2">
-      <div class="field"><label>Ваш нікнейм</label><select class="sel" id="selInit" onchange="pickInit()" disabled><option value="">— Завантаження... —</option></select></div>
+      <div class="field"><label>Ваш нікнейм</label><select class="sel" id="selInit" required onchange="pickInit()" disabled><option value="">— Завантаження... —</option></select></div>
       <div class="field"><label>Static ID</label><input class="inp" id="initSid" readonly placeholder="Автоматично"></div>
     </div>
   </div>
   <div class="card">
     <div class="clbl">Співробітник</div>
     <div class="g2">
-      <div class="field ac-wrap"><label>Нікнейм</label><input class="inp" id="empNick" list="empNickList" placeholder="Введіть нікнейм..." oninput="onEmpNickInput()" onfocus="onEmpNickInput()" autocomplete="off"><div id="empNickSuggest" class="ac-list"></div></div>
-      <div class="field"><label>Static ID</label><input class="inp" id="empSid" list="empSidList" placeholder="#0000" oninput="onEmpSidInput()"></div>
+      <div class="field ac-wrap"><label>Нікнейм</label><input class="inp" id="empNick" required list="empNickList" placeholder="Введіть нікнейм..." oninput="onEmpNickInput()" onfocus="onEmpNickInput()" autocomplete="off"><div id="empNickSuggest" class="ac-list"></div></div>
+      <div class="field"><label>Static ID</label><input class="inp" id="empSid" required list="empSidList" placeholder="#0000" inputmode="numeric" pattern="[0-9+\-]*" oninput="onEmpSidInput();sanitizeEmpSid(this)"></div>
     </div>
   </div>
   <datalist id="empNickList"></datalist>
@@ -196,24 +197,25 @@ main{margin-left:230px;min-height:100vh;}
     </div>
     <div class="g2">
       <div class="field" id="prevWrap"><label>Попередня посада</label>
-        <select class="sel" id="prevRank"><option value="">— Оберіть —</option>
+        <select class="sel" id="prevRank" required><option value="">— Оберіть —</option>
           <option value="0" id="prevRankZero" hidden>[0] Співбесіда</option>
           <option value="1">[1] Студент</option><option value="2">[2] Інтерн</option>
           <option value="3">[3] Парамедик</option><option value="4">[4] Фельдшер</option><option value="5">[5] Терапевт</option>
           <option value="6">[6] Хірург</option><option value="7">[7] Спеціаліст</option><option value="8">[8] Заст.зав.відділу</option>
-          <option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option>
+          <option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option><option value="11">[11] Головний лікар</option>
         </select>
       </div>
       <div class="field" id="newWrap"><label>Нова посада</label>
-        <select class="sel" id="newRank"><option value="">— Оберіть —</option>
+        <select class="sel" id="newRank" required><option value="">— Оберіть —</option>
+          <option value="0" id="newRankZero" hidden>[0] Співбесіда</option>
           <option value="1">[1] Студент</option><option value="2">[2] Інтерн</option>
           <option value="3">[3] Парамедик</option><option value="4">[4] Фельдшер</option><option value="5">[5] Терапевт</option>
           <option value="6">[6] Хірург</option><option value="7">[7] Спеціаліст</option><option value="8">[8] Заст.зав.відділу</option>
-          <option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option>
+          <option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option><option value="11">[11] Головний лікар</option>
         </select>
       </div>
     </div>
-    <div class="field" style="margin-top:12px;"><label>Пояснення</label><textarea class="ta" id="reason" placeholder="Вкажіть причину або коментар..."></textarea></div>
+    <div class="field" style="margin-top:12px;"><label>Пояснення</label><textarea class="ta" id="reason" required placeholder="Вкажіть причину або коментар..."></textarea></div>
   </div>
   <div class="sbar">
     <div><div class="sbar-lbl">Обрана дія</div><div class="sbar-val" id="actLabel">✅ Прийнято на роботу</div></div>
@@ -272,7 +274,7 @@ main{margin-left:230px;min-height:100vh;}
     <div class="wbox"><div class="wnum" style="color:var(--c)" id="wT">—</div><div class="wlbl">Переведено</div></div>
     <div class="wbox"><div class="wnum" style="color:var(--txt2)" id="wAll">—</div><div class="wlbl">Всього дій</div></div>
   </div>
-  <div class="clbl" style="margin-bottom:10px;">Топ-10 активних ініціаторів</div>
+  <div class="clbl" style="margin-bottom:10px;">Топ-5 активних ініціаторів</div>
   <div class="card"><div id="lb"><div class="loading"><div class="spin"></div><br>Завантаження...</div></div></div>
 </div>
 
@@ -368,9 +370,9 @@ main{margin-left:230px;min-height:100vh;}
     <div class="mh"><h3>Видалення запису</h3><button class="mx" onclick="closeM('delOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="warn-box" style="border-color:rgba(255,71,87,.25);">
       <div class="warn-title" style="color:var(--r);"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Увага! Дія незворотня</div>
-      <div class="warn-desc">Для видалення необхідний логін адміністратора архіву (isArchiveAdmin = TRUE в таблиці).</div>
+      <div class="warn-desc">Для видалення введіть код підтвердження адміністратора.</div>
     </div>
-    <div class="field" style="margin-bottom:12px;"><label>Логін архіву</label><input class="inp" id="dLogin" placeholder="Введіть логін архіву..."></div>
+    <div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="dLogin" placeholder="Введіть код підтвердження..."></div>
     <p id="dErr" style="color:var(--r);font-size:11px;display:none;margin-bottom:10px;"></p>
     <div class="btns">
       <button class="btn btn-g" style="flex:1" onclick="closeM('delOv')">Скасувати</button>
@@ -385,9 +387,9 @@ main{margin-left:230px;min-height:100vh;}
     <div class="mh"><h3>🔄 Скидання статистики</h3><button class="mx" onclick="closeM('resetStatsOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="warn-box" style="border-color:rgba(255,71,87,.25);">
       <div class="warn-title" style="color:var(--r);"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Увага! Дія незворотня</div>
-      <div class="warn-desc">Скидання статистики видалить <strong>усі записи</strong> з таблиці reports. Це також очистить Історію аудитів. Дію неможливо скасувати.</div>
+      <div class="warn-desc">Скидання статистики видалить усі записи історії. Дію неможливо скасувати.</div>
     </div>
-    <div class="field" style="margin-bottom:12px;"><label>Логін архіву для підтвердження</label><input class="inp" id="rsLogin" placeholder="Введіть логін архіву..."></div>
+    <div class="field" style="margin-bottom:12px;"><label>Код підтвердження для підтвердження</label><input class="inp" id="rsLogin" placeholder="Введіть код підтвердження..."></div>
     <p id="rsErr" style="color:var(--r);font-size:11px;display:none;margin-bottom:10px;"></p>
     <div class="btns">
       <button class="btn btn-g" style="flex:1" onclick="closeM('resetStatsOv')">Скасувати</button>
@@ -402,9 +404,9 @@ main{margin-left:230px;min-height:100vh;}
     <div class="mh"><h3>🗑️ Очистити історію</h3><button class="mx" onclick="closeM('clearHistoryOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="warn-box" style="border-color:rgba(255,71,87,.25);">
       <div class="warn-title" style="color:var(--r);">Дія видалить усю історію кадрового аудиту</div>
-      <div class="warn-desc">Потрібен спец-логін архіву для підтвердження.</div>
+      <div class="warn-desc">Потрібен код підтвердження для виконання дії.</div>
     </div>
-    <div class="field" style="margin-bottom:12px;"><label>Логін архіву</label><input class="inp" id="chLogin" placeholder="Введіть логін архіву..."></div>
+    <div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="chLogin" placeholder="Введіть код підтвердження..."></div>
     <p id="chErr" style="color:var(--r);font-size:11px;display:none;margin-bottom:10px;"></p>
     <div class="btns">
       <button class="btn btn-g" style="flex:1" onclick="closeM('clearHistoryOv')">Скасувати</button>
@@ -517,8 +519,8 @@ main{margin-left:230px;min-height:100vh;}
 <div class="overlay" id="removeRosterOv">
   <div class="modal sm">
     <div class="mh"><h3>Видалити учасника</h3><button class="mx" onclick="closeM('removeRosterOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-    <div class="warn-box" style="border-color:rgba(255,71,87,.25);"><div class="warn-desc" style="margin:0;">Потрібен спец-логін з full admin правами у Google Таблиці.</div></div>
-    <div class="field" style="margin-bottom:12px;"><label>Спец-логін (full admin)</label><input class="inp" id="rrLogin" placeholder="Введіть спец-логін..."></div>
+    <div class="warn-box" style="border-color:rgba(255,71,87,.25);"><div class="warn-desc" style="margin:0;">Для цієї дії потрібен код підтвердження адміністратора.</div></div>
+    <div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="rrLogin" placeholder="Введіть код підтвердження..."></div>
     <p id="rrErr" style="color:var(--r);font-size:11px;display:none;margin-bottom:10px;"></p>
     <div class="btns">
       <button class="btn btn-g" style="flex:1" onclick="closeM('removeRosterOv')">Скасувати</button>
@@ -531,8 +533,8 @@ main{margin-left:230px;min-height:100vh;}
 <div class="overlay" id="disbandRosterOv">
   <div class="modal sm">
     <div class="mh"><h3>Розформувати планшет</h3><button class="mx" onclick="closeM('disbandRosterOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-    <div class="warn-box" style="border-color:rgba(255,71,87,.25);"><div class="warn-desc" style="margin:0;">Видалить всіх учасників з планшету. Потрібен спец-логін.</div></div>
-    <div class="field" style="margin-bottom:12px;"><label>Спец-логін</label><input class="inp" id="drLogin" placeholder="Введіть спец-логін..."></div>
+    <div class="warn-box" style="border-color:rgba(255,71,87,.25);"><div class="warn-desc" style="margin:0;">Видалить всіх учасників з планшету. Потрібен код підтвердження.</div></div>
+    <div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="drLogin" placeholder="Введіть код підтвердження..."></div>
     <p id="drErr" style="color:var(--r);font-size:11px;display:none;margin-bottom:10px;"></p>
     <div class="btns">
       <button class="btn btn-g" style="flex:1" onclick="closeM('disbandRosterOv')">Скасувати</button>
@@ -548,9 +550,9 @@ main{margin-left:230px;min-height:100vh;}
     <div class="mh"><h3>🗑️ Очистити журнал планшету</h3><button class="mx" onclick="closeM('clearRosterHistoryOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="warn-box" style="border-color:rgba(255,71,87,.25);">
       <div class="warn-title" style="color:var(--r);">Дія видалить увесь журнал змін планшету</div>
-      <div class="warn-desc">Потрібен спец-логін архіву для підтвердження.</div>
+      <div class="warn-desc">Потрібен код підтвердження для виконання дії.</div>
     </div>
-    <div class="field" style="margin-bottom:12px;"><label>Логін архіву</label><input class="inp" id="crhLogin" placeholder="Введіть логін архіву..."></div>
+    <div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="crhLogin" placeholder="Введіть код підтвердження..."></div>
     <p id="crhErr" style="color:var(--r);font-size:11px;display:none;margin-bottom:10px;"></p>
     <div class="btns">
       <button class="btn btn-g" style="flex:1" onclick="closeM('clearRosterHistoryOv')">Скасувати</button>
@@ -563,7 +565,7 @@ main{margin-left:230px;min-height:100vh;}
 
 <script>
 const API='https://script.google.com/macros/s/AKfycbxCxiJnwm1yuh7gfSsJRhb1ZnrYzHCE8MKa17G3qg3AYghuVpX-gr83OphnDVo9uchK/exec';
-const RANKS=['Співбесіда','Студент','Інтерн','Парамедик','Фельдшер','Терапевт','Хірург','Спеціаліст','Заст.зав.відділу','Завідувач відділу','Заст.голов.лікаря'];
+const RANKS=['Співбесіда','Студент','Інтерн','Парамедик','Фельдшер','Терапевт','Хірург','Спеціаліст','Заст.зав.відділу','Завідувач відділу','Заст.голов.лікаря','Головний лікар'];
 const ALBL={hired:'✅ Прийнято на роботу',transfer:'🔄 Переведено',fired:'❌ Звільнено'};
 const ABCL={hired:'bh',transfer:'bt',fired:'bf'};
 
@@ -603,7 +605,7 @@ async function doLogin(){
   try{
     const r=await call('login',{login});
     if(r.success) enterSession(r.user);
-    else showLoginErr(r.error||'Невірний логін');
+    else showLoginErr(r.error||'Невірний код підтвердження');
   }catch(e){showLoginErr(humanizeErr(e));}
   btn.disabled=false;
   btn.innerHTML='<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Увійти';
@@ -614,7 +616,7 @@ function enterSession(user){
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('sideNick').textContent=me.nick||me.login;
   document.getElementById('sideAv').textContent=(me.nick||me.login)[0].toUpperCase();
-  document.getElementById('sideRole').textContent=me.isAdmin?'Адміністратор':'Співробітник';
+  document.getElementById('sideRole').textContent=me.isAdmin?'Керівник':'Співробітник';
   loadPlayers();
 }
 
@@ -677,6 +679,10 @@ function buildEmpSuggestions(){
   nl.innerHTML='';
   sl.innerHTML='';
 }
+
+function sanitizeEmpSid(el){
+  el.value=String(el.value||'').replace(/[^0-9+\-]/g,'');
+}
 async function onEmpNickInput(){
   await ensureRosterLookup();
   const nick=(document.getElementById('empNick').value||'').trim().toLowerCase();
@@ -735,11 +741,24 @@ function setAct(a,el){
   document.getElementById('actLabel').textContent=ALBL[a];
   const pw=document.getElementById('prevWrap'),nw=document.getElementById('newWrap');
   const prevZero=document.getElementById('prevRankZero');
+  const newZero=document.getElementById('newRankZero');
   pw.style.display=a==='hired'?'none':'flex';
-  nw.style.display=a==='fired'?'none':'flex';
+  nw.style.display='flex';
   if(prevZero){
-    prevZero.hidden=a!=='fired';
-    if(a!=='fired' && document.getElementById('prevRank').value==='0') document.getElementById('prevRank').value='';
+    prevZero.hidden=true;
+  }
+  if(a==='fired'){
+    [...document.getElementById('prevRank').options].forEach(o=>{ if(o.value==='0') o.hidden=true; });
+    [...document.getElementById('newRank').options].forEach(o=>{ o.hidden=o.value!=='0'&&o.value!==''; });
+    if(newZero) newZero.hidden=false;
+    document.getElementById('newRank').value='0';
+  }else{
+    [...document.getElementById('prevRank').options].forEach(o=>{ if(o.value==='0') o.hidden=true; });
+    [...document.getElementById('newRank').options].forEach(o=>{ if(o.value!=='0') o.hidden=false; });
+    if(newZero) newZero.hidden=true;
+    if(document.getElementById('newRank').value==='0') document.getElementById('newRank').value='';
+    if(a==='hired') pw.style.display='none';
+    if(a==='fired') pw.style.display='flex';
   }
 }
 document.getElementById('prevWrap').style.display='none';
@@ -765,12 +784,11 @@ function openConfirmModal(){
   const newRank=document.getElementById('newRank').value;
   const reason=document.getElementById('reason').value.trim();
 
-  if(!initNick) return toast('Оберіть себе зі списку','err');
-  if(!empNick)  return toast('Введіть нікнейм співробітника','err');
-  if(!empSid)   return toast('Введіть Static ID співробітника','err');
-  if(curAct!=='fired'&&!newRank) return toast('Оберіть нову посаду','err');
-  if(curAct==='transfer'&&!prevRank) return toast('Оберіть попередню посаду','err');
-  if(!reason) return toast('Вкажіть пояснення','err');
+  if(!initNick||!initSid||!empNick||!empSid||!reason) return toast('Заповніть усі обовязкові поля','err');
+  if(!/^[0-9+\-]+$/.test(empSid)) return toast('Static ID: тільки цифри та знаки +/-','err');
+  if(curAct==='hired'&&!newRank) return toast('Оберіть нову посаду','err');
+  if(curAct==='transfer'&&(!prevRank||!newRank)) return toast('Оберіть попередню і нову посади','err');
+  if(curAct==='fired'&&(!prevRank||newRank!=='0')) return toast('Для звільнення вкажіть попередню посаду та нову [0] Співбесіда','err');
 
   const pR=prevRank!==''?`[${prevRank}] ${RANKS[prevRank]||''}`:null;
   const nR=newRank!==''?`[${newRank}] ${RANKS[newRank]||''}`:null;
@@ -862,11 +880,12 @@ function renderH(){
     const nR=r.newRank!==''&&r.newRank!=null?`[${r.newRank}] ${RANKS[r.newRank]||''}`:null;
     const rs=pR&&nR?`${pR} → ${nR}`:nR||pR||'—';
     const dt=r.date?fmtKyiv(new Date(r.date)):'—';
+    const reasonUrl=extractFirstUrl(r.reason);
     return `<tr>
       <td class="tmono">${dt}</td><td class="tbold">${r.initNick||'—'}</td><td class="tbold">${r.empNick||'—'}</td>
       <td class="tmono">${r.empSid||'—'}</td><td>${badge}</td><td class="tmono" style="font-size:11px;">${rs}</td>
       <td class="racts">
-        <button class="rbtn" onclick='viewH(${JSON.stringify(r)})' title="Деталі"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        ${reasonUrl?`<button class="rbtn" onclick='openReasonLink(${JSON.stringify(reasonUrl)})' title="Відкрити посилання"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 14L21 3"/><path d="M15 3h6v6"/><path d="M5 5v14h14"/></svg></button>`:''}<button class="rbtn" onclick='viewH(${JSON.stringify(r)})' title="Деталі"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         ${me&&me.isArchiveAdmin?`<button class="rbtn del" onclick="askDel('${r.ticket}',null)" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>`:''}
       </td></tr>`;
   }).join('');
@@ -886,8 +905,18 @@ function viewH(r){
     <div class="drow"><span class="dlbl">Дія</span><span><span class="badge ${ABCL[r.action]||''}">${ALBL[r.action]||r.action}</span></span></div>
     <div class="drow"><span class="dlbl">Попередня посада</span><span class="dval">${pR}</span></div>
     <div class="drow"><span class="dlbl">Нова посада</span><span class="dval">${nR}</span></div>
-    <div class="drow" style="border:none"><span class="dlbl">Пояснення</span><span class="dval" style="max-width:220px;text-align:right;">${r.reason||'—'}</span></div>`;
+    <div class="drow" style="border:none"><span class="dlbl">Пояснення</span><span class="dval" style="max-width:220px;text-align:right;">${extractFirstUrl(r.reason)?`<button class='btn btn-o btn-sm' onclick='openReasonLink(${JSON.stringify(extractFirstUrl(r.reason))})'>Відкрити посилання</button>`:(r.reason||'—')}</span></div>`;
   openM('detOv');
+}
+
+
+function extractFirstUrl(text){
+  const m=String(text||'').match(/https?:\/\/\S+/i);
+  return m?m[0].replace(/[),.;]+$/,''):'';
+}
+function openReasonLink(url){
+  if(!url) return;
+  window.open(url,'_blank','noopener');
 }
 
 // ── DELETE ──
@@ -899,17 +928,17 @@ function askDel(ticket,rhIdx){
 }
 async function confirmDel(){
   const login=document.getElementById('dLogin').value.trim();
-  if(!login){showDE('Введіть логін архіву');return;}
+  if(!login){showDE('Введіть код підтвердження');return;}
   try{
     let r;
     if(delRHIdx!==null&&delRHIdx!==undefined){
       r=await call('deleteRosterHistory',{rowIndex:delRHIdx,archiveLogin:login});
       if(r.success){closeM('delOv');toast('Запис видалено','ok');loadRHistory();}
-      else showDE(r.error||'Невірний логін');
+      else showDE(r.error||'Невірний код підтвердження');
     } else {
       r=await call('delete',{ticket:delTicket,archiveLogin:login});
       if(r.success){closeM('delOv');toast('Запис видалено','ok');loadHistory();}
-      else showDE(r.error||'Невірний логін');
+      else showDE(r.error||'Невірний код підтвердження');
     }
   }catch(e){showDE('Помилка з\'єднання');}
 }
@@ -923,11 +952,11 @@ function openResetStats(){
 }
 async function confirmResetStats(){
   const login=document.getElementById('rsLogin').value.trim();
-  if(!login){document.getElementById('rsErr').textContent='Введіть логін архіву';document.getElementById('rsErr').style.display='block';return;}
+  if(!login){document.getElementById('rsErr').textContent='Введіть код підтвердження';document.getElementById('rsErr').style.display='block';return;}
   try{
     const r=await call('resetStats',{archiveLogin:login});
     if(r.success){closeM('resetStatsOv');toast('Статистику скинуто ✅','ok');loadStats();}
-    else{document.getElementById('rsErr').textContent=r.error||'Невірний логін';document.getElementById('rsErr').style.display='block';}
+    else{document.getElementById('rsErr').textContent=r.error||'Невірний код підтвердження';document.getElementById('rsErr').style.display='block';}
   }catch(e){document.getElementById('rsErr').textContent='Помилка з\'єднання';document.getElementById('rsErr').style.display='block';}
 }
 
@@ -938,7 +967,7 @@ function openClearHistory(){
 }
 async function confirmClearHistory(){
   const login=document.getElementById('chLogin').value.trim();
-  if(!login){document.getElementById('chErr').textContent='Введіть логін архіву';document.getElementById('chErr').style.display='block';return;}
+  if(!login){document.getElementById('chErr').textContent='Введіть код підтвердження';document.getElementById('chErr').style.display='block';return;}
   try{
     let r;
     try{ r=await call('clearHistory',{archiveLogin:login}); }
@@ -949,7 +978,7 @@ async function confirmClearHistory(){
       toast('Історію очищено','ok');
       await loadHistory(true);
     } else {
-      document.getElementById('chErr').textContent=r.error||'Невірний логін';
+      document.getElementById('chErr').textContent=r.error||'Невірний код підтвердження';
       document.getElementById('chErr').style.display='block';
     }
   }catch(e){
@@ -965,7 +994,7 @@ function openClearRosterHistory(){
 }
 async function confirmClearRosterHistory(){
   const login=document.getElementById('crhLogin').value.trim();
-  if(!login){document.getElementById('crhErr').textContent='Введіть логін архіву';document.getElementById('crhErr').style.display='block';return;}
+  if(!login){document.getElementById('crhErr').textContent='Введіть код підтвердження';document.getElementById('crhErr').style.display='block';return;}
   try{
     const r=await callFirstSuccess([
       ['clearRosterHistory',{archiveLogin:login}],
@@ -979,7 +1008,7 @@ async function confirmClearRosterHistory(){
       toast('Журнал планшету очищено','ok');
       await loadRHistory(true);
     } else {
-      document.getElementById('crhErr').textContent=r.error||'Невірний логін';
+      document.getElementById('crhErr').textContent=r.error||'Невірний код підтвердження';
       document.getElementById('crhErr').style.display='block';
     }
   }catch(e){
@@ -997,10 +1026,10 @@ function openRemoveRosterMember(){
 }
 async function confirmRemoveRosterMember(){
   const archiveLogin=document.getElementById('rrLogin').value.trim();
-  if(!archiveLogin){document.getElementById('rrErr').textContent='Введіть спец-логін';document.getElementById('rrErr').style.display='block';return;}
+  if(!archiveLogin){document.getElementById('rrErr').textContent='Введіть код підтвердження';document.getElementById('rrErr').style.display='block';return;}
   try{
     const auth=await verifyArchiveLogin(archiveLogin);
-    if(!auth.ok){document.getElementById('rrErr').textContent='Логін без full admin прав';document.getElementById('rrErr').style.display='block';return;}
+    if(!auth.ok){document.getElementById('rrErr').textContent='Недостатньо прав доступу';document.getElementById('rrErr').style.display='block';return;}
     const initMeta=getMyInitMeta();
     const r=await callFirstSuccess([
       ['submit',{initNick:initMeta.nick,initSid:initMeta.sid,initLogin:initMeta.login,empNick:targetRosterMember.nick,empSid:targetRosterMember.sid,act:'fired',prevRank:'',newRank:'',reason:'Видалення з планшету'}],
@@ -1015,7 +1044,7 @@ async function confirmRemoveRosterMember(){
       cache.roster.at=0; cache.rh.at=0;
       toast('Учасника видалено з планшету','ok');
       await loadRoster(true);
-    } else { document.getElementById('rrErr').textContent=r.error||'Невірний логін';document.getElementById('rrErr').style.display='block';}
+    } else { document.getElementById('rrErr').textContent=r.error||'Невірний код підтвердження';document.getElementById('rrErr').style.display='block';}
   }catch(e){
     document.getElementById('rrErr').textContent=humanizeErr(e);
     document.getElementById('rrErr').style.display='block';
@@ -1028,10 +1057,10 @@ function openDisbandRoster(){
 }
 async function confirmDisbandRoster(){
   const login=document.getElementById('drLogin').value.trim();
-  if(!login){document.getElementById('drErr').textContent='Введіть спец-логін';document.getElementById('drErr').style.display='block';return;}
+  if(!login){document.getElementById('drErr').textContent='Введіть код підтвердження';document.getElementById('drErr').style.display='block';return;}
   try{
     const auth=await verifyArchiveLogin(login);
-    if(!auth.ok){document.getElementById('drErr').textContent='Логін без full admin прав';document.getElementById('drErr').style.display='block';return;}
+    if(!auth.ok){document.getElementById('drErr').textContent='Недостатньо прав доступу';document.getElementById('drErr').style.display='block';return;}
     const initMeta=getMyInitMeta();
     if(allR.length){
       for(const p of allR){
@@ -1055,7 +1084,7 @@ async function confirmDisbandRoster(){
       toast('Планшет розформовано','ok');
       await loadRoster(true);
       await loadRHistory(true);
-    } else { document.getElementById('drErr').textContent=r.error||'Невірний логін';document.getElementById('drErr').style.display='block';}
+    } else { document.getElementById('drErr').textContent=r.error||'Невірний код підтвердження';document.getElementById('drErr').style.display='block';}
   }catch(e){
     document.getElementById('drErr').textContent=humanizeErr(e);
     document.getElementById('drErr').style.display='block';
@@ -1085,10 +1114,10 @@ async function loadStats(){
     ['stFW','wF'].forEach(id=>document.getElementById(id).textContent=fw);
     document.getElementById('wT').textContent=tw;
     document.getElementById('wAll').textContent=hw+fw+tw;
-    const lb=s.leaderboard||[];
+    const lb=(s.leaderboard||[]).slice(0,5);
     const cls=['ln1','ln2','ln3','lnx'];
     document.getElementById('lb').innerHTML=lb.length
-      ?lb.map((x,i)=>`<div class="lb-item"><div class="lbn ${cls[Math.min(i,3)]}">${i+1}</div><div class="lbname">${x.name}</div><div class="lbcnt">${x.count} заявок</div></div>`).join('')
+      ?lb.map((x,i)=>`<div class="lb-item" style="background:${i===0?'rgba(220,20,60,.08)':'transparent'};padding:10px;border-radius:10px;"><div class="lbn ${cls[Math.min(i,3)]}">${i+1}</div><div class="lbname">${x.name}</div><div class="lbcnt">${x.count}</div></div>`).join('')
       :'<div class="empty">Дані відсутні</div>';
   }catch(e){toast('Помилка статистики','err');}
 }
@@ -1183,38 +1212,30 @@ function renderNotes(notes){
     </div>`).join('');
 }
 function changeCounter(field,delta){
-  if(field==='warnings'){
-    editedWarnings=Math.max(0,Math.min(2,editedWarnings+delta));
-    counterDesired.warnings=editedWarnings;
-    document.getElementById('cntWarn').textContent=editedWarnings;
-    syncCounterField('warnings');
-  } else {
-    editedSanctions=Math.max(0,Math.min(3,editedSanctions+delta));
-    counterDesired.sanctions=editedSanctions;
-    document.getElementById('cntSanc').textContent=editedSanctions;
-    syncCounterField('sanctions');
-  }
+  const limit=field==='warnings'?2:3;
+  const current=field==='warnings'?editedWarnings:editedSanctions;
+  const target=Math.max(0,Math.min(limit,current+delta));
+  if(target===current) return;
+  if(field==='warnings'){editedWarnings=target;document.getElementById('cntWarn').textContent=target;}
+  else{editedSanctions=target;document.getElementById('cntSanc').textContent=target;}
+  syncCounterField(field,target);
 }
-async function syncCounterField(field){
+async function syncCounterField(field,target){
   if(pendingCounter[field]) return;
   pendingCounter[field]=true;
-  const value=counterDesired[field];
   try{
-    const r=await call('updateRoster',{nick:curPlayer.nick,sid:curPlayer.staticId,field,value,initiator:me.nick||me.login});
+    const r=await call('updateRoster',{nick:curPlayer.nick,sid:curPlayer.staticId,field,value:target,initiator:me.nick||me.login});
     if(r.success){
       const p=allR.find(x=>x.nick===curPlayer.nick);
-      if(p) p[field]=value;
-      if(field==='warnings') document.getElementById('pmWarn').textContent=`${value}/2`;
-      else document.getElementById('pmSanc').textContent=`${value}/3`;
+      if(p) p[field]=target;
+      if(field==='warnings') document.getElementById('pmWarn').textContent=`${target}/2`;
+      else document.getElementById('pmSanc').textContent=`${target}/3`;
       cache.roster.at=0; cache.rh.at=0;
       filterR();
       toast(`${field==='warnings'?'Попередження':'Догани'} оновлено`,'ok');
     } else toast(r.error||'Помилка','err');
   }catch(e){toast(humanizeErr(e),'err');}
-  finally{
-    pendingCounter[field]=false;
-    if(counterDesired[field]!==value) syncCounterField(field);
-  }
+  finally{pendingCounter[field]=false;}
 }
 async function saveEditDep(){
   const dep=document.getElementById('editDep').value;
