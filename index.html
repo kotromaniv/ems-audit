@@ -1136,17 +1136,24 @@ async function loadRoster(force=false){
     });
     rosterLookup=allR.filter(isActiveRosterMember).map(p=>({nick:p.nick||'',staticId:p.staticId||''}));
     cache.roster={at:Date.now(),data:allR};
-    document.getElementById('rCnt').textContent=`${allR.length} гравців у фракції`;
     filterR();
     document.getElementById('rLoad').style.display='none';
   }catch(e){toast('Помилка планшету','err');document.getElementById('rLoad').style.display='none';}
 }
 function setRF(f,el){curRF=f;document.querySelectorAll('#depFilters .fp').forEach(p=>p.classList.remove('on'));el.classList.add('on');filterR();}
+function updateRosterOnlineLabel(){
+  const cnt=filtR.length;
+  const lbl=curRF==='all'
+    ?`Онлайн у фракції: ${cnt}`
+    :`Онлайн у підрозділі ${curRF}: ${cnt}`;
+  document.getElementById('rCnt').textContent=lbl;
+}
 function filterR(){
   const q=(document.getElementById('rSearch').value||'').toLowerCase();
   filtR=allR
     .filter(p=>(curRF==='all'||p.dep===curRF)&&(!q||p.nick?.toLowerCase().includes(q)||String(p.staticId).includes(q)))
     .sort((a,b)=>toRank(b.rank)-toRank(a.rank));
+  updateRosterOnlineLabel();
   renderR();
 }
 function renderR(){
