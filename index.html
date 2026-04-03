@@ -56,15 +56,6 @@ main{margin-left:230px;min-height:100vh;}
 .login-box h2{font-size:20px;font-weight:800;margin-bottom:6px;color:var(--txt);}
 .login-box p{font-size:13px;color:var(--txt2);margin-bottom:24px;}
 
-/* ── SET PASSWORD SCREEN ── */
-#setPasswordScreen{position:fixed;inset:0;background:var(--bg);z-index:190;display:none;align-items:center;justify-content:center;}
-#setPasswordScreen.show{display:flex;}
-.set-pass-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:40px;width:90%;max-width:380px;box-shadow:var(--shadow2);}
-.set-pass-box h2{font-size:18px;font-weight:800;margin-bottom:8px;color:var(--txt);}
-.set-pass-box p{font-size:12px;color:var(--txt2);margin-bottom:20px;line-height:1.6;}
-.pass-strength{height:4px;border-radius:2px;margin-top:6px;background:var(--bg3);overflow:hidden;}
-.pass-strength-bar{height:100%;width:0%;transition:.3s;border-radius:2px;}
-
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:22px;margin-bottom:14px;box-shadow:var(--shadow);}
 .clbl{font-size:10px;font-weight:700;color:var(--txt3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
 .clbl::before{content:'';width:3px;height:11px;background:var(--c);border-radius:2px;display:block;}
@@ -144,43 +135,11 @@ main{margin-left:230px;min-height:100vh;}
       <div><div style="font-size:16px;font-weight:800;color:var(--txt);">EMS Фракція</div><div style="font-size:11px;color:var(--txt2);">Система управління</div></div>
     </div>
     <h2>Вхід у систему</h2>
-    <p>Введіть логін та пароль виданий адміністратором</p>
-    <div class="field" style="margin-bottom:12px;">
-      <label>Логін</label>
-      <input class="inp" id="loginInp" placeholder="Введіть логін..." onkeydown="if(event.key==='Enter')document.getElementById('passInp').focus()">
-    </div>
-    <div class="field" style="margin-bottom:16px;">
-      <label>Пароль</label>
-      <input class="inp" id="passInp" type="password" placeholder="Введіть пароль..." onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
+    <p>Введіть ваш особистий логін виданий адміністратором</p>
+    <div class="field" style="margin-bottom:12px;"><label>Логін</label><input class="inp" id="loginInp" placeholder="Введіть логін..." onkeydown="if(event.key==='Enter')doLogin()"></div>
     <p id="loginErr" style="color:var(--c);font-size:12px;display:none;margin-bottom:10px;"></p>
     <button class="btn btn-p" style="width:100%;justify-content:center;" onclick="doLogin()" id="loginBtn">
       <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Увійти
-    </button>
-  </div>
-</div>
-
-<!-- SET PASSWORD (перший вхід) -->
-<div id="setPasswordScreen">
-  <div class="set-pass-box">
-    <div class="llogo" style="margin-bottom:18px;">
-      <div class="logo-box">EMS</div>
-      <div><div style="font-size:16px;font-weight:800;color:var(--txt);">Перший вхід</div><div style="font-size:11px;color:var(--txt2);">Встановіть пароль</div></div>
-    </div>
-    <h2>Встановіть пароль</h2>
-    <p>Адміністратор ще не встановив вам пароль. Введіть новий пароль — він буде збережений у зашифрованому вигляді.</p>
-    <div class="field" style="margin-bottom:12px;">
-      <label>Новий пароль</label>
-      <input class="inp" id="newPassInp" type="password" placeholder="Мінімум 6 символів..." oninput="checkPassStrength(this.value)" onkeydown="if(event.key==='Enter')document.getElementById('newPassConfInp').focus()">
-      <div class="pass-strength"><div class="pass-strength-bar" id="passStrengthBar"></div></div>
-    </div>
-    <div class="field" style="margin-bottom:16px;">
-      <label>Повторіть пароль</label>
-      <input class="inp" id="newPassConfInp" type="password" placeholder="Повторіть пароль..." onkeydown="if(event.key==='Enter')doSetPassword()">
-    </div>
-    <p id="setPassErr" style="color:var(--c);font-size:12px;display:none;margin-bottom:10px;"></p>
-    <button class="btn btn-p" style="width:100%;justify-content:center;" onclick="doSetPassword()" id="setPassBtn">
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Зберегти пароль
     </button>
   </div>
 </div>
@@ -587,6 +546,7 @@ main{margin-left:230px;min-height:100vh;}
   </div>
 </div>
 
+
 <!-- MODAL: Очистити журнал змін планшету -->
 <div class="overlay" id="clearRosterHistoryOv">
   <div class="modal sm">
@@ -603,6 +563,7 @@ main{margin-left:230px;min-height:100vh;}
     </div>
   </div>
 </div>
+
 
 <!-- MODAL: Підтвердження призначення лідера -->
 <div class="overlay" id="leaderAuthOv">
@@ -630,8 +591,19 @@ const RANKS=['Співбесіда','Студент','Інтерн','Парам�
 const ALBL={hired:'✅ Прийнято на роботу',transfer:'🔄 Переведено',fired:'❌ Звільнено',leader:'👑 Призначення лідера'};
 const ABCL={hired:'bh',transfer:'bt',fired:'bf'};
 
-const PROMO_HOURS={1:0,2:24,3:24,4:48,5:48,6:72,7:96,8:96};
-const PROMO_KYIV_ADJUST_HOURS=-1;
+// Час до підвищення в годинах (від ранг → ранг+1)
+// Ключ = номер ранга ПІСЛЯ якого підвищення
+const PROMO_HOURS={
+  1:0,   // Студент→Інтерн: без обмеження
+  2:24,  // Інтерн→Парамедик: 24г
+  3:24,  // Парамедик→Фельдшер: 24г
+  4:48,  // Фельдшер→Терапевт: 48г
+  5:48,  // Терапевт→Хірург: 48г
+  6:72,  // Хірург→Спеціаліст: 72г
+  7:96,  // Спеціаліст→Заст.зав.: 96г
+  8:96   // Заст.зав.→Завідувач: 96г
+};
+const PROMO_KYIV_ADJUST_HOURS=-1; // корекція відносно фактичного часу Kyiv
 
 let me=null,players=[],allH=[],filtH=[],curHF='all',curHPg=1;
 let allR=[],filtR=[],curRF='all';
@@ -647,131 +619,20 @@ const pendingCounter={warnings:false,sanctions:false};
 const counterDesired={warnings:0,sanctions:0};
 const PER=15;
 
-// ── ХЕШУВАННЯ ПАРОЛЯ (SHA-256 у браузері) ──────────────────
-async function hashPassword(password, salt) {
-  const msg = new TextEncoder().encode(password + salt);
-  const buf = await crypto.subtle.digest('SHA-256', msg);
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+// ── LOGIN ──
+async function doLogin(){
+  const login=document.getElementById('loginInp').value.trim();
+  if(!login) return showLoginErr('Введіть логін');
+  const btn=document.getElementById('loginBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span> Перевірка...';
+  try{
+    const r=await call('login',{login});
+    if(r.success) enterSession(r.user);
+    else showLoginErr(r.error||'Невірний код підтвердження');
+  }catch(e){showLoginErr(humanizeErr(e));}
+  btn.disabled=false;
+  btn.innerHTML='<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Увійти';
 }
-
-// ── ІНДИКАТОР НАДІЙНОСТІ ПАРОЛЯ ──
-function checkPassStrength(pass) {
-  const bar = document.getElementById('passStrengthBar');
-  if (!bar) return;
-  let score = 0;
-  if (pass.length >= 6) score++;
-  if (pass.length >= 10) score++;
-  if (/[A-Z]/.test(pass)) score++;
-  if (/[0-9]/.test(pass)) score++;
-  if (/[^A-Za-z0-9]/.test(pass)) score++;
-  const pct = (score / 5) * 100;
-  const clr = score <= 1 ? '#DC143C' : score <= 3 ? '#FFA500' : '#006400';
-  bar.style.width = pct + '%';
-  bar.style.background = clr;
-}
-
-// ── LOGIN ──────────────────────────────────────────────────
-async function doLogin() {
-  const login = document.getElementById('loginInp').value.trim();
-  const password = document.getElementById('passInp').value;
-  if (!login) return showLoginErr('Введіть логін');
-  if (!password) return showLoginErr('Введіть пароль');
-
-  const btn = document.getElementById('loginBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span> Перевірка...';
-
-  try {
-    // Крок 1: отримати сіль для цього логіна
-    const saltRes = await call('getSalt', { login });
-
-    if (!saltRes.success) {
-      // Якщо сіль не знайдена — можливо юзер ще без пароля,
-      // або логін не існує
-      showLoginErr(saltRes.error || 'Логін не знайдено');
-      btn.disabled = false;
-      btn.innerHTML = '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Увійти';
-      return;
-    }
-
-    // Крок 2: хешуємо пароль у браузері — на сервер летить тільки хеш
-    const passwordHash = await hashPassword(password, saltRes.salt);
-
-    // Крок 3: логін з хешем
-    const r = await call('login', { login, passwordHash });
-
-    if (r.success) {
-      if (r.user && r.user.needsPassword) {
-        // Пароль ще не встановлено — показуємо екран встановлення
-        document.getElementById('loginScreen').style.display = 'none';
-        const spScreen = document.getElementById('setPasswordScreen');
-        spScreen.classList.add('show');
-        spScreen._pendingLogin = login;
-      } else {
-        enterSession(r.user);
-      }
-    } else {
-      showLoginErr(r.error || 'Невірний логін або пароль');
-    }
-  } catch (e) {
-    showLoginErr(humanizeErr(e));
-  }
-
-  btn.disabled = false;
-  btn.innerHTML = '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Увійти';
-}
-
-// ── ВСТАНОВЛЕННЯ ПАРОЛЯ (перший вхід) ─────────────────────
-async function doSetPassword() {
-  const spScreen = document.getElementById('setPasswordScreen');
-  const login = spScreen._pendingLogin;
-  const newPass = document.getElementById('newPassInp').value;
-  const confPass = document.getElementById('newPassConfInp').value;
-  const errEl = document.getElementById('setPassErr');
-
-  errEl.style.display = 'none';
-  if (!newPass || newPass.length < 6) {
-    errEl.textContent = 'Пароль має бути мінімум 6 символів';
-    errEl.style.display = 'block';
-    return;
-  }
-  if (newPass !== confPass) {
-    errEl.textContent = 'Паролі не співпадають';
-    errEl.style.display = 'block';
-    return;
-  }
-
-  const btn = document.getElementById('setPassBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span> Збереження...';
-
-  try {
-    const r = await call('setPassword', { login, newPassword: newPass });
-    if (r.success) {
-      // Тепер логінимось нормально
-      const saltRes = await call('getSalt', { login });
-      if (saltRes.success) {
-        const passwordHash = await hashPassword(newPass, saltRes.salt);
-        const loginRes = await call('login', { login, passwordHash });
-        if (loginRes.success) {
-          spScreen.classList.remove('show');
-          enterSession(loginRes.user);
-          toast('Пароль встановлено! Ласкаво просимо 🎉', 'ok');
-        }
-      }
-    } else {
-      errEl.textContent = r.error || 'Помилка збереження';
-      errEl.style.display = 'block';
-    }
-  } catch (e) {
-    errEl.textContent = humanizeErr(e);
-    errEl.style.display = 'block';
-  }
-
-  btn.disabled = false;
-  btn.innerHTML = '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg> Зберегти пароль';
-}
-
 function showLoginErr(m){const e=document.getElementById('loginErr');e.textContent=m;e.style.display='block';}
 function enterSession(user){
   me=user;
@@ -786,6 +647,7 @@ function enterSession(user){
 document.querySelectorAll('.snav').forEach(b=>{
   b.addEventListener('click',()=>goPage(b.dataset.p));
 });
+
 document.querySelectorAll('.mnav').forEach(b=>b.addEventListener('click',()=>goPage(b.dataset.p)));
 function goPage(page){
   document.querySelectorAll('.snav,.mnav').forEach(x=>x.classList.remove('on'));
@@ -832,14 +694,21 @@ function pickInit(){
   const s=document.getElementById('selInit');
   document.getElementById('initSid').value=s.options[s.selectedIndex]?.dataset.id||'';
 }
+
 function buildEmpSuggestions(){
   const nl=document.getElementById('empNickList');
   const sl=document.getElementById('empSidList');
   if(!nl||!sl) return;
-  nl.innerHTML='';sl.innerHTML='';
+  nl.innerHTML='';
+  sl.innerHTML='';
 }
-function sanitizeEmpSid(el){el.value=String(el.value||'').replace(/[^0-9+\-]/g,'');}
-function sanitizeEmpNick(el){el.value=String(el.value||'').replace(/[^\p{L}\s'_-]/gu,'');}
+
+function sanitizeEmpSid(el){
+  el.value=String(el.value||'').replace(/[^0-9+\-]/g,'');
+}
+function sanitizeEmpNick(el){
+  el.value=String(el.value||'').replace(/[^\p{L}\s'_-]/gu,'');
+}
 async function onEmpNickInput(){
   await ensureRosterLookup();
   const nick=(document.getElementById('empNick').value||'').trim().toLowerCase();
@@ -876,9 +745,11 @@ async function ensureRosterLookup(){
   if(rosterLookup.length) return;
   try{
     const r=await call('getRoster');
-    rosterLookup=(r.roster||[]).filter(isActiveRosterMember).map(p=>({nick:p.nick||'',staticId:p.staticId??p.sid??''}));
+    rosterLookup=(r.roster||[])
+      .filter(isActiveRosterMember)
+      .map(p=>({nick:p.nick||'',staticId:p.staticId??p.sid??''}));
     buildEmpSuggestions();
-  }catch(_){}
+  }catch(_){/* ignore, lookup empty */ }
 }
 function isActiveRosterMember(p){
   const s=String(p?.status||p?.state||'').toLowerCase();
@@ -899,19 +770,23 @@ function setAct(a,el){
   const newZero=document.getElementById('newRankZero');
   pw.style.display=a==='hired'?'none':'flex';
   nw.style.display='flex';
-  if(prevZero) prevZero.hidden=true;
+  if(prevZero){
+    prevZero.hidden=true;
+  }
   if(a==='leader'){
-    pw.style.display='none';nw.style.display='none';
+    pw.style.display='none';
+    nw.style.display='none';
     if(newZero) newZero.hidden=true;
-    document.getElementById('prevRank').value='';document.getElementById('newRank').value='';
+    document.getElementById('prevRank').value='';
+    document.getElementById('newRank').value='';
   } else if(a==='fired'){
-    [...document.getElementById('prevRank').options].forEach(o=>{if(o.value==='0') o.hidden=true;});
-    [...document.getElementById('newRank').options].forEach(o=>{o.hidden=o.value!=='0'&&o.value!=='';});
+    [...document.getElementById('prevRank').options].forEach(o=>{ if(o.value==='0') o.hidden=true; });
+    [...document.getElementById('newRank').options].forEach(o=>{ o.hidden=o.value!=='0'&&o.value!==''; });
     if(newZero) newZero.hidden=false;
     document.getElementById('newRank').value='0';
-  } else {
-    [...document.getElementById('prevRank').options].forEach(o=>{if(o.value==='0') o.hidden=true;});
-    [...document.getElementById('newRank').options].forEach(o=>{if(o.value!=='0') o.hidden=false;});
+  }else{
+    [...document.getElementById('prevRank').options].forEach(o=>{ if(o.value==='0') o.hidden=true; });
+    [...document.getElementById('newRank').options].forEach(o=>{ if(o.value!=='0') o.hidden=false; });
     if(newZero) newZero.hidden=true;
     if(document.getElementById('newRank').value==='0') document.getElementById('newRank').value='';
     if(a==='hired') pw.style.display='none';
@@ -920,6 +795,7 @@ function setAct(a,el){
 }
 document.getElementById('prevWrap').style.display='none';
 
+// Вирахувати час до підвищення
 function getPromoInfo(newRankVal){
   if(newRankVal===''||newRankVal===null||newRankVal===undefined) return null;
   const nr=parseInt(newRankVal);
@@ -928,7 +804,7 @@ function getPromoInfo(newRankVal){
   if(hours===undefined) return null;
   const now=new Date();
   const availableAt=new Date(now.getTime()+(hours+PROMO_KYIV_ADJUST_HOURS)*3600000);
-  return{hours,rankFrom:RANKS[nr-1]||'',rankTo:RANKS[nr]||'',availableAt};
+  return {hours,rankFrom:RANKS[nr-1]||'',rankTo:RANKS[nr]||'',availableAt};
 }
 
 function openConfirmModal(){
@@ -939,12 +815,14 @@ function openConfirmModal(){
   const prevRank=document.getElementById('prevRank').value;
   const newRank=document.getElementById('newRank').value;
   const reason=document.getElementById('reason').value.trim();
+
   if(!initNick||!initSid||!empNick||!empSid||!reason) return toast('Заповніть усі обовязкові поля','err');
   if(!/^[0-9+\-]+$/.test(empSid)) return toast('Static ID: тільки цифри та знаки +/-','err');
   if(curAct==='hired'&&!newRank) return toast('Оберіть нову посаду','err');
   if(curAct==='transfer'&&(!prevRank||!newRank)) return toast('Оберіть попередню і нову посади','err');
   if(curAct==='fired'&&(!prevRank||newRank!=='0')) return toast('Для звільнення вкажіть попередню посаду та нову [0] Співбесіда','err');
-  if(curAct==='leader'&&(!empNick||!empSid)) return toast('Для призначення лідера заповніть нік і Static ID','err');
+  if(curAct==='leader' && (!empNick||!empSid)) return toast('Для призначення лідера заповніть нік і Static ID','err');
+
   const pR=prevRank!==''?`[${prevRank}] ${RANKS[prevRank]||''}`:null;
   const nR=newRank!==''?`[${newRank}] ${RANKS[newRank]||''}`:null;
   document.getElementById('confirmDetail').innerHTML=`
@@ -953,6 +831,8 @@ function openConfirmModal(){
     <div class="wd-row"><span class="wd-lbl">Дія</span><span class="wd-val">${ALBL[curAct]}</span></div>
     <div class="wd-row"><span class="wd-lbl">Зміна посади</span><span class="wd-val">${pR&&nR?`${pR} → ${nR}`:nR||pR||'—'}</span></div>
     <div class="wd-row" style="border:none"><span class="wd-lbl">Пояснення</span><span class="wd-val">${reason}</span></div>`;
+
+  // Промо-інфо
   const pi=document.getElementById('promoInfo');
   if(curAct==='transfer'&&newRank!==''){
     const info=getPromoInfo(newRank);
@@ -960,10 +840,13 @@ function openConfirmModal(){
       const timeStr=info.hours===0?'без обмеження часу':`через ${info.hours} год після цього переведення`;
       const dt=info.hours===0?'':`<strong>${fmtKyiv(info.availableAt)}</strong> (за Києвом)`;
       pi.innerHTML=`<div class="pi-title">⏱️ Інформація про наступне підвищення</div>
-        <div class="pi-text">Наступне підвищення <strong>${info.rankTo} → ${RANKS[parseInt(newRank)+1]||'—'}</strong> буде доступне ${timeStr}${dt?': '+dt:''}.</div>`;
+        <div class="pi-text">
+          Наступне підвищення <strong>${info.rankTo} → ${RANKS[parseInt(newRank)+1]||'—'}</strong> буде доступне ${timeStr}${dt?': '+dt:''}.
+        </div>`;
       pi.style.display='block';
     } else pi.style.display='none';
   } else pi.style.display='none';
+
   openM('confirmOv');
 }
 
@@ -980,15 +863,18 @@ async function submitAudit(){
   try{
     if(curAct==='leader'){
       pendingLeaderPayload={initNick,initSid,empNick,empSid,reason:reason||'Призначення лідера'};
-      closeM('confirmOv');openLeaderAuth();
-      btn.disabled=false;btn.innerHTML='<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Підтвердити і відправити';
+      closeM('confirmOv');
+      openLeaderAuth();
+      btn.disabled=false;
+      btn.innerHTML='<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Підтвердити і відправити';
       return;
     }
     const r=await call('submit',{initNick,initSid,initLogin:me.login,empNick,empSid,act:curAct,prevRank,newRank,reason,autoDep:curAct==='hired'?'Академія':''});
     if(r.success){
       cache.history.at=0;closeM('confirmOv');toast('Заявку успішно відправлено! ✅','ok');resetAudit();
       if(curAct==='hired') ensureAcademyDep(empNick,empSid);
-    } else toast(r.error||'Помилка','err');
+    }
+    else toast(r.error||'Помилка','err');
   }catch(e){toast('Помилка з\'єднання','err');}
   btn.disabled=false;
   btn.innerHTML='<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Підтвердити і відправити';
@@ -998,7 +884,8 @@ function resetAudit(){
   setAct('hired',document.querySelector('[data-a=hired]'));
 }
 async function ensureAcademyDep(empNick,empSid){
-  try{await call('updateRoster',{nick:empNick,sid:empSid,field:'dep',value:'Академія',initiator:me.nick||me.login});}catch(_){}
+  try{ await call('updateRoster',{nick:empNick,sid:empSid,field:'dep',value:'Академія',initiator:me.nick||me.login}); }
+  catch(_){/* optional post-step */ }
 }
 
 // ── HISTORY ──
@@ -1039,8 +926,7 @@ function renderH(){
       <td class="tmono">${dt}</td><td class="tbold">${r.initNick||'—'}</td><td class="tbold">${r.empNick||'—'}</td>
       <td class="tmono">${r.empSid||'—'}</td><td>${badge}</td><td class="tmono" style="font-size:11px;">${rs}</td>
       <td class="racts">
-        ${reasonUrl?`<button class="rbtn" onclick='openReasonLink(${JSON.stringify(reasonUrl)})' title="Відкрити посилання"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 14L21 3"/><path d="M15 3h6v6"/><path d="M5 5v14h14"/></svg></button>`:''}
-        <button class="rbtn" onclick='viewH(${JSON.stringify(r)})' title="Деталі"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        ${reasonUrl?`<button class="rbtn" onclick='openReasonLink(${JSON.stringify(reasonUrl)})' title="Відкрити посилання"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 14L21 3"/><path d="M15 3h6v6"/><path d="M5 5v14h14"/></svg></button>`:''}<button class="rbtn" onclick='viewH(${JSON.stringify(r)})' title="Деталі"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         ${me&&me.isArchiveAdmin?`<button class="rbtn del" onclick="askDel('${r.ticket}',null)" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>`:''}
       </td></tr>`;
   }).join('');
@@ -1063,8 +949,17 @@ function viewH(r){
     <div class="drow" style="border:none"><span class="dlbl">Пояснення</span><span class="dval" style="max-width:220px;text-align:right;">${extractFirstUrl(r.reason)?`<button class='btn btn-o btn-sm' onclick='openReasonLink(${JSON.stringify(extractFirstUrl(r.reason))})'>Відкрити посилання</button>`:(r.reason||'—')}</span></div>`;
   openM('detOv');
 }
-function extractFirstUrl(text){const m=String(text||'').match(/https?:\/\/\S+/i);return m?m[0].replace(/[),.;]+$/,''):'';}
-function openReasonLink(url){if(!url) return;window.open(url,'_blank','noopener');}
+
+
+function extractFirstUrl(text){
+  const m=String(text||'').match(/https?:\/\/\S+/i);
+  return m?m[0].replace(/[),.;]+$/,''):'';
+}
+function openReasonLink(url){
+  if(!url) return;
+  window.open(url,'_blank','noopener');
+}
+
 
 function openLeaderAuth(){
   document.getElementById('laLogin').value='';
@@ -1078,15 +973,10 @@ async function confirmLeaderAssign(){
   if(!pendingLeaderPayload) return;
   if(!login||!password){document.getElementById('laErr').textContent='Введіть логін і пароль';document.getElementById('laErr').style.display='block';return;}
   try{
-    // Хешуємо пароль перед перевіркою
-    const saltRes = await call('getSalt', { login });
-    if (!saltRes.success) {
-      document.getElementById('laErr').textContent='Логін не знайдено';
-      document.getElementById('laErr').style.display='block';
-      return;
-    }
-    const passwordHash = await hashPassword(password, saltRes.salt);
-    const auth = await call('login', { login, passwordHash });
+    const auth=await callFirstSuccess([
+      ['verifyLeaderAccess',{login,password}],
+      ['login',{login,password}]
+    ]);
     const user=auth.user||{};
     if(auth.success!==true||!(user.isArchiveAdmin||user.isSuperAdmin||user.isAdmin)){
       document.getElementById('laErr').textContent='Недостатньо прав для призначення лідера';
@@ -1136,7 +1026,11 @@ async function confirmDel(){
 function showDE(m){const e=document.getElementById('dErr');e.textContent=m;e.style.display='block';}
 
 // ── RESET STATS ──
-function openResetStats(){document.getElementById('rsLogin').value='';document.getElementById('rsErr').style.display='none';openM('resetStatsOv');}
+function openResetStats(){
+  document.getElementById('rsLogin').value='';
+  document.getElementById('rsErr').style.display='none';
+  openM('resetStatsOv');
+}
 async function confirmResetStats(){
   const login=document.getElementById('rsLogin').value.trim();
   if(!login){document.getElementById('rsErr').textContent='Введіть код підтвердження';document.getElementById('rsErr').style.display='block';return;}
@@ -1147,34 +1041,68 @@ async function confirmResetStats(){
   }catch(e){document.getElementById('rsErr').textContent='Помилка з\'єднання';document.getElementById('rsErr').style.display='block';}
 }
 
-function openClearHistory(){document.getElementById('chLogin').value='';document.getElementById('chErr').style.display='none';openM('clearHistoryOv');}
+function openClearHistory(){
+  document.getElementById('chLogin').value='';
+  document.getElementById('chErr').style.display='none';
+  openM('clearHistoryOv');
+}
 async function confirmClearHistory(){
   const login=document.getElementById('chLogin').value.trim();
   if(!login){document.getElementById('chErr').textContent='Введіть код підтвердження';document.getElementById('chErr').style.display='block';return;}
   try{
     let r;
-    try{r=await call('clearHistory',{archiveLogin:login});}
-    catch(_){r=await call('resetStats',{archiveLogin:login});}
-    if(r.success){cache.history.at=0;closeM('clearHistoryOv');toast('Історію очищено','ok');await loadHistory(true);}
-    else{document.getElementById('chErr').textContent=r.error||'Невірний код підтвердження';document.getElementById('chErr').style.display='block';}
-  }catch(e){document.getElementById('chErr').textContent=humanizeErr(e);document.getElementById('chErr').style.display='block';}
+    try{ r=await call('clearHistory',{archiveLogin:login}); }
+    catch(_){ r=await call('resetStats',{archiveLogin:login}); } // fallback для старого backend
+    if(r.success){
+      cache.history.at=0;
+      closeM('clearHistoryOv');
+      toast('Історію очищено','ok');
+      await loadHistory(true);
+    } else {
+      document.getElementById('chErr').textContent=r.error||'Невірний код підтвердження';
+      document.getElementById('chErr').style.display='block';
+    }
+  }catch(e){
+    document.getElementById('chErr').textContent=humanizeErr(e);
+    document.getElementById('chErr').style.display='block';
+  }
 }
 
-function openClearRosterHistory(){document.getElementById('crhLogin').value='';document.getElementById('crhErr').style.display='none';openM('clearRosterHistoryOv');}
+function openClearRosterHistory(){
+  document.getElementById('crhLogin').value='';
+  document.getElementById('crhErr').style.display='none';
+  openM('clearRosterHistoryOv');
+}
 async function confirmClearRosterHistory(){
   const login=document.getElementById('crhLogin').value.trim();
   if(!login){document.getElementById('crhErr').textContent='Введіть код підтвердження';document.getElementById('crhErr').style.display='block';return;}
   try{
-    const r=await callFirstSuccess([['clearRosterHistory',{archiveLogin:login}],['clearRosterHistory',{login}],['resetRosterHistory',{archiveLogin:login}],['clearRHistory',{archiveLogin:login}]]);
-    if(r.success){cache.rh.at=0;closeM('clearRosterHistoryOv');toast('Журнал планшету очищено','ok');await loadRHistory(true);}
-    else{document.getElementById('crhErr').textContent=r.error||'Невірний код підтвердження';document.getElementById('crhErr').style.display='block';}
-  }catch(e){document.getElementById('crhErr').textContent=humanizeErr(e);document.getElementById('crhErr').style.display='block';}
+    const r=await callFirstSuccess([
+      ['clearRosterHistory',{archiveLogin:login}],
+      ['clearRosterHistory',{login}],
+      ['resetRosterHistory',{archiveLogin:login}],
+      ['clearRHistory',{archiveLogin:login}]
+    ]);
+    if(r.success){
+      cache.rh.at=0;
+      closeM('clearRosterHistoryOv');
+      toast('Журнал планшету очищено','ok');
+      await loadRHistory(true);
+    } else {
+      document.getElementById('crhErr').textContent=r.error||'Невірний код підтвердження';
+      document.getElementById('crhErr').style.display='block';
+    }
+  }catch(e){
+    document.getElementById('crhErr').textContent=humanizeErr(e);
+    document.getElementById('crhErr').style.display='block';
+  }
 }
 
 function openRemoveRosterMember(){
   if(!curPlayer) return;
   targetRosterMember={nick:curPlayer.nick,sid:curPlayer.staticId};
-  document.getElementById('rrLogin').value='';document.getElementById('rrErr').style.display='none';
+  document.getElementById('rrLogin').value='';
+  document.getElementById('rrErr').style.display='none';
   openM('removeRosterOv');
 }
 async function confirmRemoveRosterMember(){
@@ -1193,12 +1121,21 @@ async function confirmRemoveRosterMember(){
       ['updateRoster',{nick:targetRosterMember.nick,sid:targetRosterMember.sid,field:'status',value:'removed',initiator:me.nick||me.login,archiveLogin}],
     ]);
     if(r.success){
-      closeM('removeRosterOv');closeM('playerOv');cache.roster.at=0;cache.rh.at=0;
-      toast('Учасника видалено з планшету','ok');await loadRoster(true);
-    } else {document.getElementById('rrErr').textContent=r.error||'Невірний код підтвердження';document.getElementById('rrErr').style.display='block';}
-  }catch(e){document.getElementById('rrErr').textContent=humanizeErr(e);document.getElementById('rrErr').style.display='block';}
+      closeM('removeRosterOv'); closeM('playerOv');
+      cache.roster.at=0; cache.rh.at=0;
+      toast('Учасника видалено з планшету','ok');
+      await loadRoster(true);
+    } else { document.getElementById('rrErr').textContent=r.error||'Невірний код підтвердження';document.getElementById('rrErr').style.display='block';}
+  }catch(e){
+    document.getElementById('rrErr').textContent=humanizeErr(e);
+    document.getElementById('rrErr').style.display='block';
+  }
 }
-function openDisbandRoster(){document.getElementById('drLogin').value='';document.getElementById('drErr').style.display='none';openM('disbandRosterOv');}
+function openDisbandRoster(){
+  document.getElementById('drLogin').value='';
+  document.getElementById('drErr').style.display='none';
+  openM('disbandRosterOv');
+}
 async function confirmDisbandRoster(){
   const login=document.getElementById('drLogin').value.trim();
   if(!login){document.getElementById('drErr').textContent='Введіть код підтвердження';document.getElementById('drErr').style.display='block';return;}
@@ -1206,24 +1143,45 @@ async function confirmDisbandRoster(){
     const auth=await verifyArchiveLogin(login);
     if(!auth.ok){document.getElementById('drErr').textContent='Недостатньо прав доступу';document.getElementById('drErr').style.display='block';return;}
     const initMeta=getMyInitMeta();
-    if(allR.length){for(const p of allR){try{await call('submit',{initNick:initMeta.nick,initSid:initMeta.sid,initLogin:initMeta.login,empNick:p.nick,empSid:p.staticId,act:'fired',prevRank:'',newRank:'',reason:'Розформування планшету'});}catch(_){}}}
-    const r=await callFirstSuccess([['disbandRoster',{archiveLogin:login}],['disbandRoster',{login}],['clearRoster',{archiveLogin:login}],['clearRoster',{login}],['clearAllRoster',{archiveLogin:login}],['resetRoster',{archiveLogin:login}],['updateRoster',{field:'clearAll',value:1,archiveLogin:login,initiator:me.nick||me.login}]]);
-    if(r.success){closeM('disbandRosterOv');cache.roster.at=0;cache.rh.at=0;toast('Планшет розформовано','ok');await loadRoster(true);await loadRHistory(true);}
-    else{document.getElementById('drErr').textContent=r.error||'Невірний код підтвердження';document.getElementById('drErr').style.display='block';}
-  }catch(e){document.getElementById('drErr').textContent=humanizeErr(e);document.getElementById('drErr').style.display='block';}
+    if(allR.length){
+      for(const p of allR){
+        try{
+          await call('submit',{initNick:initMeta.nick,initSid:initMeta.sid,initLogin:initMeta.login,empNick:p.nick,empSid:p.staticId,act:'fired',prevRank:'',newRank:'',reason:'Розформування планшету'});
+        }catch(_){}
+      }
+    }
+    const r=await callFirstSuccess([
+      ['disbandRoster',{archiveLogin:login}],
+      ['disbandRoster',{login}],
+      ['clearRoster',{archiveLogin:login}],
+      ['clearRoster',{login}],
+      ['clearAllRoster',{archiveLogin:login}],
+      ['resetRoster',{archiveLogin:login}],
+      ['updateRoster',{field:'clearAll',value:1,archiveLogin:login,initiator:me.nick||me.login}],
+    ]);
+    if(r.success){
+      closeM('disbandRosterOv');
+      cache.roster.at=0; cache.rh.at=0;
+      toast('Планшет розформовано','ok');
+      await loadRoster(true);
+      await loadRHistory(true);
+    } else { document.getElementById('drErr').textContent=r.error||'Невірний код підтвердження';document.getElementById('drErr').style.display='block';}
+  }catch(e){
+    document.getElementById('drErr').textContent=humanizeErr(e);
+    document.getElementById('drErr').style.display='block';
+  }
 }
 function getMyInitMeta(){
   const mePlayer=players.find(p=>p.login===me?.login||p.nick===me?.nick)||{};
-  return{nick:me?.nick||me?.login||'Адміністратор',sid:mePlayer.staticId||'',login:me?.login||''};
+  return {nick:me?.nick||me?.login||'Адміністратор',sid:mePlayer.staticId||'',login:me?.login||''};
 }
 async function verifyArchiveLogin(login){
   try{
-    // Спочатку перевіряємо просто за логіном (якщо пароль не встановлено)
     const r=await call('login',{login});
-    if(!r?.success) return{ok:false};
+    if(!r?.success) return {ok:false};
     const u=r.user||{};
-    return{ok:!!(u.isArchiveAdmin||u.isAdmin)};
-  }catch(_){return{ok:false};}
+    return {ok:!!(u.isArchiveAdmin||u.isAdmin)};
+  }catch(_){ return {ok:false}; }
 }
 
 // ── STATS ──
@@ -1255,7 +1213,7 @@ async function loadRoster(force=false){
     const r=canCache?{roster:cache.roster.data}:await call('getRoster');
     allR=(r.roster||[]).map(p=>{
       const sid=p.staticId??p.sid??'';
-      return{...p,staticId:sid,warnings:p.warnings??0,sanctions:p.sanctions??0,dep:p.dep??'',notes:noteStore[sid]||[]};
+      return {...p,staticId:sid,warnings:p.warnings??0,sanctions:p.sanctions??0,dep:p.dep??'',notes:noteStore[sid]||[]};
     });
     rosterLookup=allR.filter(isActiveRosterMember).map(p=>({nick:p.nick||'',staticId:p.staticId||''}));
     cache.roster={at:Date.now(),data:allR};
@@ -1266,13 +1224,18 @@ async function loadRoster(force=false){
 function setRF(f,el){curRF=f;document.querySelectorAll('#depFilters .fp').forEach(p=>p.classList.remove('on'));el.classList.add('on');filterR();}
 function updateRosterOnlineLabel(){
   const cnt=filtR.length;
-  const lbl=curRF==='all'?`Онлайн у фракції: ${cnt}`:`Онлайн у підрозділі ${curRF}: ${cnt}`;
+  const lbl=curRF==='all'
+    ?`Онлайн у фракції: ${cnt}`
+    :`Онлайн у підрозділі ${curRF}: ${cnt}`;
   document.getElementById('rCnt').textContent=lbl;
 }
 function filterR(){
   const q=(document.getElementById('rSearch').value||'').toLowerCase();
-  filtR=allR.filter(p=>(curRF==='all'||p.dep===curRF)&&(!q||p.nick?.toLowerCase().includes(q)||String(p.staticId).includes(q))).sort((a,b)=>toRank(b.rank)-toRank(a.rank));
-  updateRosterOnlineLabel();renderR();
+  filtR=allR
+    .filter(p=>(curRF==='all'||p.dep===curRF)&&(!q||p.nick?.toLowerCase().includes(q)||String(p.staticId).includes(q)))
+    .sort((a,b)=>toRank(b.rank)-toRank(a.rank));
+  updateRosterOnlineLabel();
+  renderR();
 }
 function renderR(){
   if(!filtR.length){document.getElementById('rEmpty').style.display='block';document.getElementById('rBody').innerHTML='';return;}
@@ -1280,6 +1243,7 @@ function renderR(){
   document.getElementById('rBody').innerHTML=filtR.map(p=>{
     const rankStr=p.rank!=null?`<span class="rank-badge"><span class="rank-num">[${p.rank}]</span> ${RANKS[p.rank]||''}</span>`:'—';
     const dep=p.dep?`<span class="dep-badge dep-${p.dep.replace('.','')}">${p.dep}</span>`:'—';
+    // FIX: маленькі крапки через span з фіксованим розміром
     const warns=Array.from({length:2},(_,i)=>`<span class="dot-c ${i<(p.warnings||0)?'dot-warn-fill':'dot-warn-empty'}"></span>`).join('');
     const sancs=Array.from({length:3},(_,i)=>`<span class="dot-c ${i<(p.sanctions||0)?'dot-sanc-fill':'dot-sanc-empty'}"></span>`).join('');
     return `<div class="roster-row">
@@ -1289,7 +1253,11 @@ function renderR(){
       <div class="rcell"><div class="dots-wrap">${warns}</div></div>
       <div class="rcell"><div class="dots-wrap">${sancs}</div></div>
       <div class="rcell">${dep}</div>
-      <div class="rcell racts"><button class="rbtn" onclick="openPlayer('${esc(p.nick)}')" title="Картка"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+      <div class="rcell racts">
+        <button class="rbtn" onclick="openPlayer('${esc(p.nick)}')" title="Картка">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
     </div>`;
   }).join('');
 }
@@ -1298,8 +1266,11 @@ function renderR(){
 function openPlayer(nick){
   const p=allR.find(x=>x.nick===nick);
   if(!p) return;
-  curPlayer={...p};editedWarnings=p.warnings||0;editedSanctions=p.sanctions||0;
-  counterDesired.warnings=editedWarnings;counterDesired.sanctions=editedSanctions;
+  curPlayer={...p};
+  editedWarnings=p.warnings||0;
+  editedSanctions=p.sanctions||0;
+  counterDesired.warnings=editedWarnings;
+  counterDesired.sanctions=editedSanctions;
   document.getElementById('playerModalTitle').textContent=p.nick;
   document.getElementById('pmNick').textContent=p.nick||'—';
   document.getElementById('pmSid').textContent=p.staticId||'—';
@@ -1307,7 +1278,8 @@ function openPlayer(nick){
   document.getElementById('pmDep').textContent=p.dep||'—';
   document.getElementById('pmWarn').textContent=`${p.warnings||0}/2`;
   document.getElementById('pmSanc').textContent=`${p.sanctions||0}/3`;
-  document.getElementById('adminControls').style.display='block';
+  const ac=document.getElementById('adminControls');
+  ac.style.display='block';
   document.getElementById('editDep').value=p.dep||'';
   document.getElementById('cntWarn').textContent=editedWarnings;
   document.getElementById('cntSanc').textContent=editedSanctions;
@@ -1346,7 +1318,8 @@ async function syncCounterField(field,target){
       if(p) p[field]=target;
       if(field==='warnings') document.getElementById('pmWarn').textContent=`${target}/2`;
       else document.getElementById('pmSanc').textContent=`${target}/3`;
-      cache.roster.at=0;cache.rh.at=0;filterR();
+      cache.roster.at=0; cache.rh.at=0;
+      filterR();
       toast(`${field==='warnings'?'Попередження':'Догани'} оновлено`,'ok');
     } else toast(r.error||'Помилка','err');
   }catch(e){toast(humanizeErr(e),'err');}
@@ -1356,8 +1329,13 @@ async function saveEditDep(){
   const dep=document.getElementById('editDep').value;
   try{
     const r=await call('updateRoster',{nick:curPlayer.nick,sid:curPlayer.staticId,field:'dep',value:dep,initiator:me.nick||me.login});
-    if(r.success){const p=allR.find(x=>x.nick===curPlayer.nick);if(p) p.dep=dep;document.getElementById('pmDep').textContent=dep||'—';curPlayer.dep=dep;filterR();toast('Відділ оновлено','ok');}
-    else toast(r.error||'Помилка','err');
+    if(r.success){
+      const p=allR.find(x=>x.nick===curPlayer.nick);
+      if(p) p.dep=dep;
+      document.getElementById('pmDep').textContent=dep||'—';
+      curPlayer.dep=dep;filterR();
+      toast('Відділ оновлено','ok');
+    } else toast(r.error||'Помилка','err');
   }catch(e){toast('Помилка з\'єднання','err');}
 }
 async function saveNote(){
@@ -1367,23 +1345,30 @@ async function saveNote(){
   const notes=[...(noteStore[sid]||[])];
   notes.unshift({date:fmtKyiv(new Date()),author:me?.nick||me?.login||'Система',text});
   noteStore[sid]=notes;
-  try{await call('saveNote',{nick:curPlayer.nick,sid:curPlayer.staticId,note:text,author:me.nick||me.login});}catch(_){}
+  try{
+    await call('saveNote',{nick:curPlayer.nick,sid:curPlayer.staticId,note:text,author:me.nick||me.login});
+  }catch(_){}
   toast('Нотатку збережено','ok');
   document.getElementById('noteText').value='';
   const p=allR.find(x=>x.nick===curPlayer.nick);
   if(p) p.notes=notes;
-  curPlayer={...curPlayer,notes};renderNotes(notes);
+  curPlayer={...curPlayer,notes};
+  renderNotes(notes);
 }
 async function deleteNote(idx){
   if(!confirm('Видалити цю нотатку?')) return;
   const sid=String(curPlayer.staticId||'');
   const notes=[...(noteStore[sid]||[])];
-  notes.splice(idx,1);noteStore[sid]=notes;
-  try{await call('deleteNote',{nick:curPlayer.nick,noteIndex:idx,archiveLogin:me.login});}catch(_){}
+  notes.splice(idx,1);
+  noteStore[sid]=notes;
+  try{
+    await call('deleteNote',{nick:curPlayer.nick,noteIndex:idx,archiveLogin:me.login});
+  }catch(_){}
   toast('Нотатку видалено','ok');
   const p=allR.find(x=>x.nick===curPlayer.nick);
   if(p) p.notes=notes;
-  curPlayer={...curPlayer,notes};renderNotes(notes);
+  curPlayer={...curPlayer,notes};
+  renderNotes(notes);
 }
 
 // ── PLAYER HISTORY ──
@@ -1395,12 +1380,28 @@ async function openPlayerHistory(){
   if(!allRH.length) await loadRHistory(true);
   document.getElementById('phTitle').textContent=`Історія: ${nick}`;
   const sid=String(curPlayer.staticId||'');
-  const ev1=allRH.filter(r=>r.nick===nick||String(r.sid||'')===sid).map(r=>({date:r.date,change:r.change||'Зміна',details:r.details||'—',initiator:r.initiator||'Система',kind:'roster',rowIndex:r._idx}));
-  const ev2=allH.filter(r=>r.empNick===nick||String(r.empSid||'')===sid).map(r=>{
-    const pR=r.prevRank!==''&&r.prevRank!=null?`[${r.prevRank}] ${RANKS[r.prevRank]||''}`:null;
-    const nR=r.newRank!==''&&r.newRank!=null?`[${r.newRank}] ${RANKS[r.newRank]||''}`:null;
-    return{date:r.date,change:ALBL[r.action]||r.action||'Аудит',details:`${pR&&nR?`${pR} → ${nR}`:nR||pR||'—'} · ${r.reason||'без пояснення'}`,initiator:r.initNick||'—',kind:'audit',ticket:r.ticket||r.id||''};
-  });
+  const ev1=allRH.filter(r=>r.nick===nick||String(r.sid||'')===sid).map(r=>({
+    date:r.date,
+    change:r.change||'Зміна',
+    details:r.details||'—',
+    initiator:r.initiator||'Система',
+    kind:'roster',
+    rowIndex:r._idx
+  }));
+  const ev2=allH
+    .filter(r=>r.empNick===nick||String(r.empSid||'')===sid)
+    .map(r=>{
+      const pR=r.prevRank!==''&&r.prevRank!=null?`[${r.prevRank}] ${RANKS[r.prevRank]||''}`:null;
+      const nR=r.newRank!==''&&r.newRank!=null?`[${r.newRank}] ${RANKS[r.newRank]||''}`:null;
+      return {
+        date:r.date,
+        change:ALBL[r.action]||r.action||'Аудит',
+        details:`${pR&&nR?`${pR} → ${nR}`:nR||pR||'—'} · ${r.reason||'без пояснення'}`,
+        initiator:r.initNick||'—',
+        kind:'audit',
+        ticket:r.ticket||r.id||''
+      };
+    });
   const events=[...ev1,...ev2].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
   if(!events.length){
     document.getElementById('phBody').innerHTML='<div class="empty" style="padding:24px;"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="width:28px;height:28px;margin:0 auto 8px;display:block;opacity:.25;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Подій не знайдено</div>';
@@ -1477,19 +1478,23 @@ function switchPlayerPane(id,btn){
   document.querySelectorAll('.player-tab').forEach(x=>x.classList.remove('on'));
   document.querySelectorAll('.player-pane').forEach(x=>x.classList.remove('on'));
   if(btn) btn.classList.add('on');
-  const pane=document.getElementById(id);if(pane) pane.classList.add('on');
+  const pane=document.getElementById(id); if(pane) pane.classList.add('on');
 }
-function toRank(v){const n=parseInt(v,10);return Number.isFinite(n)?n:-1;}
+function toRank(v){ const n=parseInt(v,10); return Number.isFinite(n)?n:-1; }
 
 // ── UTILS ──
 async function callFirstSuccess(attempts){
   let lastErr=null;
   for(const [action,params] of attempts){
-    try{const r=await call(action,params);if(r&&r.success) return r;lastErr=new Error(r?.error||'Операцію відхилено');}
-    catch(e){lastErr=e;}
+    try{
+      const r=await call(action,params);
+      if(r&&r.success) return r;
+      lastErr=new Error(r?.error||'Операцію відхилено');
+    }catch(e){ lastErr=e; }
   }
   throw lastErr||new Error('Операція не виконана');
 }
+
 async function call(action,params={}){
   const q=new URLSearchParams({action,...params});
   const url=API+'?'+q.toString();
@@ -1506,7 +1511,7 @@ async function call(action,params={}){
       const data=await r.json();
       if(data&&data.success===false&&data.error) throw new Error(data.error);
       return data;
-    }catch(e){err=e;if(attempt===0) await new Promise(r=>setTimeout(r,300));}
+    }catch(e){ err=e; if(attempt===0) await new Promise(r=>setTimeout(r,300)); }
   }
   throw err;
 }
@@ -1517,8 +1522,15 @@ function humanizeErr(e){
   if(m.includes('HTTP 401')||m.includes('HTTP 403')) return 'Доступ заборонено. Виставте "Anyone" і передеплойте.';
   return 'Помилка: '+m.slice(0,100);
 }
-function fmtKyiv(d){return d.toLocaleString('uk-UA',{timeZone:'Europe/Kyiv',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}
-function fmtKyivLong(d){return d.toLocaleString('uk-UA',{timeZone:'Europe/Kyiv',dateStyle:'long',timeStyle:'short'});}
+
+// Київський час
+function fmtKyiv(d){
+  return d.toLocaleString('uk-UA',{timeZone:'Europe/Kyiv',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function fmtKyivLong(d){
+  return d.toLocaleString('uk-UA',{timeZone:'Europe/Kyiv',dateStyle:'long',timeStyle:'short'});
+}
+
 function openM(id){document.getElementById(id).classList.add('open');}
 function closeM(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
