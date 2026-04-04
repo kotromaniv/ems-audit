@@ -113,6 +113,11 @@ main{margin-left:230px;min-height:100vh;}
 .warn-title svg{width:16px;height:16px;flex-shrink:0;} .warn-desc{font-size:12px;color:var(--txt2);line-height:1.65;margin-bottom:10px;} .warn-detail{background:var(--bg2);border:1px solid var(--border3);border-radius:var(--rad2);padding:12px;}
 .promo-box{background:rgba(0,255,127,.08);border:1.5px solid rgba(0,100,0,.2);border-radius:var(--rad2);padding:12px 14px;margin-top:10px;}
 
+/* КД Банер */
+.cd-banner{background:rgba(139,69,0,.12);border:1.5px solid rgba(185,115,0,.35);border-radius:var(--rad2);padding:14px 16px;margin-bottom:18px;display:none;}
+.cd-banner-title{font-size:13px;font-weight:700;color:#b85000;margin-bottom:4px;}
+.cd-banner-msg{font-size:12px;color:var(--txt2);line-height:1.6;}
+
 #toast{position:fixed;bottom:22px;right:22px;z-index:300;background:var(--sidebar);border:1px solid rgba(220,20,60,.3);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;max-width:300px;color:var(--txts);transform:translateY(70px);opacity:0;transition:.25s ease;pointer-events:none;box-shadow:var(--shadow2);} #toast.show{transform:none;opacity:1;} #toast.ok{border-color:rgba(0,100,0,.5);} #toast.err{border-color:rgba(220,20,60,.6);}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(220,20,60,.2);border-top-color:var(--c);border-radius:50%;animation:rot .6s linear infinite;} @keyframes rot{to{transform:rotate(360deg)}} .loading{text-align:center;padding:40px;color:var(--txt2);font-size:12px;} .loading .spin{width:22px;height:22px;margin-bottom:10px;}
 .player-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;} .player-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;} .player-tab{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg3);color:var(--txt2);font:600 11px/1 'Inter',sans-serif;cursor:pointer;transition:.15s;} .player-tab.on{border-color:var(--c);color:var(--c);background:var(--cdim);} .player-pane{display:none;} .player-pane.on{display:block;}
@@ -174,10 +179,13 @@ main{margin-left:230px;min-height:100vh;}
 <!-- AUDIT -->
 <div class="page on" id="page-audit">
   <div class="ptitle"><h2>Кадровий аудит</h2><p>Оберіть учасників — дані підтягнуться автоматично</p></div>
-  <div class="cd-banner" id="cdBanner" style="background:rgba(139,69,0,.12);border:1.5px solid rgba(255,140,0,.4);border-radius:8px;padding:14px 16px;margin-bottom:14px;display:none;">
-  <div style="font-size:13px;font-weight:700;color:#b85000;margin-bottom:4px;">⏳ КД підвищення не зійшло</div>
-  <div style="font-size:12px;color:var(--txt2);line-height:1.6;" id="cdMsg"></div>
-</div>
+
+  <!-- КД Банер — показується якщо КД ще не минув -->
+  <div class="cd-banner" id="cdBanner">
+    <div class="cd-banner-title">⏳ КД ще не минув</div>
+    <div class="cd-banner-msg" id="cdMsg"></div>
+  </div>
+
   <div class="card">
     <div class="clbl">Ініціатор</div>
     <div class="g2">
@@ -213,7 +221,7 @@ main{margin-left:230px;min-height:100vh;}
         </select>
       </div>
       <div class="field" id="newWrap"><label>Нова посада</label>
-        <select class="sel" id="newRank" required><option value="">— Оберіть —</option>
+        <select class="sel" id="newRank" required onchange="triggerCdCheck()"><option value="">— Оберіть —</option>
           <option value="0" id="newRankZero" hidden>[0] Співбесіда</option>
           <option value="1">[1] Студент</option><option value="2">[2] Інтерн</option>
           <option value="3">[3] Парамедик</option><option value="4">[4] Фельдшер</option><option value="5">[5] Терапевт</option>
@@ -228,7 +236,7 @@ main{margin-left:230px;min-height:100vh;}
     <div><div class="sbar-lbl">Обрана дія</div><div class="sbar-val" id="actLabel">✅ Прийнято на роботу</div></div>
     <div class="btns">
       <button class="btn btn-g" onclick="resetAudit()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>Скинути</button>
-      <button class="btn btn-p" onclick="openConfirmModal()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Відправити</button>
+      <button class="btn btn-p" id="submitBtn" onclick="openConfirmModal()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Відправити</button>
     </div>
   </div>
 </div>
@@ -550,7 +558,6 @@ main{margin-left:230px;min-height:100vh;}
   </div>
 </div>
 
-
 <!-- MODAL: Очистити журнал змін планшету -->
 <div class="overlay" id="clearRosterHistoryOv">
   <div class="modal sm">
@@ -567,7 +574,6 @@ main{margin-left:230px;min-height:100vh;}
     </div>
   </div>
 </div>
-
 
 <!-- MODAL: Підтвердження призначення лідера -->
 <div class="overlay" id="leaderAuthOv">
@@ -595,10 +601,9 @@ const RANKS=['Співбесіда','Студент','Інтерн','Парам�
 const ALBL={hired:'✅ Прийнято на роботу',transfer:'🔄 Переведено',fired:'❌ Звільнено',leader:'👑 Призначення лідера'};
 const ABCL={hired:'bh',transfer:'bt',fired:'bf'};
 
-// Час до підвищення в годинах (від ранг → ранг+1)
-// Ключ = номер ранга ПІСЛЯ якого підвищення
-const PROMO_CD = {1:0, 2:24, 3:24, 4:48, 5:48, 6:72, 7:96, 8:96};
-const PROMO_KYIV_ADJUST_HOURS=-1; // корекція відносно фактичного часу Kyiv
+// КД у годинах між рангами (ключ = ранг НА ЯКИЙ підвищують)
+// 1→2: без обмежень, 2→3: 24г, 3→4: 24г, 4→5: 48г, 5→6: 48г, 6→7: 72г, 7→8: 96г, 8→9: 96г
+const PROMO_CD={1:0, 2:24, 3:24, 4:48, 5:48, 6:72, 7:96, 8:96};
 
 let me=null,players=[],allH=[],filtH=[],curHF='all',curHPg=1;
 let allR=[],filtR=[],curRF='all';
@@ -613,6 +618,40 @@ const cache={roster:{at:0,data:null},rh:{at:0,data:null},history:{at:0,data:null
 const pendingCounter={warnings:false,sanctions:false};
 const counterDesired={warnings:0,sanctions:0};
 const PER=15;
+
+// ── КД ПЕРЕВІРКА ──
+let cdCheckTimer=null;
+function triggerCdCheck(){
+  clearTimeout(cdCheckTimer);
+  cdCheckTimer=setTimeout(runCdCheck,400);
+}
+async function runCdCheck(){
+  const empNick=document.getElementById('empNick').value.trim();
+  const empSid=document.getElementById('empSid').value.trim();
+  const newRank=document.getElementById('newRank').value;
+  const banner=document.getElementById('cdBanner');
+  const submitBtn=document.getElementById('submitBtn');
+  // Якщо дія не "переведено", або немає нікнейму, або немає нового рангу — банер не показуємо
+  if(curAct==='fired'||curAct==='leader'||!empNick||!newRank){
+    banner.style.display='none';
+    if(submitBtn) submitBtn.disabled=false;
+    return;
+  }
+  try{
+    const r=await call('checkCooldown',{empNick,empSid,newRank});
+    if(r.onCooldown){
+      document.getElementById('cdMsg').innerHTML=`<strong>${empNick}</strong> може бути підвищений не раніше ніж: <strong>${r.availableAt||'—'}</strong>. ${r.reason||''}`;
+      banner.style.display='block';
+      if(submitBtn) submitBtn.disabled=true;
+    } else {
+      banner.style.display='none';
+      if(submitBtn) submitBtn.disabled=false;
+    }
+  }catch(_){
+    banner.style.display='none';
+    if(submitBtn) submitBtn.disabled=false;
+  }
+}
 
 // ── LOGIN ──
 async function doLogin(){
@@ -642,7 +681,6 @@ function enterSession(user){
 document.querySelectorAll('.snav').forEach(b=>{
   b.addEventListener('click',()=>goPage(b.dataset.p));
 });
-
 document.querySelectorAll('.mnav').forEach(b=>b.addEventListener('click',()=>goPage(b.dataset.p)));
 function goPage(page){
   document.querySelectorAll('.snav,.mnav').forEach(x=>x.classList.remove('on'));
@@ -710,12 +748,14 @@ async function onEmpNickInput(){
   renderEmpNickSuggest(nick,true);
   const p=rosterLookup.find(x=>(x.nick||'').toLowerCase()===nick);
   if(p) document.getElementById('empSid').value=p.staticId||'';
+  triggerCdCheck();
 }
 function onEmpSidInput(){
   if(!rosterLookup.length) return;
   const sid=(document.getElementById('empSid').value||'').trim();
   const p=rosterLookup.find(x=>String(x.staticId||'')===sid);
   if(p) document.getElementById('empNick').value=p.nick||'';
+  triggerCdCheck();
 }
 function renderEmpNickSuggest(q,reset=false){
   const box=document.getElementById('empNickSuggest');
@@ -735,6 +775,7 @@ function pickEmpNick(nick){
   if(p) document.getElementById('empSid').value=p.staticId||'';
   const box=document.getElementById('empNickSuggest');
   if(box){box.style.display='none';box.innerHTML='';}
+  triggerCdCheck();
 }
 async function ensureRosterLookup(){
   if(rosterLookup.length) return;
@@ -765,9 +806,7 @@ function setAct(a,el){
   const newZero=document.getElementById('newRankZero');
   pw.style.display=a==='hired'?'none':'flex';
   nw.style.display='flex';
-  if(prevZero){
-    prevZero.hidden=true;
-  }
+  if(prevZero){prevZero.hidden=true;}
   if(a==='leader'){
     pw.style.display='none';
     nw.style.display='none';
@@ -787,18 +826,20 @@ function setAct(a,el){
     if(a==='hired') pw.style.display='none';
     if(a==='fired') pw.style.display='flex';
   }
+  // При зміні дії — перевіряємо КД
+  triggerCdCheck();
 }
 document.getElementById('prevWrap').style.display='none';
 
-// Вирахувати час до підвищення
+// Вирахувати час до підвищення (для промо-info у модалці)
 function getPromoInfo(newRankVal){
   if(newRankVal===''||newRankVal===null||newRankVal===undefined) return null;
   const nr=parseInt(newRankVal);
   if(isNaN(nr)||nr<1) return null;
-  const hours=PROMO_HOURS[nr];
+  const hours=PROMO_CD[nr];
   if(hours===undefined) return null;
   const now=new Date();
-  const availableAt=new Date(now.getTime()+(hours+PROMO_KYIV_ADJUST_HOURS)*3600000);
+  const availableAt=new Date(now.getTime()+hours*3600000);
   return {hours,rankFrom:RANKS[nr-1]||'',rankTo:RANKS[nr]||'',availableAt};
 }
 
@@ -816,7 +857,7 @@ function openConfirmModal(){
   if(curAct==='hired'&&!newRank) return toast('Оберіть нову посаду','err');
   if(curAct==='transfer'&&(!prevRank||!newRank)) return toast('Оберіть попередню і нову посади','err');
   if(curAct==='fired'&&(!prevRank||newRank!=='0')) return toast('Для звільнення вкажіть попередню посаду та нову [0] Співбесіда','err');
-  if(curAct==='leader' && (!empNick||!empSid)) return toast('Для призначення лідера заповніть нік і Static ID','err');
+  if(curAct==='leader'&&(!empNick||!empSid)) return toast('Для призначення лідера заповніть нік і Static ID','err');
 
   const pR=prevRank!==''?`[${prevRank}] ${RANKS[prevRank]||''}`:null;
   const nR=newRank!==''?`[${newRank}] ${RANKS[newRank]||''}`:null;
@@ -829,15 +870,12 @@ function openConfirmModal(){
 
   // Промо-інфо
   const pi=document.getElementById('promoInfo');
-  if(curAct==='transfer'&&newRank!==''){
+  if((curAct==='transfer'||curAct==='hired')&&newRank!==''){
     const info=getPromoInfo(newRank);
-    if(info){
-      const timeStr=info.hours===0?'без обмеження часу':`через ${info.hours} год після цього переведення`;
-      const dt=info.hours===0?'':`<strong>${fmtKyiv(info.availableAt)}</strong> (за Києвом)`;
-      pi.innerHTML=`<div class="pi-title">⏱️ Інформація про наступне підвищення</div>
-        <div class="pi-text">
-          Наступне підвищення <strong>${info.rankTo} → ${RANKS[parseInt(newRank)+1]||'—'}</strong> буде доступне ${timeStr}${dt?': '+dt:''}.
-        </div>`;
+    if(info&&info.hours>0){
+      const dt=`<strong>${fmtKyiv(info.availableAt)}</strong> (за Києвом)`;
+      pi.innerHTML=`<div class="pi-title">⏱️ Наступне підвищення доступне через ${info.hours} год</div>
+        <div class="pi-text">Наступне підвищення буде доступне: ${dt}.</div>`;
       pi.style.display='block';
     } else pi.style.display='none';
   } else pi.style.display='none';
@@ -877,10 +915,14 @@ async function submitAudit(){
 function resetAudit(){
   ['empNick','empSid','prevRank','newRank','reason'].forEach(id=>document.getElementById(id).value='');
   setAct('hired',document.querySelector('[data-a=hired]'));
+  const banner=document.getElementById('cdBanner');
+  if(banner) banner.style.display='none';
+  const submitBtn=document.getElementById('submitBtn');
+  if(submitBtn) submitBtn.disabled=false;
 }
 async function ensureAcademyDep(empNick,empSid){
   try{ await call('updateRoster',{nick:empNick,sid:empSid,field:'dep',value:'Академія',initiator:me.nick||me.login}); }
-  catch(_){/* optional post-step */ }
+  catch(_){}
 }
 
 // ── HISTORY ──
@@ -945,7 +987,6 @@ function viewH(r){
   openM('detOv');
 }
 
-
 function extractFirstUrl(text){
   const m=String(text||'').match(/https?:\/\/\S+/i);
   return m?m[0].replace(/[),.;]+$/,''):'';
@@ -954,7 +995,6 @@ function openReasonLink(url){
   if(!url) return;
   window.open(url,'_blank','noopener');
 }
-
 
 function openLeaderAuth(){
   document.getElementById('laLogin').value='';
@@ -1047,7 +1087,7 @@ async function confirmClearHistory(){
   try{
     let r;
     try{ r=await call('clearHistory',{archiveLogin:login}); }
-    catch(_){ r=await call('resetStats',{archiveLogin:login}); } // fallback для старого backend
+    catch(_){ r=await call('resetStats',{archiveLogin:login}); }
     if(r.success){
       cache.history.at=0;
       closeM('clearHistoryOv');
@@ -1238,7 +1278,6 @@ function renderR(){
   document.getElementById('rBody').innerHTML=filtR.map(p=>{
     const rankStr=p.rank!=null?`<span class="rank-badge"><span class="rank-num">[${p.rank}]</span> ${RANKS[p.rank]||''}</span>`:'—';
     const dep=p.dep?`<span class="dep-badge dep-${p.dep.replace('.','')}">${p.dep}</span>`:'—';
-    // FIX: маленькі крапки через span з фіксованим розміром
     const warns=Array.from({length:2},(_,i)=>`<span class="dot-c ${i<(p.warnings||0)?'dot-warn-fill':'dot-warn-empty'}"></span>`).join('');
     const sancs=Array.from({length:3},(_,i)=>`<span class="dot-c ${i<(p.sanctions||0)?'dot-sanc-fill':'dot-sanc-empty'}"></span>`).join('');
     return `<div class="roster-row">
@@ -1518,7 +1557,6 @@ function humanizeErr(e){
   return 'Помилка: '+m.slice(0,100);
 }
 
-// Київський час
 function fmtKyiv(d){
   return d.toLocaleString('uk-UA',{timeZone:'Europe/Kyiv',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 }
