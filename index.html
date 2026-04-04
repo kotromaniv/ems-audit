@@ -174,10 +174,6 @@ main{margin-left:230px;min-height:100vh;}
 <!-- AUDIT -->
 <div class="page on" id="page-audit">
   <div class="ptitle"><h2>Кадровий аудит</h2><p>Оберіть учасників — дані підтягнуться автоматично</p></div>
-  <div class="cd-banner" id="cdBanner" style="background:rgba(139,69,0,.12);border:1.5px solid rgba(255,140,0,.4);border-radius:8px;padding:14px 16px;margin-bottom:14px;display:none;">
-  <div style="font-size:13px;font-weight:700;color:#b85000;margin-bottom:4px;">⏳ КД підвищення не зійшло</div>
-  <div style="font-size:12px;color:var(--txt2);line-height:1.6;" id="cdMsg"></div>
-</div>
   <div class="card">
     <div class="clbl">Ініціатор</div>
     <div class="g2">
@@ -597,7 +593,16 @@ const ABCL={hired:'bh',transfer:'bt',fired:'bf'};
 
 // Час до підвищення в годинах (від ранг → ранг+1)
 // Ключ = номер ранга ПІСЛЯ якого підвищення
-const PROMO_CD = {1:0, 2:24, 3:24, 4:48, 5:48, 6:72, 7:96, 8:96};
+const PROMO_HOURS={
+  1:0,   // Студент→Інтерн: без обмеження
+  2:24,  // Інтерн→Парамедик: 24г
+  3:24,  // Парамедик→Фельдшер: 24г
+  4:48,  // Фельдшер→Терапевт: 48г
+  5:48,  // Терапевт→Хірург: 48г
+  6:72,  // Хірург→Спеціаліст: 72г
+  7:96,  // Спеціаліст→Заст.зав.: 96г
+  8:96   // Заст.зав.→Завідувач: 96г
+};
 const PROMO_KYIV_ADJUST_HOURS=-1; // корекція відносно фактичного часу Kyiv
 
 let me=null,players=[],allH=[],filtH=[],curHF='all',curHPg=1;
@@ -826,23 +831,6 @@ function openConfirmModal(){
     <div class="wd-row"><span class="wd-lbl">Дія</span><span class="wd-val">${ALBL[curAct]}</span></div>
     <div class="wd-row"><span class="wd-lbl">Зміна посади</span><span class="wd-val">${pR&&nR?`${pR} → ${nR}`:nR||pR||'—'}</span></div>
     <div class="wd-row" style="border:none"><span class="wd-lbl">Пояснення</span><span class="wd-val">${reason}</span></div>`;
-  let cdCheckTimer=null;
-function triggerCdCheck(){clearTimeout(cdCheckTimer);cdCheckTimer=setTimeout(runCdCheck,600);}
-async function runCdCheck(){
-  const empNick=document.getElementById('empNick').value.trim();
-  const empSid=document.getElementById('empSid').value.trim();
-  const newRank=document.getElementById('newRank').value;
-  const banner=document.getElementById('cdBanner');
-  const submitBtn=document.getElementById('submitBtn'); // додай id="submitBtn" на кнопку Відправити
-  if(curAct==='fired'||curAct==='leader'||!empNick||!newRank){banner.style.display='none';if(submitBtn) submitBtn.disabled=false;return;}
-  try{
-    const r=await call('checkCooldown',{empNick,empSid,newRank});
-    if(r.onCooldown){
-      document.getElementById('cdMsg').innerHTML=`<strong>${empNick}</strong> може бути підвищений(а) не раніше ніж <strong style="color:#b85000;">${r.availableAt}</strong> (~${r.hoursLeft} год).<br>Звільнити можна в будь-який момент.`;
-      banner.style.display='block';if(submitBtn) submitBtn.disabled=true;
-    } else {banner.style.display='none';if(submitBtn) submitBtn.disabled=false;}
-  }catch(_){banner.style.display='none';}
-}
 
   // Промо-інфо
   const pi=document.getElementById('promoInfo');
