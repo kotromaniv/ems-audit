@@ -123,33 +123,75 @@ main{margin-left:230px;min-height:100vh;}
 .ac-wrap{position:relative;} .ac-list{position:absolute;top:100%;left:0;right:0;z-index:25;background:var(--bg2);border:1.5px solid var(--border2);border-radius:var(--rad2);max-height:180px;overflow:auto;margin-top:4px;display:none;box-shadow:var(--shadow2);} .ac-item{padding:9px 12px;font-size:12px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;transition:.12s;} .ac-item:hover,.ac-item.on{background:var(--cdim);color:var(--c);} .ac-meta{color:var(--txt3);font-size:11px;}
 .mobile-nav{display:none;}
 
-/* Coming Soon - Treasury */
-.treasury-page{
-  position:relative;
-  width:100%;
-  min-height:calc(100vh - 72px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  border-radius:var(--rad);
-  margin-top:-36px;
-  background:#8B0000;
+/* Treasury Styles */
+.treasury-container {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--rad);
+  padding: 28px;
+  box-shadow: var(--shadow);
 }
-.treasury-bg{
-  position:absolute;
-  inset:0;
-  background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>');
-  background-size:cover;
-  background-position:center;
+.treasury-login {
+  max-width: 380px;
+  margin: 0 auto;
+  text-align: center;
 }
-.treasury-img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center;
+.treasury-login .clbl {
+  justify-content: center;
+}
+.treasury-panel {
+  display: none;
+}
+.treasury-type-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+}
+.treasury-type-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: var(--rad2);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--txt2);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: .18s;
+}
+.treasury-type-btn.on {
+  background: var(--c);
+  border-color: var(--c);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(220,20,60,.3);
+}
+.treasury-dep-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.treasury-dep-btn {
+  padding: 8px 16px;
+  border-radius: 24px;
+  background: var(--bg3);
+  border: 1.5px solid var(--border);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: .15s;
+}
+.treasury-dep-btn.on {
+  background: var(--cdim);
+  border-color: var(--c);
+  color: var(--c);
+}
+.amount-input {
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
 }
 
 /* Player history timeline */
@@ -171,7 +213,10 @@ main{margin-left:230px;min-height:100vh;}
 .stat-adj-controls{display:flex;align-items:center;gap:6px;}
 
 @media(max-width:900px){aside{display:none;} main{margin-left:0;} .mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--sidebar);border-top:1px solid rgba(220,20,60,.25);z-index:50;height:var(--mob-nav-h);overflow-x:auto;-webkit-overflow-scrolling:touch;} .mnav{flex:1;min-width:64px;padding:8px 4px 6px;border:none;background:transparent;color:var(--txts2);font:600 10px/1.2 'Inter',sans-serif;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:.15s;} .mnav svg{width:18px;height:18px;opacity:.6;} .mnav.on{color:#ff8fa3;} .mnav.on svg{opacity:1;} .page{padding:16px 14px calc(var(--mob-nav-h) + 20px);} .ptitle h2{font-size:20px;} .ptitle{margin-bottom:18px;} .g2,.g3,.g4,.stat3,.player-grid{grid-template-columns:1fr;} .roster-row{grid-template-columns:1fr 1fr;gap:0;} .roster-row .rcell:nth-child(n+4){display:none;} .roster-row .rcell:last-child{display:flex;justify-content:flex-end;} .sbar{flex-direction:column;align-items:stretch;} .btns{width:100%;} .btns .btn{flex:1;justify-content:center;} .apills{gap:6px;} .apill{padding:8px 12px;font-size:11px;} .card{padding:16px;} .modal{padding:18px;} .mh h3{font-size:15px;} .topbar{gap:6px;} #toast{bottom:calc(var(--mob-nav-h) + 10px);right:12px;left:12px;max-width:none;}}
-@media(max-width:480px){.g2{grid-template-columns:1fr;} .stat3{grid-template-columns:1fr 1fr;} .g4{grid-template-columns:1fr 1fr;} .player-tabs{gap:6px;} .player-tab{padding:6px 10px;font-size:10px;}}
+@media(max-width:480px){.g2{grid-template-columns:1fr;} .stat3{grid-template-columns:1fr 1fr;} .g4{grid-template-columns:1fr 1fr;} .player-tabs{gap:6px;} .player-tab{padding:6px 10px;font-size:10px;}
+.treasury-type-buttons { flex-direction: column; }
+.treasury-dep-buttons { justify-content: center; }
+}
 </style>
 </head>
 <body>
@@ -227,6 +272,7 @@ main{margin-left:230px;min-height:100vh;}
   <div class="cd-banner" id="cdBanner">
     <div class="cd-banner-title">⏳ КД ще не минув</div>
     <div class="cd-banner-msg" id="cdMsg"></div>
+    <button class="btn btn-sm btn-d" style="margin-top:10px;" onclick="openEmpPromotionHistory()">📜 Історія підвищень цього співробітника</button>
   </div>
   <div class="card">
     <div class="clbl">Ініціатор</div>
@@ -383,16 +429,53 @@ main{margin-left:230px;min-height:100vh;}
   </div>
 </div>
 
-<!-- TREASURY (Coming Soon) -->
-<div class="page" id="page-treasury" style="padding:0;max-width:100%;">
-  <div class="treasury-page" id="treasuryPage">
-    <img id="treasuryImg" class="treasury-img" src="" alt="EMS Coming Soon" style="display:none;">
-    <div id="treasuryFallback" style="text-align:center;position:relative;z-index:2;">
-      <div style="width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#8B0000,#DC143C);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 8px 32px rgba(220,20,60,.5);">
-        <svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24" style="width:36px;height:36px;"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+<!-- TREASURY (NEW) -->
+<div class="page" id="page-treasury">
+  <div class="ptitle"><h2>📦 EMS Казна</h2><p>Управління фінансами та преміювання</p></div>
+  <div class="treasury-container">
+    <div id="treasuryLoginSection" class="treasury-login">
+      <div class="clbl" style="justify-content:center;">🔐 Доступ до казни</div>
+      <div class="field"><label>Логін</label><input class="inp" id="treasuryLogin" placeholder="Ваш логін..."></div>
+      <div class="field"><label>Пароль</label><input class="inp" id="treasuryPass" type="password" placeholder="Ваш пароль..."></div>
+      <button class="btn btn-p" style="width:100%;margin-top:12px;" onclick="accessTreasury()">Увійти в казну</button>
+      <p id="treasuryErr" style="color:var(--c);font-size:11px;margin-top:12px;display:none;"></p>
+    </div>
+    <div id="treasuryPanel" class="treasury-panel">
+      <div class="clbl">Синхронізація</div>
+      <div class="g2" style="margin-bottom:20px;">
+        <div class="field"><label>Ваш нікнейм</label><input class="inp" id="treasuryNick" readonly></div>
+        <div class="field"><label>Ваш Static ID</label><input class="inp" id="treasurySid" readonly></div>
       </div>
-      <div style="font-size:36px;font-weight:800;color:#fff;letter-spacing:-1px;margin-bottom:8px;">EMS Coming Soon</div>
-      <div style="font-size:14px;color:rgba(255,255,255,.6);">Казна організації — незабаром</div>
+      <div class="clbl">Тип операції</div>
+      <div class="treasury-type-buttons">
+        <button class="treasury-type-btn on" data-type="employee" onclick="setTreasuryType('employee', this)">💵 Видача працівнику EMS</button>
+        <button class="treasury-type-btn" data-type="department" onclick="setTreasuryType('department', this)">🏢 Виділення коштів на підрозділ</button>
+      </div>
+      <div id="treasuryEmployeeForm" style="display:block;">
+        <div class="clbl">Отримувач</div>
+        <div class="field ac-wrap" style="margin-bottom:16px;">
+          <label>Нікнейм співробітника</label>
+          <input class="inp" id="treasuryEmpNick" placeholder="Введіть нікнейм..." oninput="onTreasuryEmpNickInput()" autocomplete="off">
+          <div id="treasuryEmpSuggest" class="ac-list"></div>
+        </div>
+        <div class="field" style="margin-bottom:16px;"><label>Static ID</label><input class="inp" id="treasuryEmpSid" placeholder="Static ID"></div>
+        <div class="field" style="margin-bottom:16px;"><label>Сума премії ($)</label><input class="inp amount-input" id="treasuryAmount" type="number" min="1" step="100" placeholder="Введіть суму..."></div>
+        <div class="field" style="margin-bottom:16px;"><label>Причина видачі</label><textarea class="ta" id="treasuryReason" placeholder="Вкажіть причину премії..."></textarea></div>
+      </div>
+      <div id="treasuryDepartmentForm" style="display:none;">
+        <div class="clbl">Оберіть підрозділ</div>
+        <div class="treasury-dep-buttons">
+          <button class="treasury-dep-btn" data-dep="EMA" onclick="setTreasuryDep('EMA', this)">🚑 EMA</button>
+          <button class="treasury-dep-btn" data-dep="TD" onclick="setTreasuryDep('TD', this)">🛡️ TD</button>
+          <button class="treasury-dep-btn" data-dep="INT" onclick="setTreasuryDep('INT', this)">⚙️ INT</button>
+          <button class="treasury-dep-btn" data-dep="S.S" onclick="setTreasuryDep('S.S', this)">🔫 S.S</button>
+        </div>
+        <div class="field" style="margin-bottom:16px;"><label>Сума виділення ($)</label><input class="inp amount-input" id="treasuryDepAmount" type="number" min="1" step="500" placeholder="Введіть суму..."></div>
+        <div class="field" style="margin-bottom:16px;"><label>Причина виділення</label><textarea class="ta" id="treasuryDepReason" placeholder="Вкажіть причину виділення коштів..."></textarea></div>
+      </div>
+      <div class="btns" style="justify-content:center; margin-top:24px;">
+        <button class="btn btn-p" id="treasurySubmitBtn" onclick="submitTreasuryOperation()">✅ Підтвердити операцію</button>
+      </div>
     </div>
   </div>
 </div>
@@ -586,6 +669,17 @@ main{margin-left:230px;min-height:100vh;}
   </div>
 </div>
 
+<!-- MODAL: Історія підвищень співробітника (КД) -->
+<div class="overlay" id="empPromoHistOv">
+  <div class="modal md">
+    <div class="mh">
+      <h3 id="empPromoTitle">Історія підвищень</h3>
+      <button class="mx" onclick="closeM('empPromoHistOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div id="empPromoBody" style="max-height:450px;overflow-y:auto;"></div>
+  </div>
+</div>
+
 <!-- MODAL: Видалити учасника з планшету -->
 <div class="overlay" id="removeRosterOv">
   <div class="modal sm">
@@ -682,8 +776,12 @@ const cache={roster:{at:0,data:null},rh:{at:0,data:null},history:{at:0,data:null
 const pendingCounter={warnings:false,sanctions:false};
 const PER=15;
 
+// --- Treasury State ---
+let treasuryAccessGranted = false;
+let treasuryCurrentType = 'employee';
+let treasurySelectedDep = '';
+
 // ── ФІКСОВАНА KYIV TIMEZONE КОНВЕРТАЦІЯ ──
-// Повертає дату у таймзоні Kyiv (UTC+2 зима, UTC+3 літо — визначається автоматично браузером)
 function fmtKyiv(d){
   if(!(d instanceof Date)||isNaN(d)) return '—';
   return d.toLocaleString('uk-UA',{timeZone:'Europe/Kyiv',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
@@ -692,12 +790,9 @@ function fmtKyivLong(d){
   if(!(d instanceof Date)||isNaN(d)) return '—';
   return d.toLocaleString('uk-UA',{timeZone:'Europe/Kyiv',dateStyle:'long',timeStyle:'short'});
 }
-// Повертає об'єкт Date, що при відображенні через toLocaleString з timeZone:'Europe/Kyiv' покаже правильний час
-// ВИПРАВЛЕННЯ: Весь розрахунок CD робиться в UTC, а відображення — через Europe/Kyiv
 function addHoursUTC(date, hours){
   return new Date(date.getTime() + hours * 3600000);
 }
-// Отримати поточний Kyiv час як рядок для банера
 function getKyivTimeStr(utcDate){
   return fmtKyiv(utcDate);
 }
@@ -722,8 +817,6 @@ async function runCdCheck(){
   try{
     const r=await call('checkCooldown',{empNick,empSid,newRank});
     if(r.onCooldown){
-      // ВИПРАВЛЕННЯ: availableAt від сервера вже є рядком або ISO датою
-      // Конвертуємо коректно через Europe/Kyiv
       let availableStr=r.availableAt||'—';
       if(r.availableAt && r.availableAt !== '—'){
         try{
@@ -744,6 +837,38 @@ async function runCdCheck(){
     banner.style.display='none';
     if(submitBtn) submitBtn.disabled=false;
   }
+}
+
+// Відкрити історію підвищень співробітника (для КД)
+async function openEmpPromotionHistory(){
+  const nick=document.getElementById('empNick').value.trim();
+  const sid=document.getElementById('empSid').value.trim();
+  if(!nick && !sid){
+    toast('Спочатку оберіть співробітника','err');
+    return;
+  }
+  await loadHistory();
+  const events = allH.filter(r => (r.empNick === nick || String(r.empSid) === sid) && (r.action === 'transfer' || r.action === 'hired'));
+  if(events.length === 0){
+    toast('Історії підвищень для цього співробітника не знайдено','err');
+    return;
+  }
+  const sorted = events.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  document.getElementById('empPromoTitle').innerHTML = `📜 Історія підвищень: ${nick || sid}`;
+  document.getElementById('empPromoBody').innerHTML = sorted.map(e => {
+    const dt = fmtKyiv(new Date(e.date));
+    const pR = e.prevRank != null && e.prevRank !== '' ? `[${e.prevRank}] ${RANKS[e.prevRank]}` : '—';
+    const nR = e.newRank != null && e.newRank !== '' ? `[${e.newRank}] ${RANKS[e.newRank]}` : '—';
+    return `<div class="ph-row">
+      <div class="ph-date">${dt}</div>
+      <div class="ph-badge"><span class="badge bt">${ALBL[e.action] || e.action}</span></div>
+      <div style="flex:1">
+        <div class="ph-detail">${pR} → ${nR}</div>
+        <div class="ph-init">Ініціатор: ${e.initNick || '—'} | Причина: ${e.reason || '—'}</div>
+      </div>
+    </div>`;
+  }).join('');
+  openM('empPromoHistOv');
 }
 
 // ── LOGIN ──
@@ -768,20 +893,6 @@ function enterSession(user){
   document.getElementById('sideAv').textContent=(me.nick||me.login)[0].toUpperCase();
   document.getElementById('sideRole').textContent=me.isAdmin?'Керівник':'Співробітник';
   loadPlayers();
-  // Завантажити зображення Treasury
-  loadTreasuryImage();
-}
-
-// ── TREASURY ──
-function loadTreasuryImage(){
-  // Спробуємо завантажити завантажене зображення
-  // Оскільки зображення вже конвертовано до base64 нижче — використаємо його
-  const img=document.getElementById('treasuryImg');
-  if(window._treasuryImgSrc){
-    img.src=window._treasuryImgSrc;
-    img.style.display='block';
-    document.getElementById('treasuryFallback').style.display='none';
-  }
 }
 
 // ── NAV ──
@@ -800,6 +911,16 @@ function goPage(page){
   if(page==='stats') loadStats();
   if(page==='roster') loadRoster();
   if(page==='rhistory') loadRHistory();
+  if(page==='treasury') {
+    if(treasuryAccessGranted) {
+      document.getElementById('treasuryLoginSection').style.display='none';
+      document.getElementById('treasuryPanel').style.display='block';
+      syncTreasuryUserInfo();
+    } else {
+      document.getElementById('treasuryLoginSection').style.display='block';
+      document.getElementById('treasuryPanel').style.display='none';
+    }
+  }
 }
 
 // Автозаповнення нік-ім'я
@@ -927,15 +1048,12 @@ function setAct(a,el){
 }
 document.getElementById('prevWrap').style.display='none';
 
-// ВИПРАВЛЕННЯ КД банера: розрахунок часу UTC + відображення Kyiv
 function getPromoInfo(newRankVal){
   if(newRankVal===''||newRankVal===null||newRankVal===undefined) return null;
   const nr=parseInt(newRankVal);
   if(isNaN(nr)||nr<1) return null;
   const hours=PROMO_CD[nr];
   if(hours===undefined) return null;
-  // Час у UTC — не додаємо зміщення, лише передаємо UTC дату
-  // fmtKyiv() сам правильно конвертує через timeZone:'Europe/Kyiv'
   const nowUTC=new Date();
   const availableUTC=addHoursUTC(nowUTC, hours);
   return {hours, rankFrom:RANKS[nr-1]||'', rankTo:RANKS[nr]||'', availableAt:availableUTC};
@@ -966,7 +1084,6 @@ function openConfirmModal(){
   if((curAct==='transfer'||curAct==='hired')&&newRank!==''){
     const info=getPromoInfo(newRank);
     if(info&&info.hours>0){
-      // ВИПРАВЛЕННЯ: fmtKyiv правильно відобразить UTC дату у Київський час
       const dt=`<strong>${fmtKyiv(info.availableAt)}</strong>`;
       pi.innerHTML=`<div style="font-weight:700;font-size:12px;color:var(--g);margin-bottom:4px;">⏱️ КД: ${info.hours} год після підвищення</div>
         <div style="font-size:11px;color:var(--txt2);">Наступне підвищення доступне: ${dt} (за Києвом)</div>`;
@@ -997,14 +1114,12 @@ async function submitAudit(){
     }
     const r=await call('submit',{initNick,initSid,initLogin:me.login,empNick,empSid,act:curAct,prevRank,newRank,reason,autoDep:curAct==='hired'?'Академія':''});
     if(r.success){
-      // РЕАКТИВНЕ ОНОВЛЕННЯ після відправки без перезавантаження
       cache.history.at=0;
       cache.roster.at=0;
       cache.rh.at=0;
       closeM('confirmOv');
       toast('Заявку успішно відправлено! ✅','ok');
       resetAudit();
-      // Перезавантажуємо дані без рефрешу сторінки
       await Promise.all([
         loadHistory(),
         loadRoster(true),
@@ -1023,7 +1138,7 @@ function resetAudit(){
   if(banner) banner.style.display='none';
   const submitBtn=document.getElementById('submitBtn');
   if(submitBtn) submitBtn.disabled=false;
-  rosterLookup=[];// скинути кеш lookup щоб перетягнути свіжі дані
+  rosterLookup=[];
 }
 
 // ── HISTORY ──
@@ -1071,7 +1186,8 @@ function renderH(){
         ${reasonUrl?`<button class="rbtn" onclick='openReasonLink(${JSON.stringify(reasonUrl)})' title="Відкрити посилання"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 14L21 3"/><path d="M15 3h6v6"/><path d="M5 5v14h14"/></svg></button>`:''}
         <button class="rbtn" onclick='viewH(${JSON.stringify(r)})' title="Деталі"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         ${me&&me.isArchiveAdmin?`<button class="rbtn del" onclick="askDel('${r.ticket}',null)" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>`:''}
-      </td></tr>`;
+      </td>
+    </tr>`;
   }).join('');
   const tot=Math.ceil(filtH.length/PER);
   document.getElementById('hPager').innerHTML=tot<=1?'':Array.from({length:Math.min(tot,10)},(_,i)=>
@@ -1172,7 +1288,6 @@ async function confirmDel(){
 function showDE(m){const e=document.getElementById('dErr');e.textContent=m;e.style.display='block';}
 
 // ── RESET STATS ──
-// ВИПРАВЛЕННЯ: Скидання статистики НЕ видаляє історію аудитів
 function openResetStats(){
   document.getElementById('rsLogin').value='';
   document.getElementById('rsErr').style.display='none';
@@ -1182,12 +1297,10 @@ async function confirmResetStats(){
   const login=document.getElementById('rsLogin').value.trim();
   if(!login){document.getElementById('rsErr').textContent='Введіть код підтвердження';document.getElementById('rsErr').style.display='block';return;}
   try{
-    // Викликаємо тільки resetStats — НЕ clearHistory
     const r=await call('resetStats',{archiveLogin:login});
     if(r.success){
       closeM('resetStatsOv');
       toast('Статистику скинуто (Історія аудитів збережена) ✅','ok');
-      // Перезавантажуємо тільки статистику, не чіпаємо historію
       await loadStats();
     } else {
       document.getElementById('rsErr').textContent=r.error||'Невірний код підтвердження';
@@ -1343,7 +1456,6 @@ async function verifyArchiveLogin(login){
 }
 
 // ── STATS ──
-// ВИПРАВЛЕННЯ: рахуємо hired/transfer/fired з allH якщо сервер повертає 0
 async function loadStats(){
   try{
     const r=await call('getStats');
@@ -1351,7 +1463,6 @@ async function loadStats(){
     document.getElementById('stTotal').textContent=s.total??'—';
     let hw=s.hiredWeek??0,fw=s.firedWeek??0,tw=s.transferWeek??0;
 
-    // ВИПРАВЛЕННЯ: якщо сервер повертає 0 для детальних показників — рахуємо самі з allH (тиждень)
     const weekAgo=Date.now()-7*24*3600000;
     if(allH.length&&(!hw&&!fw&&!tw)){
       const weekH=allH.filter(r=>new Date(r.date).getTime()>weekAgo);
@@ -1365,10 +1476,8 @@ async function loadStats(){
     document.getElementById('wT').textContent=tw;
     document.getElementById('wAll').textContent=hw+fw+tw;
 
-    // ВИПРАВЛЕННЯ: лідерборд — рахуємо детально з allH якщо сервер не дає дані
     let lb=(s.leaderboard||[]).slice(0,10);
 
-    // Якщо сервер не повертає hired/transfer/fired — рахуємо самі
     if(lb.length&&lb[0].count>0&&(lb[0].hired===undefined||lb[0].hired===0&&lb[0].transfer===0&&lb[0].fired===0)){
       const weekH2=allH.filter(r=>new Date(r.date).getTime()>weekAgo);
       const map={};
@@ -1380,7 +1489,6 @@ async function loadStats(){
         else if(r.action==='transfer') map[name].transfer++;
         else if(r.action==='fired') map[name].fired++;
       });
-      // Мерджимо з lb — додаємо детальні показники
       lb=lb.map(x=>{
         const calc=map[x.name]||map[Object.keys(map).find(k=>k.toLowerCase()===x.name.toLowerCase())];
         if(calc){return {...x,hired:calc.hired,transfer:calc.transfer,fired:calc.fired};}
@@ -1388,7 +1496,6 @@ async function loadStats(){
       });
     }
 
-    // Якщо lb порожній — будуємо самі
     if(!lb.length&&allH.length){
       const weekH2=allH.filter(r=>new Date(r.date).getTime()>weekAgo);
       const map={};
@@ -1429,7 +1536,6 @@ async function loadStats(){
   }catch(e){toast('Помилка статистики','err');}
 }
 
-// ВИПРАВЛЕННЯ: Адмін може коригувати показники ініціатора
 function openInitiatorDetail(x){
   document.getElementById('initiatorTitle').textContent=x.name;
   const total=x.count||0,hired=x.hired||0,transfer=x.transfer||0,fired=x.fired||0;
@@ -1445,7 +1551,6 @@ function openInitiatorDetail(x){
       </div></div>`;
   };
 
-  // ВИПРАВЛЕННЯ: Контроли корекції для адміна
   const adminSection=me&&me.isAdmin?`
     <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;">
       <div class="clbl">Корекція показників</div>
@@ -1497,7 +1602,6 @@ function openInitiatorDetail(x){
   openM('initiatorOv');
 }
 
-// Коригування показників ініціатора (локально + спроба синхронізації з сервером)
 async function adjustInitiatorStat(name,field,delta){
   const elId=`adj-${field}-${esc(name)}`;
   const el=document.getElementById(elId);
@@ -1510,7 +1614,6 @@ async function adjustInitiatorStat(name,field,delta){
     toast(`Показник оновлено`,'ok');
     await loadStats();
   }catch(_){
-    // Якщо сервер не підтримує — показуємо повідомлення
     toast('Показник оновлено локально. Сервер не підтримує adjustStats.','ok');
   }
 }
@@ -1620,7 +1723,6 @@ async function syncCounterField(field,target){
       else document.getElementById('pmSanc').textContent=`${target}/3`;
       cache.roster.at=0;cache.rh.at=0;
       filterR();
-      // Реактивно оновлюємо журнал
       await loadRHistory(true);
       toast(`${field==='warnings'?'Попередження':'Догани'} оновлено`,'ok');
     } else toast(r.error||'Помилка','err');
@@ -1671,8 +1773,7 @@ async function deleteNote(idx){
   renderNotes(notes);
 }
 
-// ── PLAYER HISTORY (ВИПРАВЛЕННЯ) ──
-// Завантажує і відображає повну хронологію: прийняття, підвищення, пониження, звільнення, попередження, догани
+// ── PLAYER HISTORY ──
 async function openPlayerHistory(){
   if(!curPlayer) return;
   const nick=curPlayer.nick;
@@ -1681,13 +1782,11 @@ async function openPlayerHistory(){
   document.getElementById('phBody').innerHTML='<div class="loading"><div class="spin"></div><br>Завантаження повної історії...</div>';
   openM('playerHistOv');
 
-  // Завантажуємо всі дані паралельно якщо ще не завантажені
   const tasks=[];
   if(!allH.length) tasks.push(loadHistory());
   if(!allRH.length) tasks.push(loadRHistory(true));
   if(tasks.length) await Promise.all(tasks);
 
-  // 1) Аудит-події (прийняття, переведення, звільнення)
   const ev1=allH
     .filter(r=>r.empNick===nick||String(r.empSid||'')===sid)
     .map(r=>{
@@ -1703,7 +1802,6 @@ async function openPlayerHistory(){
       };
     });
 
-  // 2) Roster-події (зміни відділу, попередження, догани — з журналу)
   const ev2=allRH
     .filter(r=>r.nick===nick||String(r.sid||'')===sid)
     .map(r=>({
@@ -1715,7 +1813,6 @@ async function openPlayerHistory(){
       rowIndex:r._idx
     }));
 
-  // Об'єднуємо і сортуємо по даті (найновіші вгорі)
   const events=[...ev1,...ev2].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
 
   if(!events.length){
@@ -1817,6 +1914,132 @@ function switchPlayerPane(id,btn){
 }
 function toRank(v){const n=parseInt(v,10);return Number.isFinite(n)?n:-1;}
 
+// ── TREASURY FUNCTIONS ──
+async function accessTreasury(){
+  const login=document.getElementById('treasuryLogin').value.trim();
+  const pass=document.getElementById('treasuryPass').value;
+  if(!login || !pass){
+    document.getElementById('treasuryErr').textContent='Введіть логін та пароль!';
+    document.getElementById('treasuryErr').style.display='block';
+    return;
+  }
+  const btn=event.target;
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Перевірка...';
+  try{
+    const r=await call('login',{login,password:pass});
+    if(r.success && (r.user?.isAdmin || r.user?.isArchiveAdmin)){
+      treasuryAccessGranted=true;
+      me={...me, ...r.user};
+      document.getElementById('treasuryLoginSection').style.display='none';
+      document.getElementById('treasuryPanel').style.display='block';
+      syncTreasuryUserInfo();
+      document.getElementById('treasuryErr').style.display='none';
+      toast('Доступ до казни надано','ok');
+    } else {
+      document.getElementById('treasuryErr').textContent='Недостатньо прав або невірний логін/пароль.';
+      document.getElementById('treasuryErr').style.display='block';
+    }
+  } catch(e){
+    document.getElementById('treasuryErr').textContent=humanizeErr(e);
+    document.getElementById('treasuryErr').style.display='block';
+  } finally {
+    btn.disabled=false; btn.innerHTML='Увійти в казну';
+  }
+}
+function syncTreasuryUserInfo(){
+  const myPlayer = players.find(p => p.login === me?.login);
+  if(myPlayer){
+    document.getElementById('treasuryNick').value = myPlayer.nick || me.nick || '';
+    document.getElementById('treasurySid').value = myPlayer.staticId || '';
+  } else {
+    document.getElementById('treasuryNick').value = me?.nick || me?.login || '';
+    document.getElementById('treasurySid').value = '';
+  }
+}
+function setTreasuryType(type, btn){
+  treasuryCurrentType = type;
+  document.querySelectorAll('.treasury-type-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  if(type === 'employee'){
+    document.getElementById('treasuryEmployeeForm').style.display = 'block';
+    document.getElementById('treasuryDepartmentForm').style.display = 'none';
+  } else {
+    document.getElementById('treasuryEmployeeForm').style.display = 'none';
+    document.getElementById('treasuryDepartmentForm').style.display = 'block';
+  }
+}
+function setTreasuryDep(dep, btn){
+  treasurySelectedDep = dep;
+  document.querySelectorAll('.treasury-dep-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+async function submitTreasuryOperation(){
+  if(!treasuryAccessGranted) return toast('Доступ до казни не підтверджено','err');
+  const initNick = document.getElementById('treasuryNick').value;
+  const initSid = document.getElementById('treasurySid').value;
+  let payload = { initNick, initSid, type: treasuryCurrentType };
+  if(treasuryCurrentType === 'employee'){
+    const empNick = document.getElementById('treasuryEmpNick').value.trim();
+    const empSid = document.getElementById('treasuryEmpSid').value.trim();
+    const amount = document.getElementById('treasuryAmount').value;
+    const reason = document.getElementById('treasuryReason').value.trim();
+    if(!empNick || !empSid) return toast('Введіть дані співробітника','err');
+    if(!amount || amount<=0) return toast('Введіть коректну суму премії','err');
+    if(!reason) return toast('Вкажіть причину видачі премії','err');
+    payload = {...payload, empNick, empSid, amount, reason };
+  } else {
+    if(!treasurySelectedDep) return toast('Оберіть підрозділ','err');
+    const amount = document.getElementById('treasuryDepAmount').value;
+    const reason = document.getElementById('treasuryDepReason').value.trim();
+    if(!amount || amount<=0) return toast('Введіть коректну суму виділення','err');
+    if(!reason) return toast('Вкажіть причину виділення коштів','err');
+    payload = {...payload, department: treasurySelectedDep, amount, reason };
+  }
+  const btn = document.getElementById('treasurySubmitBtn');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Відправлення...';
+  try{
+    const r = await call('treasuryOperation', payload);
+    if(r.success){
+      toast('Операцію успішно виконано!','ok');
+      if(treasuryCurrentType === 'employee'){
+        document.getElementById('treasuryEmpNick').value='';
+        document.getElementById('treasuryEmpSid').value='';
+        document.getElementById('treasuryAmount').value='';
+        document.getElementById('treasuryReason').value='';
+      } else {
+        document.getElementById('treasuryDepAmount').value='';
+        document.getElementById('treasuryDepReason').value='';
+        if(document.querySelector('.treasury-dep-btn.on')) document.querySelector('.treasury-dep-btn.on').classList.remove('on');
+        treasurySelectedDep='';
+      }
+    } else toast(r.error || 'Помилка операції','err');
+  } catch(e){ toast('Помилка з\'єднання','err'); }
+  finally { btn.disabled=false; btn.innerHTML='✅ Підтвердити операцію'; }
+}
+
+// Autocomplete for Treasury Employee
+async function onTreasuryEmpNickInput(){
+  await ensureRosterLookup();
+  const nick = document.getElementById('treasuryEmpNick').value.trim().toLowerCase();
+  const box = document.getElementById('treasuryEmpSuggest');
+  if(!nick){ box.style.display='none'; box.innerHTML=''; return; }
+  const matches = rosterLookup.filter(p => p.nick.toLowerCase().includes(nick)).slice(0,8);
+  if(!matches.length){ box.style.display='none'; box.innerHTML=''; return; }
+  box.innerHTML = matches.map(p => `<div class="ac-item" onmousedown="pickTreasuryEmp('${esc(p.nick)}','${esc(p.staticId)}')">${p.nick}<span class="ac-meta">${p.staticId}</span></div>`).join('');
+  box.style.display='block';
+}
+function pickTreasuryEmp(nick, sid){
+  document.getElementById('treasuryEmpNick').value = nick;
+  document.getElementById('treasuryEmpSid').value = sid;
+  const box = document.getElementById('treasuryEmpSuggest');
+  if(box){ box.style.display='none'; box.innerHTML=''; }
+}
+document.getElementById('treasuryEmpNick').addEventListener('blur', () => setTimeout(() => {
+  const box = document.getElementById('treasuryEmpSuggest');
+  if(box) box.style.display='none';
+}, 150));
+document.getElementById('treasuryEmpNick').addEventListener('input', onTreasuryEmpNickInput);
+
 // ── UTILS ──
 async function callFirstSuccess(attempts){
   let lastErr=null;
@@ -1870,35 +2093,12 @@ function toast(msg,type='ok'){
 }
 function esc(s){return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 
-// ── TREASURY IMAGE LOADER ──
-// Завантажуємо зображення з файлу що завантажив користувач
-(function loadTreasuryBg(){
-  // Зображення вбудоване як base64 нижче — замінити на реальне
-  // Для тестування — кольоровий фон вже встановлено CSS
-  // Якщо є доступне зображення — показуємо його
-  const img=document.getElementById('treasuryImg');
-  // Спроба завантажити з відносного шляху (якщо файл поруч)
-  img.onload=function(){
-    this.style.display='block';
-    document.getElementById('treasuryFallback').style.display='none';
-  };
-  img.onerror=function(){
-    this.style.display='none';
-    document.getElementById('treasuryFallback').style.display='flex';
-    document.getElementById('treasuryFallback').style.flexDirection='column';
-    document.getElementById('treasuryFallback').style.alignItems='center';
-  };
-  // Завантажуємо зображення що було завантажено разом з файлом
-  img.src='photo_2026-04-06_23-14-27.jpg';
-})();
-
-// ── AUTO-REFRESH (кожні 60 сек якщо сторінка активна) ──
+// ── AUTO-REFRESH ──
 let autoRefreshTimer=null;
 function startAutoRefresh(){
   if(autoRefreshTimer) clearInterval(autoRefreshTimer);
   autoRefreshTimer=setInterval(async()=>{
     if(document.hidden) return;
-    // Скидаємо TTL кешу щоб при наступному переходу дані підтягнулися
     const now=Date.now();
     if(now-cache.history.at>CACHE_TTL) cache.history.at=0;
     if(now-cache.roster.at>CACHE_TTL) cache.roster.at=0;
@@ -1907,12 +2107,12 @@ function startAutoRefresh(){
 }
 document.addEventListener('visibilitychange',()=>{
   if(!document.hidden&&me){
-    // При поверненні на вкладку — оновлюємо дані
     cache.history.at=0;
     cache.roster.at=0;
     cache.rh.at=0;
   }
 });
+startAutoRefresh();
 </script>
 </body>
 </html>
