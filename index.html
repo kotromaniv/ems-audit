@@ -42,7 +42,7 @@ aside{position:fixed;left:0;top:0;bottom:0;width:230px;background:var(--sidebar)
 .user-info .ur{font-size:10px;color:var(--txts2);}
 
 main{margin-left:230px;min-height:100vh;}
-.page{display:none;padding:36px 32px 80px;max-width:1180px;margin:0 auto;}
+.page{display:none;padding:36px 32px 80px;max-width:100%;}
 .page.on{display:block;}
 .ptitle{margin-bottom:28px;}
 .ptitle h2{font-size:26px;font-weight:800;color:var(--c);letter-spacing:-.5px;}
@@ -123,44 +123,64 @@ main{margin-left:230px;min-height:100vh;}
 .mobile-nav{display:none;}
 
 /* Treasury Styles */
-.treasury-container {
+.treasury-dashboard {
   background: var(--bg2);
-  border: 1px solid var(--border);
   border-radius: var(--rad);
-  padding: 28px;
-  box-shadow: var(--shadow);
-  max-width: 800px;
-  margin: 0 auto;
+  overflow: hidden;
+  box-shadow: var(--shadow2);
+  margin-bottom: 28px;
 }
 .treasury-header {
+  background: linear-gradient(135deg, var(--sidebar), var(--sidebar2));
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(220,20,60,.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--bg3);
-  padding: 16px 20px;
-  border-radius: var(--rad2);
-  margin-bottom: 28px;
   flex-wrap: wrap;
+  gap: 16px;
+}
+.treasury-balance-box {
+  display: flex;
+  align-items: baseline;
   gap: 12px;
 }
-.treasury-balance {
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--c);
+.treasury-balance-label {
+  font-size: 12px;
+  color: var(--txts2);
+  letter-spacing: 1px;
 }
-.treasury-balance span {
+.treasury-balance {
+  font-size: 32px;
+  font-weight: 800;
+  color: #ff8fa3;
+  letter-spacing: -0.5px;
+}
+.treasury-balance small {
   font-size: 14px;
   font-weight: 500;
-  color: var(--txt2);
-  margin-right: 8px;
+  color: var(--txts2);
+}
+.treasury-history {
+  padding: 20px 24px;
+}
+.treasury-history-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .treasury-login {
-  max-width: 380px;
+  max-width: 400px;
   margin: 0 auto;
   text-align: center;
-}
-.treasury-login .clbl {
-  justify-content: center;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--rad);
+  padding: 32px;
 }
 .treasury-panel {
   display: none;
@@ -217,29 +237,59 @@ main{margin-left:230px;min-height:100vh;}
   text-align: right;
   letter-spacing: 0.5px;
 }
-
-/* Player history timeline */
-.ph-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border3);}
-.ph-row:last-child{border-bottom:none;}
-.ph-date{font-size:10px;color:var(--txt3);font-family:monospace;white-space:nowrap;min-width:90px;padding-top:3px;}
-.ph-badge{flex-shrink:0;}
-.ph-detail{font-size:12px;font-weight:600;color:var(--txt);margin-bottom:2px;}
-.ph-init{font-size:10px;color:var(--txt3);}
-.ph-actions{display:flex;gap:4px;margin-left:auto;flex-shrink:0;}
-
-/* Leaderboard cards */
-.lb-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:14px 16px;cursor:pointer;transition:.15s;}
-.lb-card:hover{border-color:var(--border2);background:var(--bg4);}
-
-/* Stats adjust controls */
-.stat-adj-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border3);font-size:12px;}
-.stat-adj-row:last-child{border-bottom:none;}
-.stat-adj-controls{display:flex;align-items:center;gap:6px;}
+.treasury-history-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+.treasury-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border3);
+  gap: 12px;
+  font-size: 12px;
+}
+.treasury-history-item:last-child {
+  border-bottom: none;
+}
+.treasury-history-date {
+  min-width: 100px;
+  color: var(--txt3);
+  font-family: monospace;
+  font-size: 10px;
+}
+.treasury-history-details {
+  flex: 1;
+}
+.treasury-history-type {
+  font-weight: 700;
+  color: var(--txt);
+  margin-bottom: 4px;
+}
+.treasury-history-type.sync { color: var(--g); }
+.treasury-history-type.employee { color: var(--c); }
+.treasury-history-type.department { color: #8b5020; }
+.treasury-history-meta {
+  font-size: 10px;
+  color: var(--txt2);
+  margin-top: 2px;
+}
+.treasury-history-amount {
+  font-weight: 700;
+  font-family: monospace;
+  white-space: nowrap;
+}
+.treasury-history-amount.plus { color: var(--g); }
+.treasury-history-amount.minus { color: var(--c); }
 
 @media(max-width:900px){aside{display:none;} main{margin-left:0;} .mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--sidebar);border-top:1px solid rgba(220,20,60,.25);z-index:50;height:var(--mob-nav-h);overflow-x:auto;-webkit-overflow-scrolling:touch;} .mnav{flex:1;min-width:64px;padding:8px 4px 6px;border:none;background:transparent;color:var(--txts2);font:600 10px/1.2 'Inter',sans-serif;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:.15s;} .mnav svg{width:18px;height:18px;opacity:.6;} .mnav.on{color:#ff8fa3;} .mnav.on svg{opacity:1;} .page{padding:16px 14px calc(var(--mob-nav-h) + 20px);} .ptitle h2{font-size:20px;} .ptitle{margin-bottom:18px;} .g2,.g3,.g4,.stat3,.player-grid{grid-template-columns:1fr;} .roster-row{grid-template-columns:1fr 1fr;gap:0;} .roster-row .rcell:nth-child(n+4){display:none;} .roster-row .rcell:last-child{display:flex;justify-content:flex-end;} .sbar{flex-direction:column;align-items:stretch;} .btns{width:100%;} .btns .btn{flex:1;justify-content:center;} .apills{gap:6px;} .apill{padding:8px 12px;font-size:11px;} .card{padding:16px;} .modal{padding:18px;} .mh h3{font-size:15px;} .topbar{gap:6px;} #toast{bottom:calc(var(--mob-nav-h) + 10px);right:12px;left:12px;max-width:none;}
 .treasury-header { flex-direction: column; align-items: stretch; text-align: center; }
+.treasury-balance-box { justify-content: center; }
 .treasury-type-buttons { flex-direction: column; }
 .treasury-dep-buttons { justify-content: center; }
+.treasury-history-item { flex-direction: column; }
+.treasury-history-date { min-width: auto; }
 }
 @media(max-width:480px){.g2{grid-template-columns:1fr;} .stat3{grid-template-columns:1fr 1fr;} .g4{grid-template-columns:1fr 1fr;} .player-tabs{gap:6px;} .player-tab{padding:6px 10px;font-size:10px;}
 }
@@ -254,7 +304,7 @@ main{margin-left:230px;min-height:100vh;}
       <div class="logo-box">EMS</div>
       <div><div style="font-size:16px;font-weight:800;color:var(--txt);">EMS Фракція</div><div style="font-size:11px;color:var(--txt2);">Система управління</div></div>
     </div>
-    <h2>Вхiд у систему</h2>
+    <h2>Вхід у систему</h2>
     <p>Введіть ваш особистий логін виданий адміністратором</p>
     <div class="field" style="margin-bottom:12px;"><label>Логін</label><input class="inp" id="loginInp" placeholder="Введіть логін..." onkeydown="if(event.key==='Enter')doLogin()"></div>
     <p id="loginErr" style="color:var(--c);font-size:12px;display:none;margin-bottom:10px;"></p>
@@ -458,21 +508,34 @@ main{margin-left:230px;min-height:100vh;}
 <!-- TREASURY (NEW) -->
 <div class="page" id="page-treasury">
   <div class="ptitle"><h2>📦 EMS Казна</h2><p>Управління фінансами та преміювання</p></div>
-  <div class="treasury-container">
-    <div id="treasuryLoginSection" class="treasury-login">
-      <div class="clbl" style="justify-content:center;">🔐 Доступ до казни</div>
-      <div class="field"><label>Логін</label><input class="inp" id="treasuryLogin" placeholder="Ваш логін..."></div>
-      <div class="field"><label>Пароль</label><input class="inp" id="treasuryPass" type="password" placeholder="Ваш пароль..."></div>
-      <button class="btn btn-p" style="width:100%;margin-top:12px;" onclick="accessTreasury()">Увійти в казну</button>
-      <p id="treasuryErr" style="color:var(--c);font-size:11px;margin-top:12px;display:none;"></p>
-    </div>
-    <div id="treasuryPanel" class="treasury-panel">
+  <div id="treasuryLoginSection" class="treasury-login" style="max-width:100%;">
+    <div class="clbl" style="justify-content:center;">🔐 Доступ до казни</div>
+    <div class="field"><label>Логін</label><input class="inp" id="treasuryLogin" placeholder="Ваш логін..."></div>
+    <div class="field"><label>Пароль</label><input class="inp" id="treasuryPass" type="password" placeholder="Ваш пароль..."></div>
+    <button class="btn btn-p" style="width:100%;margin-top:12px;" onclick="accessTreasury()">Увійти в казну</button>
+    <p id="treasuryErr" style="color:var(--c);font-size:11px;margin-top:12px;display:none;"></p>
+  </div>
+  <div id="treasuryPanel" style="display:none;">
+    <div class="treasury-dashboard">
       <div class="treasury-header">
-        <div class="clbl" style="margin:0;">💰 Поточний баланс казни</div>
-        <div class="treasury-balance"><span>$</span> <span id="treasuryBalance">0</span></div>
-        <button class="btn btn-o btn-sm" onclick="openSyncModal()">🔄 Синхронізувати казну</button>
+        <div class="treasury-balance-box">
+          <span class="treasury-balance-label">💰 Поточний баланс</span>
+          <span class="treasury-balance"><span id="treasuryBalance">0</span> <small>$</small></span>
+        </div>
+        <button class="btn btn-o btn-sm" onclick="openSyncModal()">➕ Синхронізувати казну</button>
       </div>
-      <div class="clbl">Синхронізація</div>
+      <div class="treasury-history">
+        <div class="treasury-history-title">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="14" height="14"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Історія операцій
+        </div>
+        <div id="treasuryHistoryList" class="treasury-history-list">
+          <div class="loading"><div class="spin"></div><br>Завантаження...</div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:0;">
+      <div class="clbl">Синхронізація даних</div>
       <div class="g2" style="margin-bottom:20px;">
         <div class="field"><label>Ваш нікнейм</label><input class="inp" id="treasuryNick" readonly></div>
         <div class="field"><label>Ваш Static ID</label><input class="inp" id="treasurySid" readonly></div>
@@ -600,15 +663,13 @@ main{margin-left:230px;min-height:100vh;}
   </div>
 </div>
 
-<!-- MODAL: Картка гравця (БЕЗ НОТАТОК) -->
+<!-- MODAL: Картка гравця -->
 <div class="overlay" id="playerOv">
   <div class="modal lg">
     <div class="mh">
       <h3 id="playerModalTitle">Картка гравця</h3>
       <div style="display:flex;gap:8px;align-items:center;">
-        <button class="btn btn-o btn-sm" id="playerHistBtn" onclick="openPlayerHistory()">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Історія
-        </button>
+        <button class="btn btn-o btn-sm" onclick="openPlayerHistory()">📜 Історія</button>
         <button class="btn btn-d btn-sm" onclick="openRemoveRosterMember()">Видалити</button>
         <button class="mx" onclick="closeM('playerOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
@@ -632,7 +693,7 @@ main{margin-left:230px;min-height:100vh;}
               <option value="EMA">EMA</option><option value="TD">TD</option>
               <option value="INT">INT</option><option value="S.S">S.S</option><option value="Академія">Академія</option>
             </select>
-            <button class="btn btn-p btn-sm" style="margin-left:6px;white-space:nowrap;" onclick="saveEditDep()">OK</button>
+            <button class="btn btn-p btn-sm" onclick="saveEditDep()">OK</button>
           </div>
           <div class="action-row" style="margin-top:10px;">
             <label>Попередження</label>
@@ -686,7 +747,7 @@ main{margin-left:230px;min-height:100vh;}
   </div>
 </div>
 
-<!-- MODAL: Історія підвищень співробітника (КД) -->
+<!-- MODAL: Історія підвищень -->
 <div class="overlay" id="empPromoHistOv">
   <div class="modal md">
     <div class="mh">
@@ -705,20 +766,20 @@ main{margin-left:230px;min-height:100vh;}
       <button class="mx" onclick="closeM('syncTreasuryOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="field" style="margin-bottom:12px;">
-      <label>NickName (той, хто проводить синхронізацію)</label>
+      <label>NickName (ініціатор)</label>
       <input class="inp" id="syncNick" readonly>
     </div>
     <div class="field" style="margin-bottom:12px;">
-      <label>StaticID (той, хто проводить синхронізацію)</label>
+      <label>StaticID (ініціатор)</label>
       <input class="inp" id="syncSid" readonly>
     </div>
     <div class="field" style="margin-bottom:12px;">
       <label>Поточна сума коштів в казні ($)</label>
-      <input class="inp" id="syncCurrentBalance" type="text" placeholder="0" oninput="formatNumberInput(this)">
+      <input class="inp" id="syncCurrentBalance" type="text" readonly>
     </div>
     <div class="field" style="margin-bottom:12px;">
       <label>Яку суму ви додаєте в казну ($)</label>
-      <input class="inp" id="syncAddAmount" type="text" placeholder="0" oninput="formatNumberInput(this)">
+      <input class="inp" id="syncAddAmount" type="text" placeholder="Введіть суму..." oninput="formatNumberInput(this)">
     </div>
     <div class="field" style="margin-bottom:12px;">
       <label>Дата-час</label>
@@ -731,7 +792,7 @@ main{margin-left:230px;min-height:100vh;}
   </div>
 </div>
 
-<!-- MODAL: Видалити учасника з планшету -->
+<!-- MODAL: Видалити учасника -->
 <div class="overlay" id="removeRosterOv">
   <div class="modal sm">
     <div class="mh"><h3>Видалити учасника</h3><button class="mx" onclick="closeM('removeRosterOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
@@ -759,7 +820,7 @@ main{margin-left:230px;min-height:100vh;}
   </div>
 </div>
 
-<!-- MODAL: Очистити журнал змін планшету -->
+<!-- MODAL: Очистити журнал змін -->
 <div class="overlay" id="clearRosterHistoryOv">
   <div class="modal sm">
     <div class="mh"><h3>🗑️ Очистити журнал планшету</h3><button class="mx" onclick="closeM('clearRosterHistoryOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
@@ -794,7 +855,7 @@ main{margin-left:230px;min-height:100vh;}
   </div>
 </div>
 
-<!-- MODAL: Статистика ініціатора (з корекцією) -->
+<!-- MODAL: Статистика ініціатора -->
 <div class="overlay" id="initiatorOv">
   <div class="modal sm">
     <div class="mh">
@@ -826,13 +887,14 @@ const cache={roster:{at:0,data:null},rh:{at:0,data:null},history:{at:0,data:null
 const pendingCounter={warnings:false,sanctions:false};
 const PER=15;
 
-// --- Treasury State ---
+// Treasury State
 let treasuryAccessGranted = false;
 let treasuryCurrentType = 'employee';
 let treasurySelectedDep = '';
 let currentTreasuryBalance = 0;
+let treasuryHistory = [];
 
-// ── ФІКСОВАНА KYIV TIMEZONE КОНВЕРТАЦІЯ ──
+// ── ФІКСОВАНА KYIV TIMEZONE ──
 function fmtKyiv(d){
   if(!(d instanceof Date)||isNaN(d)) return '—';
   return d.toLocaleString('uk-UA',{timeZone:'Europe/Kyiv',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
@@ -844,11 +906,8 @@ function fmtKyivLong(d){
 function addHoursUTC(date, hours){
   return new Date(date.getTime() + hours * 3600000);
 }
-function getKyivTimeStr(utcDate){
-  return fmtKyiv(utcDate);
-}
 
-// ── Helper: Format number with dots ──
+// Helper: Format number with dots
 function formatNumberInput(el) {
   let val = el.value.replace(/[^0-9]/g, '');
   if (val === '') val = '0';
@@ -933,16 +992,16 @@ async function openEmpPromotionHistory(){
   openM('empPromoHistOv');
 }
 
-// ── LOGIN ──
+// ── LOGIN (тільки логін) ──
 async function doLogin(){
   const login=document.getElementById('loginInp').value.trim();
   if(!login) return showLoginErr('Введіть логін');
   const btn=document.getElementById('loginBtn');
   btn.disabled=true;btn.innerHTML='<span class="spin"></span> Перевірка...';
   try{
-    const r=await call('login',{login});
+    const r=await call('loginSimple',{login});
     if(r.success) enterSession(r.user);
-    else showLoginErr(r.error||'Невірний код підтвердження');
+    else showLoginErr(r.error||'Невірний логін');
   }catch(e){showLoginErr(humanizeErr(e));}
   btn.disabled=false;
   btn.innerHTML='<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Увійти';
@@ -955,7 +1014,6 @@ function enterSession(user){
   document.getElementById('sideAv').textContent=(me.nick||me.login)[0].toUpperCase();
   document.getElementById('sideRole').textContent=me.isAdmin?'Керівник':'Співробітник';
   loadPlayers();
-  loadTreasuryBalance();
 }
 
 // ── NAV ──
@@ -980,6 +1038,7 @@ function goPage(page){
       document.getElementById('treasuryPanel').style.display='block';
       syncTreasuryUserInfo();
       loadTreasuryBalance();
+      loadTreasuryHistory();
     } else {
       document.getElementById('treasuryLoginSection').style.display='block';
       document.getElementById('treasuryPanel').style.display='none';
@@ -1733,7 +1792,7 @@ function renderR(){
   }).join('');
 }
 
-// ── PLAYER MODAL (NO NOTES) ──
+// ── PLAYER MODAL ──
 function openPlayer(nick){
   const p=allR.find(x=>x.nick===nick);
   if(!p) return;
@@ -1958,6 +2017,7 @@ async function accessTreasury(){
       document.getElementById('treasuryPanel').style.display='block';
       syncTreasuryUserInfo();
       await loadTreasuryBalance();
+      await loadTreasuryHistory();
       document.getElementById('treasuryErr').style.display='none';
       toast('Доступ до казни надано','ok');
     } else {
@@ -1979,6 +2039,53 @@ async function loadTreasuryBalance(){
       document.getElementById('treasuryBalance').innerText = currentTreasuryBalance.toLocaleString('en-US');
     }
   } catch(e){ console.warn(e); }
+}
+async function loadTreasuryHistory(){
+  try{
+    const r=await call('getTreasuryHistory');
+    if(r.success && r.history){
+      treasuryHistory = r.history;
+      const container = document.getElementById('treasuryHistoryList');
+      if(!treasuryHistory.length){
+        container.innerHTML = '<div class="empty" style="padding:24px;">Історія операцій порожня</div>';
+        return;
+      }
+      container.innerHTML = treasuryHistory.map(h => {
+        const dt = fmtKyiv(new Date(h.date));
+        let typeClass = '';
+        let typeText = '';
+        let amountClass = '';
+        if(h.type === 'sync'){
+          typeClass = 'sync';
+          typeText = '➕ Синхронізація казни';
+          amountClass = 'plus';
+        } else if(h.type === 'employee'){
+          typeClass = 'employee';
+          typeText = `💵 Видача премії: ${h.empNick || h.empSid}`;
+          amountClass = 'minus';
+        } else {
+          typeClass = 'department';
+          typeText = `🏢 Виділення коштів: ${h.department}`;
+          amountClass = 'minus';
+        }
+        const amount = (h.amount || 0).toLocaleString('en-US');
+        const sign = h.type === 'sync' ? '+' : '-';
+        return `<div class="treasury-history-item">
+          <div class="treasury-history-date">${dt}</div>
+          <div class="treasury-history-details">
+            <div class="treasury-history-type ${typeClass}">${typeText}</div>
+            <div class="treasury-history-meta">Ініціатор: ${h.initNick || h.initSid || '—'}${h.reason ? ` · ${h.reason}` : ''}</div>
+          </div>
+          <div class="treasury-history-amount ${amountClass}">${sign} $${amount}</div>
+        </div>`;
+      }).join('');
+    } else {
+      document.getElementById('treasuryHistoryList').innerHTML = '<div class="empty">Не вдалося завантажити історію</div>';
+    }
+  } catch(e){
+    console.warn(e);
+    document.getElementById('treasuryHistoryList').innerHTML = '<div class="empty">Помилка завантаження історії</div>';
+  }
 }
 function syncTreasuryUserInfo(){
   const myPlayer = players.find(p => p.login === me?.login);
@@ -2049,6 +2156,7 @@ async function submitTreasuryOperation(){
         treasurySelectedDep='';
       }
       await loadTreasuryBalance();
+      await loadTreasuryHistory();
     } else toast(r.error || 'Помилка операції','err');
   } catch(e){ toast('Помилка з\'єднання','err'); }
   finally { btn.disabled=false; btn.innerHTML='✅ Підтвердити операцію'; }
@@ -2104,6 +2212,7 @@ async function confirmSyncTreasury(){
       toast('Казну синхронізовано!','ok');
       closeM('syncTreasuryOv');
       await loadTreasuryBalance();
+      await loadTreasuryHistory();
     } else toast(r.error || 'Помилка синхронізації','err');
   } catch(e){ toast('Помилка з\'єднання','err'); }
   finally { btn.disabled=false; btn.innerHTML='✅ Підтвердити синхронізацію'; }
