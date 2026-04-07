@@ -495,7 +495,7 @@ main{margin-left:230px;min-height:100vh;}
   <div class="card" style="padding:0;overflow:hidden;">
     <div id="rhLoad" class="loading"><div class="spin"></div><br>Завантаження...</div>
     <div id="rhWrap" style="display:none;">
-      <div class="tbl-wrap"><table>
+      <div class="tbl-wrap"></table>
         <thead><tr><th>Дата</th><th>Ініціатор</th><th>Гравець</th><th>Зміна</th><th>Деталі</th><th></th></tr></thead>
         <tbody id="rhBody"></tbody>
       </table></div>
@@ -992,14 +992,14 @@ async function openEmpPromotionHistory(){
   openM('empPromoHistOv');
 }
 
-// ── LOGIN (тільки логін) ──
+// ── LOGIN (тільки логін, без пароля) ──
 async function doLogin(){
   const login=document.getElementById('loginInp').value.trim();
   if(!login) return showLoginErr('Введіть логін');
   const btn=document.getElementById('loginBtn');
   btn.disabled=true;btn.innerHTML='<span class="spin"></span> Перевірка...';
   try{
-    const r=await call('loginSimple',{login});
+    const r=await call('login',{login}); // Використовуємо стандартний login, але без пароля (сервер має пропускати)
     if(r.success) enterSession(r.user);
     else showLoginErr(r.error||'Невірний логін');
   }catch(e){showLoginErr(humanizeErr(e));}
