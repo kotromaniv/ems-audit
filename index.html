@@ -585,8 +585,6 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
       <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>Скинути
     </button>
   </div>
-
-  <!-- Stat cards -->
   <div class="stat3">
     <div class="sbox">
       <div class="si si-b"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
@@ -604,7 +602,6 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
       <div class="snum" style="color:#ff4444" id="stFW">—</div>
     </div>
   </div>
-
   <div class="clbl" style="margin-bottom:10px;">Тижневі зміни</div>
   <div class="g4" style="margin-bottom:24px;">
     <div class="wbox"><div class="wnum" style="color:var(--g)" id="wH">—</div><div class="wlbl">Прийнято</div></div>
@@ -612,7 +609,6 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
     <div class="wbox"><div class="wnum" style="color:var(--c)" id="wT">—</div><div class="wlbl">Переведено</div></div>
     <div class="wbox"><div class="wnum" style="color:var(--txt2)" id="wAll">—</div><div class="wlbl">Всього дій</div></div>
   </div>
-
   <div class="clbl" style="margin-bottom:12px;">Топ ініціаторів тижня</div>
   <div id="lb" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:28px;"></div>
 </div>
@@ -1027,7 +1023,7 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
 
 <script>
 /* ══════════════════════════════════════════════════════════
-   EMS — Повний JavaScript
+   EMS — Повний JavaScript з виправленою логікою КД
    ══════════════════════════════════════════════════════════ */
 
 const API = 'https://script.google.com/macros/s/AKfycbxCxiJnwm1yuh7gfSsJRhb1ZnrYzHCE8MKa17G3qg3AYghuVpX-gr83OphnDVo9uchK/exec';
@@ -1038,11 +1034,15 @@ const ABCL = {hired:'bh',transfer:'bt',fired:'bf'};
 
 /*
  * КД між підвищеннями (години).
- * Ключ = ранг, ЯКИЙ ЩОЙНО ОТРИМАЛА ЛЮДИНА.
- * Значення = скільки годин треба до наступного підвищення.
+ * Ключ = ранг, ЯКИЙ ЩОЙНО ОТРИМАЛА ЛЮДИНА (тобто новий ранг після підвищення).
+ * Значення = скільки годин треба витримати перед НАСТУПНИМ підвищенням.
+ *
+ * При підвищенні через кілька рангів одразу —
+ * КД = сума КД всіх пройдених проміжних рангів (від lastRank до newRank-1 включно).
+ * Приклад: [2]→[5] = CD[2] + CD[3] + CD[4] = 24 + 24 + 48 = 96 год
  */
 const PROMO_CD = {
-  1: 0,    // Студент → одразу можна далі
+  1: 0,    // Студент → немає КД
   2: 24,   // Інтерн → 24г КД
   3: 24,   // Парамедик → 24г КД
   4: 48,   // Фельдшер → 48г КД
@@ -1051,6 +1051,24 @@ const PROMO_CD = {
   7: 96,   // Спеціаліст → 96г КД
   8: 96    // Заст.зав.відділу → 96г КД
 };
+
+/**
+ * Обчислює сумарний КД для підвищення з fromRank до toRank.
+ * При підвищенні на 1: CD[fromRank]
+ * При підвищенні через кілька: sum(CD[fromRank], CD[fromRank+1], ..., CD[toRank-1])
+ *
+ * Логіка: коли людина стрибає одразу через кілька рангів,
+ * вважаємо що вона "пропустила" КД кожного проміжного рангу.
+ * Тому сумуємо КД всіх рангів від fromRank до toRank-1 включно.
+ */
+function calcTotalCd(fromRank, toRank) {
+  if (toRank <= fromRank) return 0;
+  let total = 0;
+  for (let r = fromRank; r < toRank; r++) {
+    total += (PROMO_CD[r] || 0);
+  }
+  return total;
+}
 
 let me = null, players = [], allH = [], filtH = [], curHF = 'all', curHPg = 1;
 let allR = [], filtR = [], curRF = 'all';
@@ -1093,7 +1111,6 @@ function fmtKyivLong(d) {
 }
 
 function parseKyivDate(str) {
-  // Handles ISO strings and various formats
   if (!str) return null;
   const d = new Date(str);
   return isNaN(d) ? null : d;
@@ -1104,7 +1121,6 @@ function formatCdAvailableAt(value) {
   if (value instanceof Date) return fmtKyiv(value);
   if (typeof value === 'string') {
     const s = value.trim();
-    // If backend already sent a localized datetime string, keep it as-is.
     if (/^\d{2}\.\d{2}\.\d{4}(,\s*\d{2}:\d{2})?$/.test(s)) return s;
     const parsed = parseKyivDate(s);
     return parsed ? fmtKyiv(parsed) : s;
@@ -1139,14 +1155,14 @@ async function runCdCheck() {
 
   const newRank = parseInt(newRankVal);
 
-  // Check CD from local history first (faster)
+  // Спочатку перевіряємо локально (швидко)
   const localCd = checkCdLocal(empNick, empSid, newRank);
   if (localCd.onCooldown) {
     showCdBanner(empNick, localCd, banner, submitBtn);
     return;
   }
 
-  // Also check from server
+  // Також перевіряємо на сервері (актуальні дані)
   try {
     const r = await call('checkCooldown', {empNick, empSid, newRank: newRankVal});
     if (r.onCooldown) {
@@ -1166,28 +1182,50 @@ async function runCdCheck() {
 }
 
 function showCdBanner(empNick, cdResult, banner, submitBtn) {
+  if (cdResult && cdResult.reason) {
+    document.getElementById('cdMsg').innerHTML =
+      `<strong>${empNick}</strong>: ${cdResult.reason}`;
+    banner.style.display = 'block';
+    if (submitBtn) submitBtn.disabled = true;
+    return;
+  }
+  const availAt = fmtKyiv(cdResult.availableAt);
+  const skip = cdResult.skippedRanks > 0
+    ? ` (підвищення через ${cdResult.skippedRanks + 1} ранги, сумарний КД: ${cdResult.totalCdHours} год)`
+    : ` (КД: ${cdResult.totalCdHours} год)`;
   document.getElementById('cdMsg').innerHTML =
-    `<strong>${empNick}</strong> може бути підвищений не раніше ніж: <strong>${fmtKyiv(cdResult.availableAt)}</strong> (за Києвом).`;
+    `<strong>${empNick}</strong> може бути підвищений не раніше ніж: <strong>${availAt}</strong> (за Києвом).${skip}`;
   banner.style.display = 'block';
   if (submitBtn) submitBtn.disabled = true;
 }
 
+/**
+ * ВИПРАВЛЕНА функція checkCdLocal.
+ *
+ * Алгоритм:
+ * 1. Знаходимо останню подію підвищення/прийому для цього співробітника
+ * 2. Визначаємо ранг, який він мав після тієї події (lastRank)
+ * 3. Рахуємо totalCdHours = calcTotalCd(lastRank, newRank)
+ *    — якщо newRank == lastRank+1: це звичайний КД одного рангу
+ *    — якщо newRank > lastRank+1: сумуємо КД всіх пропущених рангів
+ * 4. Визначаємо availableAt = lastEventDate + totalCdHours
+ * 5. Якщо now < availableAt → onCooldown = true
+ */
 function checkCdLocal(empNick, empSid, newRank) {
   if (!allRH.length && !allH.length) return {onCooldown: false};
 
-  // Find last promotion event for this person
   const sid = String(empSid || '');
   let lastDate = null;
   let lastRank = null;
 
-  // Check roster history
+  // Шукаємо в журналі планшету
   for (const r of allRH) {
     if (r.nick !== empNick && (!sid || String(r.sid || '') !== sid)) continue;
     const change = r.change || '';
     if (!change.includes('Прийнято') && !change.includes('Переведено')) continue;
     const d = parseKyivDate(r.date);
     if (!d) continue;
-    // Extract rank from details
+    // Витягуємо ранг з деталей
     const details = r.details || '';
     const rankMatch = details.match(/\[(\d+)\][^\[→]*$/);
     const rank = rankMatch ? parseInt(rankMatch[1]) : null;
@@ -1197,7 +1235,7 @@ function checkCdLocal(empNick, empSid, newRank) {
     }
   }
 
-  // Also check audit history
+  // Шукаємо в журналі аудиту
   for (const r of allH) {
     if (r.empNick !== empNick && (!sid || String(r.empSid || '') !== sid)) continue;
     if (r.action !== 'hired' && r.action !== 'transfer') continue;
@@ -1213,15 +1251,25 @@ function checkCdLocal(empNick, empSid, newRank) {
   if (!lastDate || lastRank === null) return {onCooldown: false};
   if (newRank <= lastRank) return {onCooldown: false};
 
-  const cdHours = PROMO_CD[lastRank];
-  if (cdHours === undefined || cdHours === 0) return {onCooldown: false};
+  // ── ГОЛОВНА ЛОГІКА КД ──
+  // Рахуємо сумарний КД від lastRank до newRank
+  const totalCdHours = calcTotalCd(lastRank, newRank);
 
-  const availableAt = addHours(lastDate, cdHours);
+  if (totalCdHours === 0) return {onCooldown: false};
+
+  const availableAt = addHours(lastDate, totalCdHours);
   const now = new Date();
 
   if (now >= availableAt) return {onCooldown: false};
 
-  return {onCooldown: true, availableAt, lastRank, lastRankName: RANKS[lastRank] || ''};
+  return {
+    onCooldown: true,
+    availableAt,
+    lastRank,
+    lastRankName: RANKS[lastRank] || '',
+    totalCdHours,
+    skippedRanks: newRank - lastRank - 1  // кількість пропущених рангів (0 якщо +1)
+  };
 }
 
 async function openEmpPromotionHistory() {
@@ -1234,7 +1282,6 @@ async function openEmpPromotionHistory() {
 
   const promoEvents = [];
 
-  // From audit history
   for (const r of allH) {
     if (r.empNick !== nick && String(r.empSid || '') !== sid) continue;
     if (r.action !== 'hired' && r.action !== 'transfer') continue;
@@ -1253,19 +1300,30 @@ async function openEmpPromotionHistory() {
 
   document.getElementById('empPromoTitle').textContent = `📜 Підвищення: ${nick || sid}`;
 
-  const html = promoEvents.map((e, idx) => {
+  const html = promoEvents.map((e) => {
     const pR = e.prevRank != null ? `[${e.prevRank}] ${RANKS[e.prevRank] || ''}` : null;
     const nR = e.newRank != null ? `[${e.newRank}] ${RANKS[e.newRank] || ''}` : null;
     const rankChange = pR && nR ? `${pR} → ${nR}` : (nR || pR || '—');
-    const rankNum = e.newRank != null ? e.newRank : (e.prevRank != null ? e.prevRank : null);
+    const rankNum = e.newRank != null ? e.newRank : null;
+    const prevNum = e.prevRank != null ? e.prevRank : null;
 
-    // Calculate CD that was set by this promotion
+    // Обчислюємо КД для цього переходу
     let cdInfo = '';
-    if (rankNum !== null && PROMO_CD[rankNum] !== undefined) {
-      const cdH = PROMO_CD[rankNum];
+    if (rankNum !== null && prevNum !== null && rankNum > prevNum) {
+      const cdH = calcTotalCd(prevNum, rankNum);
+      const skipped = rankNum - prevNum - 1;
       if (cdH === 0) {
         cdInfo = `<div class="promo-cd-info">КД: немає обмежень</div>`;
       } else if (e.date) {
+        const nextAt = addHours(e.date, cdH);
+        const isExpired = new Date() >= nextAt;
+        const skipNote = skipped > 0 ? ` · стрибок через ${skipped + 1} ранги (сума КД: ${cdH} год)` : ``;
+        cdInfo = `<div class="promo-cd-info" style="${isExpired ? 'color:var(--txt3);background:var(--bg3);border-color:var(--border)' : ''}">КД: ${cdH} год${skipNote}${isExpired ? ` · минув ${fmtKyiv(nextAt)}` : ` · до ${fmtKyiv(nextAt)}`}</div>`;
+      }
+    } else if (rankNum !== null && prevNum === null) {
+      // hired without previous rank
+      const cdH = PROMO_CD[rankNum] || 0;
+      if (cdH > 0 && e.date) {
         const nextAt = addHours(e.date, cdH);
         const isExpired = new Date() >= nextAt;
         cdInfo = `<div class="promo-cd-info" style="${isExpired ? 'color:var(--txt3);background:var(--bg3);border-color:var(--border)' : ''}">КД: ${cdH} год${isExpired ? ` · минув ${fmtKyiv(nextAt)}` : ` · до ${fmtKyiv(nextAt)}`}</div>`;
@@ -1286,15 +1344,31 @@ async function openEmpPromotionHistory() {
   openM('empPromoHistOv');
 }
 
-// Compute next promo time given the newRank just assigned and current time
-function computeNextPromoTime(newRank, promotionDate) {
+/**
+ * Обчислює КД після підвищення на newRank.
+ * Якщо є prevRank — рахуємо сумарний КД від prevRank до newRank.
+ * Якщо немає prevRank — беремо КД тільки newRank.
+ */
+function computeNextPromoTime(newRank, prevRank, promotionDate) {
   const nr = parseInt(newRank);
   if (isNaN(nr)) return null;
-  const cdH = PROMO_CD[nr];
-  if (cdH === undefined || cdH === 0) return {hours: 0, availableAt: null};
   const base = promotionDate instanceof Date ? promotionDate : new Date();
-  const availableAt = addHours(base, cdH);
-  return {hours: cdH, availableAt};
+
+  let cdHours;
+  if (prevRank !== undefined && prevRank !== null && prevRank !== '') {
+    const pr = parseInt(prevRank);
+    if (!isNaN(pr) && nr > pr) {
+      cdHours = calcTotalCd(pr, nr);
+    } else {
+      cdHours = PROMO_CD[nr] || 0;
+    }
+  } else {
+    cdHours = PROMO_CD[nr] || 0;
+  }
+
+  if (!cdHours) return {hours: 0, availableAt: null};
+  const availableAt = addHours(base, cdHours);
+  return {hours: cdHours, availableAt};
 }
 
 // ── LOGIN ─────────────────────────────────────────────────
@@ -1520,10 +1594,15 @@ function openConfirmModal() {
 
   const pi = document.getElementById('promoInfo');
   if ((curAct === 'transfer' || curAct === 'hired') && newRank !== '') {
-    const promoResult = computeNextPromoTime(newRank, new Date());
+    const promoResult = computeNextPromoTime(newRank, prevRank, new Date());
     if (promoResult && promoResult.hours > 0) {
+      const skipped = prevRank !== '' ? Math.max(0, parseInt(newRank) - parseInt(prevRank) - 1) : 0;
+      const skipNote = skipped > 0
+        ? `<div style="font-size:11px;color:var(--gold);margin-top:4px;">⚡ Стрибок через ${skipped + 1} ранги — сумарний КД: ${promoResult.hours} год</div>`
+        : '';
       pi.innerHTML = `<div style="font-weight:700;font-size:12px;color:var(--g);margin-bottom:4px;">⏱️ КД після підвищення: ${promoResult.hours} год</div>
-        <div style="font-size:11px;color:var(--txt2);">Наступне підвищення буде доступне: <strong>${fmtKyiv(promoResult.availableAt)}</strong> (за Києвом)</div>`;
+        <div style="font-size:11px;color:var(--txt2);">Наступне підвищення буде доступне: <strong>${fmtKyiv(promoResult.availableAt)}</strong> (за Києвом)</div>
+        ${skipNote}`;
       pi.style.display = 'block';
     } else {
       pi.style.display = 'none';
@@ -1557,7 +1636,6 @@ async function submitAudit() {
       return;
     }
 
-    // ВИПРАВЛЕННЯ: при підвищенні НЕ виставляємо автоматично відділ "Академія" — тільки при hired
     const autoDep = curAct === 'hired' ? 'Академія' : undefined;
     const payload = {initNick, initSid, initLogin: me.login, empNick, empSid, act: curAct, prevRank, newRank, reason};
     if (autoDep) payload.autoDep = autoDep;
@@ -1572,11 +1650,11 @@ async function submitAudit() {
     } else if (r.cooldown) {
       closeM('confirmOv');
       toast(r.error || 'КД не зійшло', 'err');
-      // Show CD banner
       const banner = document.getElementById('cdBanner');
       if (r.availableAt) {
         const availableAt = formatCdAvailableAt(r.availableAt);
-        document.getElementById('cdMsg').innerHTML = `<strong>${empNick}</strong> може бути підвищений не раніше ніж: <strong>${availableAt}</strong> (за Києвом).`;
+        const cdNote = r.totalCdHours ? ` (КД: ${r.totalCdHours} год)` : '';
+        document.getElementById('cdMsg').innerHTML = `<strong>${empNick}</strong> може бути підвищений не раніше ніж: <strong>${availableAt}</strong> (за Києвом).${cdNote}`;
         banner.style.display = 'block';
         const submitBtn = document.getElementById('submitBtn');
         if (submitBtn) submitBtn.disabled = true;
@@ -1893,7 +1971,6 @@ async function loadStats() {
 
     let lb = (s.leaderboard || []).slice(0, 10);
 
-    // Augment with per-action counts from local history
     if (!lb.length && allH.length) {
       const weekH = allH.filter(r => new Date(r.date).getTime() > weekAgo);
       const map = {};
@@ -2181,7 +2258,6 @@ async function loadRHistory(force = false) {
   } catch (e) {
     toast('Помилка завантаження журналу', 'err');
     document.getElementById('rhLoad').style.display = 'none';
-    // Show empty state even on error
     document.getElementById('rhWrap').style.display = 'block';
     document.getElementById('rhEmpty').style.display = 'block';
     document.getElementById('rhBody').innerHTML = '';
