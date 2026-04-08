@@ -1099,6 +1099,20 @@ function parseKyivDate(str) {
   return isNaN(d) ? null : d;
 }
 
+function formatCdAvailableAt(value) {
+  if (!value) return '—';
+  if (value instanceof Date) return fmtKyiv(value);
+  if (typeof value === 'string') {
+    const s = value.trim();
+    // If backend already sent a localized datetime string, keep it as-is.
+    if (/^\d{2}\.\d{2}\.\d{4}(,\s*\d{2}:\d{2})?$/.test(s)) return s;
+    const parsed = parseKyivDate(s);
+    return parsed ? fmtKyiv(parsed) : s;
+  }
+  const parsed = parseKyivDate(String(value));
+  return parsed ? fmtKyiv(parsed) : String(value);
+}
+
 function addHours(date, hours) {
   return new Date(date.getTime() + hours * 3600000);
 }
@@ -1136,7 +1150,7 @@ async function runCdCheck() {
   try {
     const r = await call('checkCooldown', {empNick, empSid, newRank: newRankVal});
     if (r.onCooldown) {
-      const availableAt = r.availableAt || '—';
+      const availableAt = formatCdAvailableAt(r.availableAt);
       document.getElementById('cdMsg').innerHTML =
         `<strong>${empNick}</strong> може бути підвищений не раніше ніж: <strong>${availableAt}</strong> (за Києвом). ${r.reason || ''}`;
       banner.style.display = 'block';
@@ -1561,7 +1575,8 @@ async function submitAudit() {
       // Show CD banner
       const banner = document.getElementById('cdBanner');
       if (r.availableAt) {
-        document.getElementById('cdMsg').innerHTML = `<strong>${empNick}</strong> може бути підвищений не раніше ніж: <strong>${r.availableAt}</strong> (за Києвом).`;
+        const availableAt = formatCdAvailableAt(r.availableAt);
+        document.getElementById('cdMsg').innerHTML = `<strong>${empNick}</strong> може бути підвищений не раніше ніж: <strong>${availableAt}</strong> (за Києвом).`;
         banner.style.display = 'block';
         const submitBtn = document.getElementById('submitBtn');
         if (submitBtn) submitBtn.disabled = true;
