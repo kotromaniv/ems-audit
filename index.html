@@ -19,15 +19,18 @@
   --mob-nav-h:60px;
 }
 html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;}
+
+/* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:var(--bg2);}
 ::-webkit-scrollbar-thumb{background:rgba(220,20,60,.3);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(220,20,60,.5);}
 
-/* SIDEBAR */
+/* ── SIDEBAR ── */
 aside{position:fixed;left:0;top:0;bottom:0;width:232px;background:var(--bg2);display:flex;flex-direction:column;z-index:40;border-right:1px solid var(--border);}
 .side-top{padding:20px 16px 16px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(220,20,60,.08),transparent);}
 .side-logo{display:flex;align-items:center;gap:11px;}
-.logo-box{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--c),#ff4d6d);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff;flex-shrink:0;font-family:'JetBrains Mono',monospace;}
+.logo-box{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--c),#ff4d6d);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff;flex-shrink:0;box-shadow:0 4px 16px rgba(220,20,60,.4);font-family:'JetBrains Mono',monospace;}
 .logo-txt h1{font-size:15px;font-weight:800;color:var(--txt);letter-spacing:-.3px;}
 .logo-txt p{font-size:10px;color:var(--txt3);letter-spacing:2px;text-transform:uppercase;margin-top:1px;}
 .side-section{padding:16px 16px 5px;font-size:9px;font-weight:700;color:var(--txt3);letter-spacing:2px;text-transform:uppercase;}
@@ -44,7 +47,7 @@ aside{position:fixed;left:0;top:0;bottom:0;width:232px;background:var(--bg2);dis
 .user-info .un{font-size:12px;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .user-info .ur{font-size:10px;color:var(--txt3);}
 
-/* MAIN */
+/* ── MAIN ── */
 main{margin-left:232px;min-height:100vh;}
 .page{display:none;padding:32px 28px 80px;max-width:100%;}
 .page.on{display:block;}
@@ -53,33 +56,36 @@ main{margin-left:232px;min-height:100vh;}
 .ptitle h2 span{color:var(--c);}
 .ptitle p{font-size:12px;color:var(--txt3);margin-top:6px;letter-spacing:.3px;}
 
-/* LOGIN */
+/* ── LOGIN ── */
 #loginScreen{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;align-items:center;justify-content:center;}
 #loginScreen::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(220,20,60,.08) 0%,transparent 70%);}
 .login-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:40px;width:90%;max-width:380px;box-shadow:var(--shadow2);position:relative;z-index:1;}
 .login-box .llogo{display:flex;align-items:center;gap:13px;margin-bottom:28px;}
 .login-box h2{font-size:22px;font-weight:800;margin-bottom:5px;color:var(--txt);}
 .login-box p{font-size:12px;color:var(--txt3);margin-bottom:24px;line-height:1.6;}
-.inp{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad2);color:var(--txt);font:500 14px/1 'Outfit',sans-serif;padding:11px 13px;outline:none;width:100%;transition:.18s;}
-.inp:focus{border-color:var(--c);background:var(--bg4);box-shadow:0 0 0 3px rgba(220,20,60,.08);}
-.inp::placeholder{color:var(--txt3);}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:var(--rad2);font:700 12px/1 'Outfit',sans-serif;border:none;cursor:pointer;transition:.18s;outline:none;letter-spacing:.3px;}
-.btn-p{background:var(--c);color:#fff;}
-.btn-p:hover{background:var(--c2);box-shadow:0 4px 18px rgba(220,20,60,.35);transform:translateY(-1px);}
-.btn-p:disabled{opacity:.35;cursor:not-allowed;}
-.btn-g{background:var(--bg3);border:1px solid var(--border);color:var(--txt2);}
-.btn-g:hover{color:var(--txt);border-color:rgba(220,20,60,.3);}
-.btn-d{background:transparent;border:1.5px solid var(--c);color:var(--c);}
-.btn-d:hover{background:var(--cdim);}
-.btn-o{background:transparent;border:1.5px solid var(--g);color:var(--g);}
-.btn-o:hover{background:var(--gdim);}
-.btn-sm{padding:7px 14px;font-size:11px;}
+
+/* ── CARDS ── */
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:22px;margin-bottom:14px;box-shadow:var(--shadow);}
 .clbl{font-size:9px;font-weight:700;color:var(--txt3);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
 .clbl::before{content:'';width:3px;height:10px;background:var(--c);border-radius:2px;display:block;}
+
+/* ── GRID ── */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+
+/* ── FIELDS ── */
 .field{display:flex;flex-direction:column;gap:5px;}
 .field label{font-size:9px;font-weight:700;color:var(--txt3);letter-spacing:1.5px;text-transform:uppercase;}
+.inp,.sel,.ta{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad2);color:var(--txt);font:500 14px/1 'Outfit',sans-serif;padding:11px 13px;outline:none;width:100%;transition:.18s;}
+.inp::placeholder,.ta::placeholder{color:var(--txt3);}
+.inp:focus,.sel:focus,.ta:focus{border-color:var(--c);background:var(--bg4);box-shadow:0 0 0 3px rgba(220,20,60,.08);}
+.inp[readonly]{color:var(--txt2);cursor:default;}
+.sel{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23606060' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:32px;}
+.sel option{background:var(--bg2);}
+.ta{resize:vertical;min-height:72px;line-height:1.5;}
+
+/* ── ACTION PILLS ── */
 .apills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
 .apill{display:flex;align-items:center;gap:7px;padding:9px 18px;border-radius:24px;border:1.5px solid var(--border);background:var(--bg3);color:var(--txt2);font:600 12px/1 'Outfit',sans-serif;cursor:pointer;transition:.18s;}
 .apill .dot{width:7px;height:7px;border-radius:50%;background:var(--txt3);transition:.18s;flex-shrink:0;}
@@ -91,18 +97,28 @@ main{margin-left:232px;min-height:100vh;}
 .apill[data-a=fired].on .dot{background:#ff4444;box-shadow:0 0 8px rgba(255,68,68,.5);}
 .apill[data-a=leader].on{border-color:var(--gold);color:var(--gold);background:var(--golddim);}
 .apill[data-a=leader].on .dot{background:var(--gold);box-shadow:0 0 8px rgba(245,158,11,.5);}
+
+/* ── STAT BAR ── */
 .sbar{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:18px 22px;flex-wrap:wrap;gap:12px;}
 .sbar-lbl{font-size:10px;color:var(--txt3);letter-spacing:1px;text-transform:uppercase;}
 .sbar-val{font-size:14px;font-weight:700;color:var(--txt);margin-top:4px;}
 .btns{display:flex;gap:8px;flex-wrap:wrap;}
 
-/* CD BANNER */
-.cd-banner{background:rgba(245,158,11,.06);border:1.5px solid rgba(245,158,11,.3);border-radius:var(--rad2);padding:14px 16px;margin-bottom:16px;display:none;}
-.cd-banner-title{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
-.cd-banner-msg{font-size:12px;color:var(--txt2);line-height:1.6;}
-.cd-banner-msg strong{color:var(--gold);}
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:var(--rad2);font:700 12px/1 'Outfit',sans-serif;border:none;cursor:pointer;transition:.18s;outline:none;letter-spacing:.3px;}
+.btn svg{width:13px;height:13px;flex-shrink:0;}
+.btn-g{background:var(--bg3);border:1px solid var(--border);color:var(--txt2);}
+.btn-g:hover{color:var(--txt);border-color:rgba(220,20,60,.3);}
+.btn-p{background:var(--c);color:#fff;}
+.btn-p:hover{background:var(--c2);box-shadow:0 4px 18px rgba(220,20,60,.35);transform:translateY(-1px);}
+.btn-p:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;}
+.btn-d{background:transparent;border:1.5px solid var(--c);color:var(--c);}
+.btn-d:hover{background:var(--cdim);}
+.btn-o{background:transparent;border:1.5px solid var(--g);color:var(--g);}
+.btn-o:hover{background:var(--gdim);}
+.btn-sm{padding:7px 14px;font-size:11px;}
 
-/* TOPBAR / SEARCH */
+/* ── TOPBAR / SEARCH ── */
 .topbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
 .sw{flex:1;min-width:180px;position:relative;}
 .sw svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--txt3);width:14px;height:14px;}
@@ -111,12 +127,13 @@ main{margin-left:232px;min-height:100vh;}
 .sinp::placeholder{color:var(--txt3);}
 .ibtn{width:42px;height:42px;border-radius:var(--rad2);background:var(--bg2);border:1px solid var(--border);color:var(--txt2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.18s;flex-shrink:0;}
 .ibtn:hover{border-color:var(--border2);color:var(--c);}
+.ibtn svg{width:14px;height:14px;}
 .frow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
 .fp{padding:5px 14px;border-radius:20px;background:var(--bg2);border:1.5px solid var(--border);color:var(--txt2);font:600 11px/1 'Outfit',sans-serif;cursor:pointer;transition:.18s;}
 .fp:hover{border-color:var(--border2);color:var(--txt);}
 .fp.on{background:var(--cdim);border-color:var(--c);color:var(--c);}
 
-/* TABLE */
+/* ── TABLE ── */
 .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
 table{width:100%;border-collapse:collapse;}
 thead th{text-align:left;padding:10px 14px;font-size:9px;font-weight:700;color:var(--txt3);letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid var(--border);background:var(--bg3);}
@@ -125,6 +142,8 @@ tbody tr:hover{background:rgba(220,20,60,.03);}
 tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
 .tmono{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt2);}
 .tbold{font-weight:600;}
+.tlink{font-weight:600;color:var(--c);cursor:pointer;}
+.tlink:hover{text-decoration:underline;}
 .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:14px;font-size:10px;font-weight:700;white-space:nowrap;font-family:'JetBrains Mono',monospace;}
 .bh{background:rgba(34,197,94,.12);color:var(--g);border:1px solid rgba(34,197,94,.25);}
 .bt{background:var(--cdim);color:var(--c);border:1px solid var(--border);}
@@ -133,12 +152,14 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
 .rbtn{width:28px;height:28px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);color:var(--txt2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.12s;}
 .rbtn svg{width:12px;height:12px;}
 .rbtn:hover{border-color:var(--border2);color:var(--c);}
+.rbtn.del:hover{border-color:#ff4444;color:#ff4444;background:rgba(255,68,68,.08);}
 .empty{text-align:center;padding:52px 20px;color:var(--txt3);font-size:12px;}
+.empty svg{width:32px;height:32px;margin:0 auto 10px;display:block;opacity:.2;}
 .pager{display:flex;gap:5px;justify-content:center;padding:14px;flex-wrap:wrap;}
 .pgb{width:32px;height:32px;border-radius:6px;background:var(--bg3);border:1.5px solid var(--border);color:var(--txt2);font:600 11px/1 'JetBrains Mono',monospace;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.12s;}
 .pgb:hover,.pgb.on{border-color:var(--c);color:var(--c);background:var(--cdim);}
 
-/* STATS */
+/* ── STATS ── */
 .stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px;}
 .sbox{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:22px;box-shadow:var(--shadow);transition:.2s;}
 .sbox:hover{border-color:var(--border2);}
@@ -153,10 +174,8 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
 .wbox:hover{border-color:var(--border2);}
 .wnum{font-size:24px;font-weight:900;margin-bottom:4px;font-family:'JetBrains Mono',monospace;}
 .wlbl{font-size:9px;color:var(--txt3);letter-spacing:1.2px;text-transform:uppercase;}
-.lb-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:18px;cursor:pointer;transition:.2s;}
-.lb-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--shadow2);}
 
-/* ROSTER */
+/* ── ROSTER ── */
 .roster-row{display:grid;grid-template-columns:1.8fr 1fr 1.4fr 72px 72px 1fr 50px;align-items:center;border-bottom:1px solid var(--border3);transition:background .12s;}
 .roster-row:hover{background:rgba(220,20,60,.03);}
 .roster-row.header{background:var(--bg3);}
@@ -171,6 +190,8 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
 .dep-AK{background:rgba(138,43,226,.08);color:#8b2be2;}
 .rank-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);font-size:11px;font-weight:600;}
 .rank-num{font-size:9px;color:var(--txt3);font-family:'JetBrains Mono',monospace;}
+
+/* ── DOTS ── */
 .dots-wrap{display:flex;gap:4px;align-items:center;}
 .dot-c{display:inline-block;width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .dot-warn-fill{background:var(--gold);}
@@ -178,7 +199,7 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
 .dot-sanc-fill{background:var(--c);}
 .dot-sanc-empty{background:transparent;border:1.5px solid var(--border);}
 
-/* OVERLAY / MODAL */
+/* ── OVERLAY / MODAL ── */
 .overlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:12px;}
 .overlay.open{display:flex;}
 .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:24px;width:100%;box-shadow:var(--shadow2);animation:mIn .18s ease;max-height:92vh;overflow-y:auto;}
@@ -190,22 +211,34 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
 .mh h3{font-size:16px;font-weight:800;color:var(--txt);}
 .mx{background:transparent;border:none;color:var(--txt2);cursor:pointer;padding:4px;border-radius:6px;transition:.12s;flex-shrink:0;}
 .mx:hover{color:var(--c);background:var(--cdim);}
+.mx svg{width:16px;height:16px;display:block;}
 .drow{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border3);font-size:12px;gap:10px;}
 .drow:last-child{border-bottom:none;}
 .dlbl{color:var(--txt3);font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;flex-shrink:0;padding-top:2px;}
 .dval{font-weight:600;text-align:right;word-break:break-word;color:var(--txt);}
+
+/* ── WARN BOX ── */
 .warn-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad2);padding:16px;margin-bottom:14px;}
 .warn-title{font-size:14px;font-weight:700;color:var(--c);margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.warn-title svg{width:16px;height:16px;flex-shrink:0;}
 .warn-desc{font-size:12px;color:var(--txt2);line-height:1.65;margin-bottom:10px;}
 .warn-detail{background:var(--bg2);border:1px solid var(--border3);border-radius:var(--rad2);padding:12px;}
 .promo-box{background:rgba(34,197,94,.06);border:1.5px solid rgba(34,197,94,.2);border-radius:var(--rad2);padding:12px 14px;margin-top:10px;}
-.ac-wrap{position:relative;}
-.ac-list{position:absolute;top:100%;left:0;right:0;z-index:25;background:var(--bg2);border:1.5px solid var(--border2);border-radius:var(--rad2);max-height:180px;overflow:auto;margin-top:4px;display:none;box-shadow:var(--shadow2);}
-.ac-item{padding:9px 12px;font-size:12px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;transition:.12s;}
-.ac-item:hover,.ac-item.on{background:var(--cdim);color:var(--c);}
-.ac-meta{color:var(--txt3);font-size:11px;font-family:'JetBrains Mono',monospace;}
 
-/* PLAYER MODAL */
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:22px;right:22px;z-index:300;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;max-width:320px;color:var(--txt);transform:translateY(70px);opacity:0;transition:.25s ease;pointer-events:none;box-shadow:var(--shadow2);}
+#toast.show{transform:none;opacity:1;}
+#toast.ok{border-color:rgba(34,197,94,.4);}
+#toast.err{border-color:rgba(220,20,60,.5);}
+
+/* ── SPIN / LOADING ── */
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(220,20,60,.15);border-top-color:var(--c);border-radius:50%;animation:rot .6s linear infinite;}
+@keyframes rot{to{transform:rotate(360deg)}}
+.loading{text-align:center;padding:40px;color:var(--txt2);font-size:12px;}
+.loading .spin{width:22px;height:22px;margin-bottom:10px;}
+
+/* ── PLAYER MODAL ── */
 .player-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
 .player-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
 .player-tab{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg3);color:var(--txt2);font:600 11px/1 'Outfit',sans-serif;cursor:pointer;transition:.15s;}
@@ -222,7 +255,14 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
 .cbtn.minus:hover{border-color:var(--c);color:var(--c);}
 .divider{border:none;border-top:1px solid var(--border);margin:14px 0;}
 
-/* PLAYER HISTORY */
+/* ── AUTOCOMPLETE ── */
+.ac-wrap{position:relative;}
+.ac-list{position:absolute;top:100%;left:0;right:0;z-index:25;background:var(--bg2);border:1.5px solid var(--border2);border-radius:var(--rad2);max-height:180px;overflow:auto;margin-top:4px;display:none;box-shadow:var(--shadow2);}
+.ac-item{padding:9px 12px;font-size:12px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;transition:.12s;}
+.ac-item:hover,.ac-item.on{background:var(--cdim);color:var(--c);}
+.ac-meta{color:var(--txt3);font-size:11px;font-family:'JetBrains Mono',monospace;}
+
+/* ── PLAYER HISTORY ── */
 .ph-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border3);}
 .ph-row:last-child{border-bottom:none;}
 .ph-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);min-width:105px;}
@@ -231,16 +271,25 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
 .ph-init{font-size:10px;color:var(--txt3);}
 .ph-actions{display:flex;gap:4px;}
 
-/* PROMOTION HISTORY */
-.promo-hist-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--border3);align-items:flex-start;}
-.promo-hist-item:last-child{border-bottom:none;}
-.promo-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);min-width:110px;padding-top:2px;}
-.promo-content{flex:1;}
-.promo-rank-change{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:4px;}
-.promo-meta{font-size:11px;color:var(--txt3);}
-.promo-cd-info{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:6px;padding:6px 10px;margin-top:6px;font-size:11px;color:var(--g);}
+/* ── LEADERBOARD ── */
+.lb-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:18px;cursor:pointer;transition:.2s;}
+.lb-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--shadow2);}
 
-/* TREASURY */
+/* ── STAT ADJ ── */
+.stat-adj-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border3);}
+.stat-adj-row:last-child{border-bottom:none;}
+.stat-adj-controls{display:flex;align-items:center;gap:7px;}
+
+/* ── JOURNAL / RHISTORY ── */
+.rh-item{display:grid;grid-template-columns:130px 1fr auto;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border3);transition:background .12s;}
+.rh-item:hover{background:rgba(220,20,60,.03);}
+.rh-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);}
+.rh-content{}
+.rh-who{font-size:13px;font-weight:700;color:var(--txt);}
+.rh-sub{font-size:11px;color:var(--txt3);margin-top:2px;}
+.rh-actions{display:flex;gap:4px;}
+
+/* ── TREASURY ── */
 .treasury-dashboard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);overflow:hidden;box-shadow:var(--shadow);}
 .treasury-header{padding:22px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;background:linear-gradient(135deg,rgba(220,20,60,.05),transparent);}
 .treasury-balance-box{display:flex;flex-direction:column;gap:4px;}
@@ -271,28 +320,34 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
 .treasury-history-amount{font-weight:700;font-family:'JetBrains Mono',monospace;white-space:nowrap;}
 .treasury-history-amount.plus{color:var(--g);}
 .treasury-history-amount.minus{color:var(--c);}
-.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(220,20,60,.15);border-top-color:var(--c);border-radius:50%;animation:rot .6s linear infinite;}
-@keyframes rot{to{transform:rotate(360deg)}}
-.loading{text-align:center;padding:40px;color:var(--txt2);font-size:12px;}
-.loading .spin{width:22px;height:22px;margin-bottom:10px;}
-#toast{position:fixed;bottom:22px;right:22px;z-index:300;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;max-width:320px;color:var(--txt);transform:translateY(70px);opacity:0;transition:.25s ease;pointer-events:none;box-shadow:var(--shadow2);}
-#toast.show{transform:none;opacity:1;}
-#toast.ok{border-color:rgba(34,197,94,.4);}
-#toast.err{border-color:rgba(220,20,60,.5);}
+
+/* ── PROMOTION HISTORY MODAL ── */
+.promo-hist-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--border3);align-items:flex-start;}
+.promo-hist-item:last-child{border-bottom:none;}
+.promo-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);min-width:110px;padding-top:2px;}
+.promo-content{flex:1;}
+.promo-rank-change{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:4px;}
+.promo-meta{font-size:11px;color:var(--txt3);}
+.promo-cd-info{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:6px;padding:6px 10px;margin-top:6px;font-size:11px;color:var(--g);}
+
+/* ── MOBILE NAV ── */
 .mobile-nav{display:none;}
 
+/* ── RESPONSIVE ── */
 @media(max-width:900px){
-  aside{display:none;}main{margin-left:0;}
-  .mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--bg2);border-top:1px solid var(--border);z-index:50;height:var(--mob-nav-h);overflow-x:auto;}
+  aside{display:none;}
+  main{margin-left:0;}
+  .mobile-nav{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--bg2);border-top:1px solid var(--border);z-index:50;height:var(--mob-nav-h);overflow-x:auto;-webkit-overflow-scrolling:touch;}
   .mnav{flex:1;min-width:64px;padding:8px 4px 6px;border:none;background:transparent;color:var(--txt2);font:600 10px/1.2 'Outfit',sans-serif;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:.15s;}
   .mnav svg{width:18px;height:18px;opacity:.5;}
   .mnav.on{color:var(--c);}
   .mnav.on svg{opacity:1;}
   .page{padding:16px 14px calc(var(--mob-nav-h) + 20px);}
   .ptitle h2{font-size:22px;}
-  .g2,.stat3,.player-grid{grid-template-columns:1fr;}
+  .g2,.g3,.g4,.stat3,.player-grid{grid-template-columns:1fr;}
   .roster-row{grid-template-columns:1fr 1fr;gap:0;}
   .roster-row .rcell:nth-child(n+4){display:none;}
+  .roster-row .rcell:last-child{display:flex;justify-content:flex-end;}
   .sbar{flex-direction:column;align-items:stretch;}
   .btns{width:100%;}
   .btns .btn{flex:1;justify-content:center;}
@@ -300,12 +355,18 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
   .apill{padding:8px 12px;font-size:11px;}
   .card{padding:16px;}
   .modal{padding:18px;}
+  .topbar{gap:6px;}
   #toast{bottom:calc(var(--mob-nav-h) + 10px);right:12px;left:12px;max-width:none;}
   .treasury-header{flex-direction:column;align-items:stretch;text-align:center;}
   .treasury-type-buttons{flex-direction:column;}
   .treasury-dep-buttons{justify-content:center;}
 }
-@media(max-width:480px){.stat3{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){
+  .stat3{grid-template-columns:1fr 1fr;}
+  .g4{grid-template-columns:1fr 1fr;}
+  .player-tabs{gap:6px;}
+  .player-tab{padding:6px 10px;font-size:10px;}
+}
 </style>
 </head>
 <body>
@@ -313,102 +374,665 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
 <!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
-    <div class="llogo"><div class="logo-box">EMS</div><div><div style="font-size:17px;font-weight:900;color:var(--txt);">EMS Фракція</div><div style="font-size:11px;color:var(--txt3);">Система управління</div></div></div>
+    <div class="llogo">
+      <div class="logo-box">EMS</div>
+      <div>
+        <div style="font-size:17px;font-weight:900;color:var(--txt);">EMS Фракція</div>
+        <div style="font-size:11px;color:var(--txt3);">Система управління</div>
+      </div>
+    </div>
     <h2>Вхід у систему</h2>
     <p>Введіть ваш особистий логін, виданий адміністратором</p>
-    <div class="field" style="margin-bottom:12px;"><label>Логін</label><input class="inp" id="loginInp" placeholder="Введіть логін..." onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="field" style="margin-bottom:12px;">
+      <label>Логін</label>
+      <input class="inp" id="loginInp" placeholder="Введіть логін..." onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
     <p id="loginErr" style="color:var(--c);font-size:12px;display:none;margin-bottom:10px;"></p>
-    <button class="btn btn-p" style="width:100%;justify-content:center;" onclick="doLogin()" id="loginBtn"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Увійти</button>
+    <button class="btn btn-p" style="width:100%;justify-content:center;" onclick="doLogin()" id="loginBtn">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Увійти
+    </button>
   </div>
 </div>
 
 <!-- SIDEBAR -->
 <aside>
-  <div class="side-top"><div class="side-logo"><div class="logo-box">EMS</div><div class="logo-txt"><h1>EMS Фракція</h1><p>Управління</p></div></div></div>
+  <div class="side-top">
+    <div class="side-logo">
+      <div class="logo-box">EMS</div>
+      <div class="logo-txt"><h1>EMS Фракція</h1><p>Управління</p></div>
+    </div>
+  </div>
   <div class="side-nav">
     <div class="side-section">Кадровий аудит</div>
-    <button class="snav on" data-p="audit"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Аудит</button>
-    <button class="snav" data-p="history"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Історія</button>
-    <button class="snav" data-p="stats"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Статистика</button>
+    <button class="snav on" data-p="audit">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Аудит
+    </button>
+    <button class="snav" data-p="history">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Історія
+    </button>
+    <button class="snav" data-p="stats">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Статистика
+    </button>
     <div class="side-section" style="margin-top:8px;">Фракція</div>
-    <button class="snav" data-p="roster"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Планшет</button>
-    <button class="snav" data-p="rhistory"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="14 2 14 8 20 8"/><path d="M20 20H4a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v10a2 2 0 01-2 2z"/></svg>Журнал змін</button>
-    <button class="snav" data-p="treasury"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>Казна</button>
+    <button class="snav" data-p="roster">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Планшет
+    </button>
+    <button class="snav" data-p="rhistory">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="14 2 14 8 20 8"/><path d="M20 20H4a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v10a2 2 0 01-2 2z"/></svg>Журнал змін
+    </button>
+    <button class="snav" data-p="treasury">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>Казна
+    </button>
   </div>
-  <div class="side-bottom"><div class="user-pill"><div class="user-av" id="sideAv">?</div><div class="user-info"><div class="un" id="sideNick">—</div><div class="ur" id="sideRole">Співробітник</div></div></div></div>
+  <div class="side-bottom">
+    <div class="user-pill">
+      <div class="user-av" id="sideAv">?</div>
+      <div class="user-info">
+        <div class="un" id="sideNick">—</div>
+        <div class="ur" id="sideRole">Співробітник</div>
+      </div>
+    </div>
+  </div>
 </aside>
 
 <main>
 
-<!-- AUDIT -->
+<!-- ═══════════════════════ AUDIT ═══════════════════════ -->
 <div class="page on" id="page-audit">
-  <div class="ptitle"><h2>Кадровий <span>аудит</span></h2><p>Оберіть учасників — дані підтягнуться автоматично</p></div>
-  <div class="cd-banner" id="cdBanner"><div class="cd-banner-title">⏳ КД на підвищення</div><div class="cd-banner-msg" id="cdMsg"></div><button class="btn btn-sm btn-d" style="margin-top:10px;" onclick="openEmpPromotionHistory()">📜 Історія підвищень</button></div>
-  <div class="card"><div class="clbl">Ініціатор</div><div class="g2"><div class="field"><label>Ваш нікнейм</label><select class="sel" id="selInit" required onchange="pickInit()" disabled><option value="">— Завантаження... —</option></select></div><div class="field"><label>Static ID</label><input class="inp" id="initSid" readonly placeholder="Автоматично"></div></div></div>
-  <div class="card"><div class="clbl">Співробітник</div><div class="g2"><div class="field ac-wrap"><label>Нікнейм</label><input class="inp" id="empNick" required placeholder="Введіть нікнейм..." oninput="sanitizeEmpNick(this);onEmpNickInput()" onfocus="onEmpNickInput()" autocomplete="off"><div id="empNickSuggest" class="ac-list"></div></div><div class="field"><label>Static ID</label><input class="inp" id="empSid" required placeholder="#0000" inputmode="numeric" oninput="onEmpSidInput();sanitizeEmpSid(this)"></div></div></div>
-  <div class="card"><div class="clbl">Дія</div><div class="apills"><button class="apill on" data-a="hired" onclick="setAct('hired',this)"><span class="dot"></span>Прийнято на роботу</button><button class="apill" data-a="transfer" onclick="setAct('transfer',this)"><span class="dot"></span>Переведено</button><button class="apill" data-a="fired" onclick="setAct('fired',this)"><span class="dot"></span>Звільнено</button><button class="apill" data-a="leader" onclick="setAct('leader',this)"><span class="dot"></span>Призначити лідера</button></div>
-    <div class="g2"><div class="field" id="prevWrap" style="display:none;"><label>Попередня посада</label><select class="sel" id="prevRank" required><option value="">— Оберіть —</option><option value="0" id="prevRankZero" hidden>[0] Співбесіда</option><option value="1">[1] Студент</option><option value="2">[2] Інтерн</option><option value="3">[3] Парамедик</option><option value="4">[4] Фельдшер</option><option value="5">[5] Терапевт</option><option value="6">[6] Хірург</option><option value="7">[7] Спеціаліст</option><option value="8">[8] Заст.зав.відділу</option><option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option></select></div><div class="field" id="newWrap"><label>Нова посада</label><select class="sel" id="newRank" required onchange="checkPromotionCooldown()"><option value="">— Оберіть —</option><option value="0" id="newRankZero" hidden>[0] Співбесіда</option><option value="1">[1] Студент</option><option value="2">[2] Інтерн</option><option value="3">[3] Парамедик</option><option value="4">[4] Фельдшер</option><option value="5">[5] Терапевт</option><option value="6">[6] Хірург</option><option value="7">[7] Спеціаліст</option><option value="8">[8] Заст.зав.відділу</option><option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option></select></div></div>
-    <div class="field" style="margin-top:12px;"><label>Пояснення</label><textarea class="ta" id="reason" required placeholder="Вкажіть причину або коментар..."></textarea></div>
+  <div class="ptitle">
+    <h2>Кадровий <span>аудит</span></h2>
+    <p>Оберіть учасників — дані підтягнуться автоматично</p>
   </div>
-  <div class="sbar"><div><div class="sbar-lbl">Обрана дія</div><div class="sbar-val" id="actLabel">✅ Прийнято на роботу</div></div><div class="btns"><button class="btn btn-g" onclick="resetAudit()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>Скинути</button><button class="btn btn-p" id="submitBtn" onclick="openConfirmModal()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Відправити</button></div></div>
+
+  <!-- CD BANNER (НОВИЙ ДИЗАЙН) -->
+  <div class="cd-banner" id="cdBanner">
+    <div class="cd-banner-title">⏳ КД на підвищення</div>
+    <div class="cd-banner-msg" id="cdMsg"></div>
+    <button class="btn btn-sm btn-d" style="margin-top:10px;" onclick="openEmpPromotionHistory()">📜 Історія підвищень</button>
+  </div>
+
+  <div class="card">
+    <div class="clbl">Ініціатор</div>
+    <div class="g2">
+      <div class="field">
+        <label>Ваш нікнейм</label>
+        <select class="sel" id="selInit" required onchange="pickInit()" disabled>
+          <option value="">— Завантаження... —</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Static ID</label>
+        <input class="inp" id="initSid" readonly placeholder="Автоматично">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="clbl">Співробітник</div>
+    <div class="g2">
+      <div class="field ac-wrap">
+        <label>Нікнейм</label>
+        <input class="inp" id="empNick" required placeholder="Введіть нікнейм..."
+          oninput="sanitizeEmpNick(this);onEmpNickInput()"
+          onfocus="onEmpNickInput()" autocomplete="off">
+        <div id="empNickSuggest" class="ac-list"></div>
+      </div>
+      <div class="field">
+        <label>Static ID</label>
+        <input class="inp" id="empSid" required placeholder="#0000" inputmode="numeric"
+          oninput="onEmpSidInput();sanitizeEmpSid(this)">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="clbl">Дія</div>
+    <div class="apills">
+      <button class="apill on" data-a="hired" onclick="setAct('hired',this)"><span class="dot"></span>Прийнято на роботу</button>
+      <button class="apill" data-a="transfer" onclick="setAct('transfer',this)"><span class="dot"></span>Переведено</button>
+      <button class="apill" data-a="fired" onclick="setAct('fired',this)"><span class="dot"></span>Звільнено</button>
+      <button class="apill" data-a="leader" onclick="setAct('leader',this)"><span class="dot"></span>Призначити лідера</button>
+    </div>
+    <div class="g2">
+      <div class="field" id="prevWrap" style="display:none;">
+        <label>Попередня посада</label>
+        <select class="sel" id="prevRank" required>
+          <option value="">— Оберіть —</option>
+          <option value="0" id="prevRankZero" hidden>[0] Співбесіда</option>
+          <option value="1">[1] Студент</option><option value="2">[2] Інтерн</option>
+          <option value="3">[3] Парамедик</option><option value="4">[4] Фельдшер</option>
+          <option value="5">[5] Терапевт</option><option value="6">[6] Хірург</option>
+          <option value="7">[7] Спеціаліст</option><option value="8">[8] Заст.зав.відділу</option>
+          <option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option>
+        </select>
+      </div>
+      <div class="field" id="newWrap">
+        <label>Нова посада</label>
+        <select class="sel" id="newRank" required onchange="checkPromotionCooldown()">
+          <option value="">— Оберіть —</option>
+          <option value="0" id="newRankZero" hidden>[0] Співбесіда</option>
+          <option value="1">[1] Студент</option><option value="2">[2] Інтерн</option>
+          <option value="3">[3] Парамедик</option><option value="4">[4] Фельдшер</option>
+          <option value="5">[5] Терапевт</option><option value="6">[6] Хірург</option>
+          <option value="7">[7] Спеціаліст</option><option value="8">[8] Заст.зав.відділу</option>
+          <option value="9">[9] Завідувач відділу</option><option value="10">[10] Заст.голов.лікаря</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" style="margin-top:12px;">
+      <label>Пояснення</label>
+      <textarea class="ta" id="reason" required placeholder="Вкажіть причину або коментар..."></textarea>
+    </div>
+  </div>
+
+  <div class="sbar">
+    <div>
+      <div class="sbar-lbl">Обрана дія</div>
+      <div class="sbar-val" id="actLabel">✅ Прийнято на роботу</div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-g" onclick="resetAudit()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>Скинути
+      </button>
+      <button class="btn btn-p" id="submitBtn" onclick="openConfirmModal()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Відправити
+      </button>
+    </div>
+  </div>
 </div>
 
-<!-- HISTORY -->
-<div class="page" id="page-history"><div class="ptitle"><h2>Історія <span>аудитів</span></h2><p id="hCnt">Завантаження...</p></div><div class="topbar"><div class="sw"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="sinp" id="hSearch" placeholder="Пошук за ніком або Static ID..." oninput="filterH()"></div><button class="ibtn" onclick="loadHistory(true)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></button><button class="ibtn" onclick="exportCSV()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button><button class="ibtn" onclick="openClearHistory()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button></div><div class="frow"><button class="fp on" onclick="setHF('all',this)">Всі</button><button class="fp" onclick="setHF('hired',this)">✅ Прийнято</button><button class="fp" onclick="setHF('transfer',this)">🔄 Переведено</button><button class="fp" onclick="setHF('fired',this)">❌ Звільнено</button></div><div class="card" style="padding:0;overflow:hidden;"><div id="hLoad" class="loading"><div class="spin"></div><br>Завантаження...</div><div id="hWrap" style="display:none;"><div class="tbl-wrap"><table><thead><tr><th>Дата</th><th>Ініціатор</th><th>Співробітник</th><th>Static ID</th><th>Дія</th><th>Зміна посади</th><th></th></tr></thead><tbody id="hBody"></tbody></table></div><div id="hEmpty" class="empty" style="display:none;"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Записів не знайдено</div><div id="hPager" class="pager"></div></div></div></div>
+<!-- ═══════════════════════ HISTORY ═══════════════════════ -->
+<div class="page" id="page-history">
+  <div class="ptitle"><h2>Історія <span>аудитів</span></h2><p id="hCnt">Завантаження...</p></div>
+  <div class="topbar">
+    <div class="sw"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="sinp" id="hSearch" placeholder="Пошук за ніком або Static ID..." oninput="filterH()"></div>
+    <button class="ibtn" onclick="loadHistory(true)" title="Оновити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></button>
+    <button class="ibtn" onclick="exportCSV()" title="Експорт CSV"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+    <button class="ibtn" onclick="openClearHistory()" title="Видалити всю історію"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>
+  </div>
+  <div class="frow">
+    <button class="fp on" onclick="setHF('all',this)">Всі</button>
+    <button class="fp" onclick="setHF('hired',this)">✅ Прийнято</button>
+    <button class="fp" onclick="setHF('transfer',this)">🔄 Переведено</button>
+    <button class="fp" onclick="setHF('fired',this)">❌ Звільнено</button>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div id="hLoad" class="loading"><div class="spin"></div><br>Завантаження...</div>
+    <div id="hWrap" style="display:none;">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Дата</th><th>Ініціатор</th><th>Співробітник</th><th>Static ID</th><th>Дія</th><th>Зміна посади</th><th></th></tr></thead>
+          <tbody id="hBody"></tbody>
+        </table>
+      </div>
+      <div id="hEmpty" class="empty" style="display:none;"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Записів не знайдено</div>
+      <div id="hPager" class="pager"></div>
+    </div>
+  </div>
+</div>
 
-<!-- STATS -->
-<div class="page" id="page-stats"><div class="ptitle" style="display:flex;justify-content:space-between;align-items:flex-start;"><div><h2>Стати<span>стика</span></h2><p>Аналітика кадрових змін фракції</p></div><button class="btn btn-d btn-sm" onclick="openResetStats()" style="margin-top:6px;"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>Скинути</button></div><div class="stat3"><div class="sbox"><div class="si si-b"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div><div class="slbl">Всього у фракції</div><div class="snum" id="stTotal">—</div></div><div class="sbox"><div class="si si-g"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div><div class="slbl">Прийнято за тиждень</div><div class="snum" style="color:var(--g)" id="stHW">—</div></div><div class="sbox"><div class="si si-r"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div><div class="slbl">Звільнено за тиждень</div><div class="snum" style="color:#ff4444" id="stFW">—</div></div></div><div class="clbl" style="margin-bottom:10px;">Тижневі зміни</div><div class="g4" style="margin-bottom:24px;"><div class="wbox"><div class="wnum" style="color:var(--g)" id="wH">—</div><div class="wlbl">Прийнято</div></div><div class="wbox"><div class="wnum" style="color:#ff4444" id="wF">—</div><div class="wlbl">Звільнено</div></div><div class="wbox"><div class="wnum" style="color:var(--c)" id="wT">—</div><div class="wlbl">Переведено</div></div><div class="wbox"><div class="wnum" style="color:var(--txt2)" id="wAll">—</div><div class="wlbl">Всього дій</div></div></div><div class="clbl" style="margin-bottom:12px;">Топ ініціаторів тижня</div><div id="lb" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:28px;"></div></div>
+<!-- ═══════════════════════ STATS ═══════════════════════ -->
+<div class="page" id="page-stats">
+  <div class="ptitle" style="display:flex;justify-content:space-between;align-items:flex-start;">
+    <div><h2>Стати<span>стика</span></h2><p>Аналітика кадрових змін фракції</p></div>
+    <button class="btn btn-d btn-sm" onclick="openResetStats()" style="margin-top:6px;">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>Скинути
+    </button>
+  </div>
 
-<!-- ROSTER -->
-<div class="page" id="page-roster"><div class="ptitle" style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;"><div><h2>Планшет <span>фракції</span></h2><p id="rCnt">Завантаження...</p></div><button class="btn btn-d btn-sm" onclick="openDisbandRoster()" style="margin-top:6px;">Розформувати</button></div><div class="topbar"><div class="sw"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="sinp" id="rSearch" placeholder="Пошук за ніком або Static ID..." oninput="filterR()"></div><button class="ibtn" onclick="loadRoster(true)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></button></div><div class="frow" id="depFilters"><button class="fp on" onclick="setRF('all',this)">Всі</button><button class="fp" onclick="setRF('EMA',this)">EMA</button><button class="fp" onclick="setRF('TD',this)">TD</button><button class="fp" onclick="setRF('INT',this)">INT</button><button class="fp" onclick="setRF('S.S',this)">S.S</button><button class="fp" onclick="setRF('Академія',this)">Академія</button></div><div class="roster-wrap"><div class="roster-row header"><div class="rcell hd">Нікнейм</div><div class="rcell hd">Static ID</div><div class="rcell hd">Посада</div><div class="rcell hd">Попер.</div><div class="rcell hd">Догани</div><div class="rcell hd">Відділ</div><div class="rcell hd"></div></div><div id="rLoad" class="loading"><div class="spin"></div><br>Завантаження...</div><div id="rBody"></div><div id="rEmpty" class="empty" style="display:none;"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Гравців не знайдено</div></div></div>
+  <!-- Stat cards -->
+  <div class="stat3">
+    <div class="sbox">
+      <div class="si si-b"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <div class="slbl">Всього у фракції</div>
+      <div class="snum" id="stTotal">—</div>
+    </div>
+    <div class="sbox">
+      <div class="si si-g"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div>
+      <div class="slbl">Прийнято за тиждень</div>
+      <div class="snum" style="color:var(--g)" id="stHW">—</div>
+    </div>
+    <div class="sbox">
+      <div class="si si-r"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div>
+      <div class="slbl">Звільнено за тиждень</div>
+      <div class="snum" style="color:#ff4444" id="stFW">—</div>
+    </div>
+  </div>
 
-<!-- ROSTER HISTORY -->
-<div class="page" id="page-rhistory"><div class="ptitle"><h2>Журнал <span>змін</span></h2><p id="rhCnt">Завантаження...</p></div><div class="topbar"><div class="sw"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="sinp" id="rhSearch" placeholder="Пошук..." oninput="filterRH()"></div><button class="ibtn" onclick="loadRHistory(true)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></button><button class="ibtn" onclick="openClearRosterHistory()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button></div><div class="card" style="padding:0;overflow:hidden;"><div id="rhLoad" class="loading"><div class="spin"></div><br>Завантаження...</div><div id="rhWrap" style="display:none;"><div class="tbl-wrap"><table><thead><tr><th>Дата</th><th>Ініціатор</th><th>Гравець</th><th>Зміна</th><th>Деталі</th><th></th></tr></thead><tbody id="rhBody"></tbody></table></div><div id="rhEmpty" class="empty" style="display:none;"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Записів не знайдено</div><div id="rhPager" class="pager"></div></div></div></div>
+  <div class="clbl" style="margin-bottom:10px;">Тижневі зміни</div>
+  <div class="g4" style="margin-bottom:24px;">
+    <div class="wbox"><div class="wnum" style="color:var(--g)" id="wH">—</div><div class="wlbl">Прийнято</div></div>
+    <div class="wbox"><div class="wnum" style="color:#ff4444" id="wF">—</div><div class="wlbl">Звільнено</div></div>
+    <div class="wbox"><div class="wnum" style="color:var(--c)" id="wT">—</div><div class="wlbl">Переведено</div></div>
+    <div class="wbox"><div class="wnum" style="color:var(--txt2)" id="wAll">—</div><div class="wlbl">Всього дій</div></div>
+  </div>
 
-<!-- TREASURY -->
-<div class="page" id="page-treasury"><div class="ptitle"><h2>EMS <span>Казна</span></h2><p>Управління фінансами та преміювання</p></div><div id="treasuryLoginSection" class="treasury-login" style="max-width:100%;"><div class="clbl" style="justify-content:center;">🔐 Доступ до казни</div><div class="field" style="margin-bottom:12px;"><label>Логін</label><input class="inp" id="treasuryLogin" placeholder="Ваш логін..."></div><div class="field" style="margin-bottom:12px;"><label>Пароль</label><input class="inp" id="treasuryPass" type="password" placeholder="Ваш пароль..."></div><button class="btn btn-p" style="width:100%;margin-top:12px;justify-content:center;" onclick="accessTreasury()">Увійти в казну</button><p id="treasuryErr" style="color:var(--c);font-size:11px;margin-top:12px;display:none;"></p></div><div id="treasuryPanel" style="display:none;"><div class="treasury-dashboard"><div class="treasury-header"><div class="treasury-balance-box"><span class="treasury-balance-label">Поточний баланс</span><span class="treasury-balance"><span id="treasuryBalance">0</span> <small>$</small></span></div><button class="btn btn-o btn-sm" onclick="openSyncModal()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>Синхронізувати</button></div><div class="treasury-history"><div class="treasury-history-title">Історія операцій</div><div id="treasuryHistoryList" class="treasury-history-list"><div class="loading"><div class="spin"></div><br>Завантаження...</div></div></div></div><div class="card" style="margin-top:14px;"><div class="clbl">Нова операція</div><div class="g2" style="margin-bottom:20px;"><div class="field"><label>Ваш нікнейм</label><input class="inp" id="treasuryNick" readonly></div><div class="field"><label>Ваш Static ID</label><input class="inp" id="treasurySid" readonly></div></div><div class="clbl">Тип операції</div><div class="treasury-type-buttons"><button class="treasury-type-btn on" data-type="employee" onclick="setTreasuryType('employee', this)">💵 Видача працівнику EMS</button><button class="treasury-type-btn" data-type="department" onclick="setTreasuryType('department', this)">🏢 Виділення коштів на підрозділ</button></div><div id="treasuryEmployeeForm" style="display:block;"><div class="clbl">Отримувач</div><div class="field ac-wrap" style="margin-bottom:16px;"><label>Нікнейм співробітника</label><input class="inp" id="treasuryEmpNick" placeholder="Введіть нікнейм..." oninput="onTreasuryEmpNickInput()" autocomplete="off"><div id="treasuryEmpSuggest" class="ac-list"></div></div><div class="field" style="margin-bottom:16px;"><label>Static ID</label><input class="inp" id="treasuryEmpSid" placeholder="Static ID"></div><div class="field" style="margin-bottom:16px;"><label>Сума премії ($)</label><input class="inp amount-input" id="treasuryAmount" type="text" placeholder="0" oninput="formatNumberInput(this)"></div><div class="field" style="margin-bottom:16px;"><label>Причина видачі</label><textarea class="ta" id="treasuryReason" placeholder="Вкажіть причину премії..."></textarea></div></div><div id="treasuryDepartmentForm" style="display:none;"><div class="clbl">Оберіть підрозділ</div><div class="treasury-dep-buttons"><button class="treasury-dep-btn" data-dep="EMA" onclick="setTreasuryDep('EMA', this)">🚑 EMA</button><button class="treasury-dep-btn" data-dep="TD" onclick="setTreasuryDep('TD', this)">🛡️ TD</button><button class="treasury-dep-btn" data-dep="INT" onclick="setTreasuryDep('INT', this)">⚙️ INT</button><button class="treasury-dep-btn" data-dep="S.S" onclick="setTreasuryDep('S.S', this)">🔫 S.S</button></div><div class="field" style="margin-bottom:16px;"><label>Сума виділення ($)</label><input class="inp amount-input" id="treasuryDepAmount" type="text" placeholder="0" oninput="formatNumberInput(this)"></div><div class="field" style="margin-bottom:16px;"><label>Причина виділення</label><textarea class="ta" id="treasuryDepReason" placeholder="Вкажіть причину виділення коштів..."></textarea></div></div><div class="btns" style="justify-content:center;margin-top:24px;"><button class="btn btn-p" id="treasurySubmitBtn" onclick="submitTreasuryOperation()">✅ Підтвердити операцію</button></div></div></div></div>
+  <div class="clbl" style="margin-bottom:12px;">Топ ініціаторів тижня</div>
+  <div id="lb" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:28px;"></div>
+</div>
+
+<!-- ═══════════════════════ ROSTER ═══════════════════════ -->
+<div class="page" id="page-roster">
+  <div class="ptitle" style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+    <div><h2>Планшет <span>фракції</span></h2><p id="rCnt">Завантаження...</p></div>
+    <button class="btn btn-d btn-sm" onclick="openDisbandRoster()" style="margin-top:6px;">Розформувати</button>
+  </div>
+  <div class="topbar">
+    <div class="sw"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="sinp" id="rSearch" placeholder="Пошук за ніком або Static ID..." oninput="filterR()"></div>
+    <button class="ibtn" onclick="loadRoster(true)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></button>
+  </div>
+  <div class="frow" id="depFilters">
+    <button class="fp on" onclick="setRF('all',this)">Всі</button>
+    <button class="fp" onclick="setRF('EMA',this)">EMA</button>
+    <button class="fp" onclick="setRF('TD',this)">TD</button>
+    <button class="fp" onclick="setRF('INT',this)">INT</button>
+    <button class="fp" onclick="setRF('S.S',this)">S.S</button>
+    <button class="fp" onclick="setRF('Академія',this)">Академія</button>
+  </div>
+  <div class="roster-wrap">
+    <div class="roster-row header">
+      <div class="rcell hd">Нікнейм</div>
+      <div class="rcell hd">Static ID</div>
+      <div class="rcell hd">Посада</div>
+      <div class="rcell hd">Попер.</div>
+      <div class="rcell hd">Догани</div>
+      <div class="rcell hd">Відділ</div>
+      <div class="rcell hd"></div>
+    </div>
+    <div id="rLoad" class="loading"><div class="spin"></div><br>Завантаження...</div>
+    <div id="rBody"></div>
+    <div id="rEmpty" class="empty" style="display:none;">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Гравців не знайдено
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ ROSTER HISTORY ═══════════════════════ -->
+<div class="page" id="page-rhistory">
+  <div class="ptitle"><h2>Журнал <span>змін</span></h2><p id="rhCnt">Завантаження...</p></div>
+  <div class="topbar">
+    <div class="sw"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="sinp" id="rhSearch" placeholder="Пошук..." oninput="filterRH()"></div>
+    <button class="ibtn" onclick="loadRHistory(true)"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></button>
+    <button class="ibtn" onclick="openClearRosterHistory()" title="Очистити журнал"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div id="rhLoad" class="loading"><div class="spin"></div><br>Завантаження...</div>
+    <div id="rhWrap" style="display:none;">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Дата</th><th>Ініціатор</th><th>Гравець</th><th>Зміна</th><th>Деталі</th><th></th></tr></thead>
+          <tbody id="rhBody"></tbody>
+        </table>
+      </div>
+      <div id="rhEmpty" class="empty" style="display:none;"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Записів не знайдено</div>
+      <div id="rhPager" class="pager"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ TREASURY ═══════════════════════ -->
+<div class="page" id="page-treasury">
+  <div class="ptitle"><h2>EMS <span>Казна</span></h2><p>Управління фінансами та преміювання</p></div>
+  <div id="treasuryLoginSection" class="treasury-login" style="max-width:100%;">
+    <div class="clbl" style="justify-content:center;">🔐 Доступ до казни</div>
+    <div class="field" style="margin-bottom:12px;"><label>Логін</label><input class="inp" id="treasuryLogin" placeholder="Ваш логін..."></div>
+    <div class="field" style="margin-bottom:12px;"><label>Пароль</label><input class="inp" id="treasuryPass" type="password" placeholder="Ваш пароль..."></div>
+    <button class="btn btn-p" style="width:100%;margin-top:12px;justify-content:center;" onclick="accessTreasury()">Увійти в казну</button>
+    <p id="treasuryErr" style="color:var(--c);font-size:11px;margin-top:12px;display:none;"></p>
+  </div>
+  <div id="treasuryPanel" style="display:none;">
+    <div class="treasury-dashboard">
+      <div class="treasury-header">
+        <div class="treasury-balance-box">
+          <span class="treasury-balance-label">Поточний баланс</span>
+          <span class="treasury-balance"><span id="treasuryBalance">0</span> <small>$</small></span>
+        </div>
+        <button class="btn btn-o btn-sm" onclick="openSyncModal()">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>Синхронізувати
+        </button>
+      </div>
+      <div class="treasury-history">
+        <div class="treasury-history-title">Історія операцій</div>
+        <div id="treasuryHistoryList" class="treasury-history-list">
+          <div class="loading"><div class="spin"></div><br>Завантаження...</div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px;">
+      <div class="clbl">Нова операція</div>
+      <div class="g2" style="margin-bottom:20px;">
+        <div class="field"><label>Ваш нікнейм</label><input class="inp" id="treasuryNick" readonly></div>
+        <div class="field"><label>Ваш Static ID</label><input class="inp" id="treasurySid" readonly></div>
+      </div>
+      <div class="clbl">Тип операції</div>
+      <div class="treasury-type-buttons">
+        <button class="treasury-type-btn on" data-type="employee" onclick="setTreasuryType('employee', this)">💵 Видача працівнику EMS</button>
+        <button class="treasury-type-btn" data-type="department" onclick="setTreasuryType('department', this)">🏢 Виділення коштів на підрозділ</button>
+      </div>
+      <div id="treasuryEmployeeForm" style="display:block;">
+        <div class="clbl">Отримувач</div>
+        <div class="field ac-wrap" style="margin-bottom:16px;">
+          <label>Нікнейм співробітника</label>
+          <input class="inp" id="treasuryEmpNick" placeholder="Введіть нікнейм..." oninput="onTreasuryEmpNickInput()" autocomplete="off">
+          <div id="treasuryEmpSuggest" class="ac-list"></div>
+        </div>
+        <div class="field" style="margin-bottom:16px;"><label>Static ID</label><input class="inp" id="treasuryEmpSid" placeholder="Static ID"></div>
+        <div class="field" style="margin-bottom:16px;"><label>Сума премії ($)</label><input class="inp amount-input" id="treasuryAmount" type="text" placeholder="0" oninput="formatNumberInput(this)"></div>
+        <div class="field" style="margin-bottom:16px;"><label>Причина видачі</label><textarea class="ta" id="treasuryReason" placeholder="Вкажіть причину премії..."></textarea></div>
+      </div>
+      <div id="treasuryDepartmentForm" style="display:none;">
+        <div class="clbl">Оберіть підрозділ</div>
+        <div class="treasury-dep-buttons">
+          <button class="treasury-dep-btn" data-dep="EMA" onclick="setTreasuryDep('EMA', this)">🚑 EMA</button>
+          <button class="treasury-dep-btn" data-dep="TD" onclick="setTreasuryDep('TD', this)">🛡️ TD</button>
+          <button class="treasury-dep-btn" data-dep="INT" onclick="setTreasuryDep('INT', this)">⚙️ INT</button>
+          <button class="treasury-dep-btn" data-dep="S.S" onclick="setTreasuryDep('S.S', this)">🔫 S.S</button>
+        </div>
+        <div class="field" style="margin-bottom:16px;"><label>Сума виділення ($)</label><input class="inp amount-input" id="treasuryDepAmount" type="text" placeholder="0" oninput="formatNumberInput(this)"></div>
+        <div class="field" style="margin-bottom:16px;"><label>Причина виділення</label><textarea class="ta" id="treasuryDepReason" placeholder="Вкажіть причину виділення коштів..."></textarea></div>
+      </div>
+      <div class="btns" style="justify-content:center;margin-top:24px;">
+        <button class="btn btn-p" id="treasurySubmitBtn" onclick="submitTreasuryOperation()">✅ Підтвердити операцію</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </main>
 
 <div class="mobile-nav" id="mobileNav">
-  <button class="mnav on" data-p="audit"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Аудит</button>
-  <button class="mnav" data-p="history"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Історія</button>
-  <button class="mnav" data-p="stats"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Статистика</button>
-  <button class="mnav" data-p="roster"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Планшет</button>
-  <button class="mnav" data-p="rhistory"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="14 2 14 8 20 8"/><path d="M20 20H4a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v10a2 2 0 01-2 2z"/></svg>Журнал</button>
-  <button class="mnav" data-p="treasury"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>Казна</button>
+  <button class="mnav on" data-p="audit">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Аудит
+  </button>
+  <button class="mnav" data-p="history">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Історія
+  </button>
+  <button class="mnav" data-p="stats">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Статистика
+  </button>
+  <button class="mnav" data-p="roster">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Планшет
+  </button>
+  <button class="mnav" data-p="rhistory">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="14 2 14 8 20 8"/><path d="M20 20H4a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v10a2 2 0 01-2 2z"/></svg>Журнал
+  </button>
+  <button class="mnav" data-p="treasury">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>Казна
+  </button>
 </div>
 
-<!-- MODALS -->
-<div class="overlay" id="confirmOv"><div class="modal sm"><div class="mh"><h3>⚠️ Підтвердження заявки</h3><button class="mx" onclick="closeM('confirmOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="warn-box"><div class="warn-title"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Перевірте дані перед відправкою</div><div class="warn-desc">Ця дія буде записана в систему. Відмінити або редагувати запис можна тільки через адміністратора.</div><div class="warn-detail" id="confirmDetail"></div><div class="promo-box" id="promoInfo" style="display:none;"></div></div><div class="btns"><button class="btn btn-g" style="flex:1" onclick="closeM('confirmOv')">Скасувати</button><button class="btn btn-p" style="flex:1" id="confirmSendBtn" onclick="submitAudit()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Підтвердити і відправити</button></div></div></div>
-<div class="overlay" id="detOv"><div class="modal sm"><div class="mh"><h3>Деталі запису</h3><button class="mx" onclick="closeM('detOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div id="detBody"></div></div></div>
-<div class="overlay" id="delOv"><div class="modal sm"><div class="mh"><h3>Видалення запису</h3><button class="mx" onclick="closeM('delOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="warn-box" style="border-color:rgba(255,68,68,.25);"><div class="warn-title" style="color:#ff4444;"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Увага! Дія незворотня</div><div class="warn-desc">Для видалення введіть код підтвердження адміністратора.</div></div><div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="dLogin" placeholder="Введіть код підтвердження..."></div><p id="dErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p><div class="btns"><button class="btn btn-g" style="flex:1" onclick="closeM('delOv')">Скасувати</button><button class="btn btn-d" style="flex:1" onclick="confirmDel()">Видалити</button></div></div></div>
-<div class="overlay" id="resetStatsOv"><div class="modal sm"><div class="mh"><h3>🔄 Скидання статистики</h3><button class="mx" onclick="closeM('resetStatsOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="warn-box" style="border-color:rgba(255,68,68,.25);"><div class="warn-title" style="color:#ff4444;">Увага!</div><div class="warn-desc">Скидання обнулить лічильники тижневої статистики без видалення записів.</div></div><div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="rsLogin" placeholder="Введіть код підтвердження..."></div><p id="rsErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p><div class="btns"><button class="btn btn-g" style="flex:1" onclick="closeM('resetStatsOv')">Скасувати</button><button class="btn btn-d" style="flex:1" onclick="confirmResetStats()">Скинути</button></div></div></div>
-<div class="overlay" id="clearHistoryOv"><div class="modal sm"><div class="mh"><h3>🗑️ Очистити історію</h3><button class="mx" onclick="closeM('clearHistoryOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="warn-box" style="border-color:rgba(255,68,68,.25);"><div class="warn-title" style="color:#ff4444;">Дія видалить усю історію</div><div class="warn-desc">Потрібен код підтвердження.</div></div><div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="chLogin" placeholder="Введіть код підтвердження..."></div><p id="chErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p><div class="btns"><button class="btn btn-g" style="flex:1" onclick="closeM('clearHistoryOv')">Скасувати</button><button class="btn btn-d" style="flex:1" onclick="confirmClearHistory()">Очистити</button></div></div></div>
-<div class="overlay" id="playerOv"><div class="modal lg"><div class="mh"><h3 id="playerModalTitle">Картка гравця</h3><div style="display:flex;gap:8px;"><button class="btn btn-o btn-sm" onclick="openPlayerHistory()">📜 Історія</button><button class="btn btn-d btn-sm" onclick="openRemoveRosterMember()">Видалити</button><button class="mx" onclick="closeM('playerOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></div><div class="player-grid"><div><div class="clbl">Основна інформація</div><div class="drow"><span class="dlbl">Нікнейм</span><span class="dval" id="pmNick">—</span></div><div class="drow"><span class="dlbl">Static ID</span><span class="dval tmono" id="pmSid">—</span></div><div class="drow"><span class="dlbl">Посада</span><span class="dval" id="pmRank">—</span></div><div class="drow"><span class="dlbl">Відділ</span><span class="dval" id="pmDep">—</span></div><div class="drow"><span class="dlbl">Попередження</span><span class="dval" id="pmWarn">—</span></div><div class="drow" style="border:none"><span class="dlbl">Догани</span><span class="dval" id="pmSanc">—</span></div><div id="adminControls" style="display:none;"><hr class="divider"><div class="clbl">Управління</div><div class="action-row"><label>Відділ</label><select class="sel" id="editDep" style="flex:1;"><option value="">— Не вказано —</option><option value="EMA">EMA</option><option value="TD">TD</option><option value="INT">INT</option><option value="S.S">S.S</option><option value="Академія">Академія</option></select><button class="btn btn-p btn-sm" onclick="saveEditDep()">OK</button></div><div class="action-row" style="margin-top:10px;"><label>Попередження</label><div class="counter-ctrl"><button class="cbtn minus" onclick="changeCounter('warnings',-1)">−</button><span class="counter-num" id="cntWarn">0</span><span style="font-size:10px;color:var(--txt3)">/2</span><button class="cbtn plus" onclick="changeCounter('warnings',1)">+</button><button class="cbtn plus" onclick="changeCounter('warnings',2)">+2</button></div></div><div class="action-row"><label>Догани</label><div class="counter-ctrl"><button class="cbtn minus" onclick="changeCounter('sanctions',-1)">−</button><span class="counter-num" id="cntSanc">0</span><span style="font-size:10px;color:var(--txt3)">/3</span><button class="cbtn plus" onclick="changeCounter('sanctions',1)">+</button><button class="cbtn plus" onclick="changeCounter('sanctions',3)">+3</button></div></div></div></div><div><div class="player-tabs"><button class="player-tab on" data-pane="pInfo" onclick="switchPlayerPane('pInfo',this)">Профіль</button></div><div id="pInfo" class="player-pane on"><div class="warn-box" style="margin:0;"><div class="warn-title">Підказка</div><div class="warn-desc" style="margin:0;">Натисніть «Історія» вгорі — відкриється повна хронологія подій цього гравця.</div></div></div></div></div></div></div>
-<div class="overlay" id="playerHistOv"><div class="modal md"><div class="mh"><h3 id="phTitle">Історія у фракції</h3><button class="mx" onclick="closeM('playerHistOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div id="phBody" style="max-height:450px;overflow-y:auto;"></div></div></div>
-<div class="overlay" id="empPromoHistOv"><div class="modal md"><div class="mh"><h3 id="empPromoTitle">Історія підвищень</h3><button class="mx" onclick="closeM('empPromoHistOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div id="empPromoBody" style="max-height:500px;overflow-y:auto;"></div></div></div>
-<div class="overlay" id="syncTreasuryOv"><div class="modal sm"><div class="mh"><h3>🔄 Синхронізація казни</h3><button class="mx" onclick="closeM('syncTreasuryOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="field" style="margin-bottom:12px;"><label>NickName (ініціатор)</label><input class="inp" id="syncNick" readonly></div><div class="field" style="margin-bottom:12px;"><label>StaticID (ініціатор)</label><input class="inp" id="syncSid" readonly></div><div class="field" style="margin-bottom:12px;"><label>Поточна сума ($)</label><input class="inp" id="syncCurrentBalance" type="text" readonly></div><div class="field" style="margin-bottom:12px;"><label>Сума додавання ($)</label><input class="inp" id="syncAddAmount" type="text" placeholder="0" oninput="formatNumberInput(this)"></div><div class="field" style="margin-bottom:12px;"><label>Дата-час</label><input class="inp" id="syncDatetime" readonly></div><div class="btns" style="margin-top:20px;"><button class="btn btn-g" onclick="closeM('syncTreasuryOv')">Скасувати</button><button class="btn btn-p" onclick="confirmSyncTreasury()">✅ Підтвердити</button></div></div></div>
-<div class="overlay" id="removeRosterOv"><div class="modal sm"><div class="mh"><h3>Видалити учасника</h3><button class="mx" onclick="closeM('removeRosterOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="warn-box" style="border-color:rgba(255,68,68,.25);"><div class="warn-desc" style="margin:0;">Потрібен код підтвердження адміністратора.</div></div><div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="rrLogin" placeholder="Введіть код..."></div><p id="rrErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p><div class="btns"><button class="btn btn-g" style="flex:1" onclick="closeM('removeRosterOv')">Скасувати</button><button class="btn btn-d" style="flex:1" onclick="confirmRemoveRosterMember()">Видалити</button></div></div></div>
-<div class="overlay" id="disbandRosterOv"><div class="modal sm"><div class="mh"><h3>Розформувати планшет</h3><button class="mx" onclick="closeM('disbandRosterOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="warn-box" style="border-color:rgba(255,68,68,.25);"><div class="warn-desc" style="margin:0;">Потрібен код підтвердження.</div></div><div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="drLogin" placeholder="Введіть код..."></div><p id="drErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p><div class="btns"><button class="btn btn-g" style="flex:1" onclick="closeM('disbandRosterOv')">Скасувати</button><button class="btn btn-d" style="flex:1" onclick="confirmDisbandRoster()">Розформувати</button></div></div></div>
-<div class="overlay" id="clearRosterHistoryOv"><div class="modal sm"><div class="mh"><h3>🗑️ Очистити журнал</h3><button class="mx" onclick="closeM('clearRosterHistoryOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="warn-box" style="border-color:rgba(255,68,68,.25);"><div class="warn-title" style="color:#ff4444;">Дія видалить увесь журнал</div><div class="warn-desc">Потрібен код підтвердження.</div></div><div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="crhLogin" placeholder="Введіть код..."></div><p id="crhErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p><div class="btns"><button class="btn btn-g" style="flex:1" onclick="closeM('clearRosterHistoryOv')">Скасувати</button><button class="btn btn-d" style="flex:1" onclick="confirmClearRosterHistory()">Очистити</button></div></div></div>
-<div class="overlay" id="leaderAuthOv"><div class="modal sm"><div class="mh"><h3>👑 Призначення лідера</h3><button class="mx" onclick="closeM('leaderAuthOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="warn-box" style="border-color:rgba(245,158,11,.3);"><div class="warn-title" style="color:var(--gold);">Підтвердження доступу</div><div class="warn-desc">Потрібні облікові дані керівника.</div></div><div class="field" style="margin-bottom:8px;"><label>Логін</label><input class="inp" id="laLogin" placeholder="Введіть логін..."></div><div class="field" style="margin-bottom:12px;"><label>Пароль</label><input class="inp" id="laPass" type="password" placeholder="Введіть пароль..."></div><p id="laErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p><div class="btns"><button class="btn btn-g" style="flex:1" onclick="closeM('leaderAuthOv')">Скасувати</button><button class="btn btn-p" style="flex:1" onclick="confirmLeaderAssign()">Підтвердити</button></div></div></div>
-<div class="overlay" id="initiatorOv"><div class="modal sm"><div class="mh"><h3 id="initiatorTitle">Статистика ініціатора</h3><button class="mx" onclick="closeM('initiatorOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div id="initiatorBody"></div></div></div>
+<!-- ═══════════════════════ MODALS ═══════════════════════ -->
+
+<!-- Confirm Audit -->
+<div class="overlay" id="confirmOv">
+  <div class="modal sm">
+    <div class="mh"><h3>⚠️ Підтвердження заявки</h3><button class="mx" onclick="closeM('confirmOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="warn-box">
+      <div class="warn-title"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Перевірте дані перед відправкою</div>
+      <div class="warn-desc">Ця дія буде записана в систему та надіслана до Discord каналу. Відмінити або редагувати запис можна тільки через адміністратора.</div>
+      <div class="warn-detail" id="confirmDetail"></div>
+      <div class="promo-box" id="promoInfo" style="display:none;"></div>
+    </div>
+    <div class="btns">
+      <button class="btn btn-g" style="flex:1" onclick="closeM('confirmOv')">Скасувати</button>
+      <button class="btn btn-p" style="flex:1" id="confirmSendBtn" onclick="submitAudit()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Підтвердити і відправити
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Detail View -->
+<div class="overlay" id="detOv">
+  <div class="modal sm">
+    <div class="mh"><h3>Деталі запису</h3><button class="mx" onclick="closeM('detOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div id="detBody"></div>
+  </div>
+</div>
+
+<!-- Delete -->
+<div class="overlay" id="delOv">
+  <div class="modal sm">
+    <div class="mh"><h3>Видалення запису</h3><button class="mx" onclick="closeM('delOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="warn-box" style="border-color:rgba(255,68,68,.25);">
+      <div class="warn-title" style="color:#ff4444;"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Увага! Дія незворотня</div>
+      <div class="warn-desc">Для видалення введіть код підтвердження адміністратора.</div>
+    </div>
+    <div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="dLogin" placeholder="Введіть код підтвердження..."></div>
+    <p id="dErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p>
+    <div class="btns">
+      <button class="btn btn-g" style="flex:1" onclick="closeM('delOv')">Скасувати</button>
+      <button class="btn btn-d" style="flex:1" onclick="confirmDel()">Видалити</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reset Stats -->
+<div class="overlay" id="resetStatsOv">
+  <div class="modal sm">
+    <div class="mh"><h3>🔄 Скидання статистики</h3><button class="mx" onclick="closeM('resetStatsOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="warn-box" style="border-color:rgba(255,68,68,.25);">
+      <div class="warn-title" style="color:#ff4444;">Увага!</div>
+      <div class="warn-desc">Скидання обнулить лічильники тижневої статистики <strong>без видалення</strong> записів із Історії аудитів.</div>
+    </div>
+    <div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="rsLogin" placeholder="Введіть код підтвердження..."></div>
+    <p id="rsErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p>
+    <div class="btns">
+      <button class="btn btn-g" style="flex:1" onclick="closeM('resetStatsOv')">Скасувати</button>
+      <button class="btn btn-d" style="flex:1" onclick="confirmResetStats()">Скинути статистику</button>
+    </div>
+  </div>
+</div>
+
+<!-- Clear History -->
+<div class="overlay" id="clearHistoryOv">
+  <div class="modal sm">
+    <div class="mh"><h3>🗑️ Очистити історію</h3><button class="mx" onclick="closeM('clearHistoryOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="warn-box" style="border-color:rgba(255,68,68,.25);">
+      <div class="warn-title" style="color:#ff4444;">Дія видалить усю історію кадрового аудиту</div>
+      <div class="warn-desc">Потрібен код підтвердження для виконання дії.</div>
+    </div>
+    <div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="chLogin" placeholder="Введіть код підтвердження..."></div>
+    <p id="chErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p>
+    <div class="btns">
+      <button class="btn btn-g" style="flex:1" onclick="closeM('clearHistoryOv')">Скасувати</button>
+      <button class="btn btn-d" style="flex:1" onclick="confirmClearHistory()">Очистити</button>
+    </div>
+  </div>
+</div>
+
+<!-- Player Card -->
+<div class="overlay" id="playerOv">
+  <div class="modal lg">
+    <div class="mh">
+      <h3 id="playerModalTitle">Картка гравця</h3>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn btn-o btn-sm" onclick="openPlayerHistory()">📜 Історія</button>
+        <button class="btn btn-d btn-sm" onclick="openRemoveRosterMember()">Видалити</button>
+        <button class="mx" onclick="closeM('playerOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+    </div>
+    <div class="player-grid">
+      <div>
+        <div class="clbl">Основна інформація</div>
+        <div class="drow"><span class="dlbl">Нікнейм</span><span class="dval" id="pmNick">—</span></div>
+        <div class="drow"><span class="dlbl">Static ID</span><span class="dval tmono" id="pmSid">—</span></div>
+        <div class="drow"><span class="dlbl">Посада</span><span class="dval" id="pmRank">—</span></div>
+        <div class="drow"><span class="dlbl">Відділ</span><span class="dval" id="pmDep">—</span></div>
+        <div class="drow"><span class="dlbl">Попередження</span><span class="dval" id="pmWarn">—</span></div>
+        <div class="drow" style="border:none"><span class="dlbl">Догани</span><span class="dval" id="pmSanc">—</span></div>
+        <div id="adminControls" style="display:none;">
+          <hr class="divider">
+          <div class="clbl">Управління</div>
+          <div class="action-row">
+            <label>Відділ</label>
+            <select class="sel" id="editDep" style="flex:1;">
+              <option value="">— Не вказано —</option>
+              <option value="EMA">EMA</option>
+              <option value="TD">TD</option>
+              <option value="INT">INT</option>
+              <option value="S.S">S.S</option>
+              <option value="Академія">Академія</option>
+            </select>
+            <button class="btn btn-p btn-sm" onclick="saveEditDep()">OK</button>
+          </div>
+          <div class="action-row" style="margin-top:10px;">
+            <label>Попередження</label>
+            <div class="counter-ctrl">
+              <button class="cbtn minus" onclick="changeCounter('warnings',-1)">−</button>
+              <span class="counter-num" id="cntWarn">0</span>
+              <span style="font-size:10px;color:var(--txt3)">/2</span>
+              <button class="cbtn plus" onclick="changeCounter('warnings',1)">+</button>
+              <button class="cbtn plus" onclick="changeCounter('warnings',2)" title="+2">+2</button>
+            </div>
+          </div>
+          <div class="action-row">
+            <label>Догани</label>
+            <div class="counter-ctrl">
+              <button class="cbtn minus" onclick="changeCounter('sanctions',-1)">−</button>
+              <span class="counter-num" id="cntSanc">0</span>
+              <span style="font-size:10px;color:var(--txt3)">/3</span>
+              <button class="cbtn plus" onclick="changeCounter('sanctions',1)">+</button>
+              <button class="cbtn plus" onclick="changeCounter('sanctions',3)" title="+3">+3</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="player-tabs">
+          <button class="player-tab on" data-pane="pInfo" onclick="switchPlayerPane('pInfo',this)">Профіль</button>
+        </div>
+        <div id="pInfo" class="player-pane on">
+          <div class="warn-box" style="margin:0;">
+            <div class="warn-title">Підказка</div>
+            <div class="warn-desc" style="margin:0;">Натисніть «Історія» вгорі — відкриється повна хронологія подій цього гравця.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Player History -->
+<div class="overlay" id="playerHistOv">
+  <div class="modal md">
+    <div class="mh"><h3 id="phTitle">Історія у фракції</h3><button class="mx" onclick="closeM('playerHistOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div id="phBody" style="max-height:450px;overflow-y:auto;"></div>
+  </div>
+</div>
+
+<!-- Promotion History -->
+<div class="overlay" id="empPromoHistOv">
+  <div class="modal md">
+    <div class="mh"><h3 id="empPromoTitle">Історія підвищень</h3><button class="mx" onclick="closeM('empPromoHistOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div id="empPromoBody" style="max-height:500px;overflow-y:auto;"></div>
+  </div>
+</div>
+
+<!-- Sync Treasury -->
+<div class="overlay" id="syncTreasuryOv">
+  <div class="modal sm">
+    <div class="mh"><h3>🔄 Синхронізація казни</h3><button class="mx" onclick="closeM('syncTreasuryOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="field" style="margin-bottom:12px;"><label>NickName (ініціатор)</label><input class="inp" id="syncNick" readonly></div>
+    <div class="field" style="margin-bottom:12px;"><label>StaticID (ініціатор)</label><input class="inp" id="syncSid" readonly></div>
+    <div class="field" style="margin-bottom:12px;"><label>Поточна сума в казні ($)</label><input class="inp" id="syncCurrentBalance" type="text" readonly></div>
+    <div class="field" style="margin-bottom:12px;"><label>Яку суму ви додаєте ($)</label><input class="inp" id="syncAddAmount" type="text" placeholder="Введіть суму..." oninput="formatNumberInput(this)"></div>
+    <div class="field" style="margin-bottom:12px;"><label>Дата-час</label><input class="inp" id="syncDatetime" readonly></div>
+    <div class="btns" style="margin-top:20px;">
+      <button class="btn btn-g" onclick="closeM('syncTreasuryOv')">Скасувати</button>
+      <button class="btn btn-p" onclick="confirmSyncTreasury()">✅ Підтвердити</button>
+    </div>
+  </div>
+</div>
+
+<!-- Remove Roster Member -->
+<div class="overlay" id="removeRosterOv">
+  <div class="modal sm">
+    <div class="mh"><h3>Видалити учасника</h3><button class="mx" onclick="closeM('removeRosterOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="warn-box" style="border-color:rgba(255,68,68,.25);"><div class="warn-desc" style="margin:0;">Для цієї дії потрібен код підтвердження адміністратора.</div></div>
+    <div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="rrLogin" placeholder="Введіть код підтвердження..."></div>
+    <p id="rrErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p>
+    <div class="btns">
+      <button class="btn btn-g" style="flex:1" onclick="closeM('removeRosterOv')">Скасувати</button>
+      <button class="btn btn-d" style="flex:1" onclick="confirmRemoveRosterMember()">Видалити</button>
+    </div>
+  </div>
+</div>
+
+<!-- Disband Roster -->
+<div class="overlay" id="disbandRosterOv">
+  <div class="modal sm">
+    <div class="mh"><h3>Розформувати планшет</h3><button class="mx" onclick="closeM('disbandRosterOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="warn-box" style="border-color:rgba(255,68,68,.25);"><div class="warn-desc" style="margin:0;">Видалить всіх учасників з планшету. Потрібен код підтвердження.</div></div>
+    <div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="drLogin" placeholder="Введіть код підтвердження..."></div>
+    <p id="drErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p>
+    <div class="btns">
+      <button class="btn btn-g" style="flex:1" onclick="closeM('disbandRosterOv')">Скасувати</button>
+      <button class="btn btn-d" style="flex:1" onclick="confirmDisbandRoster()">Розформувати</button>
+    </div>
+  </div>
+</div>
+
+<!-- Clear Roster History -->
+<div class="overlay" id="clearRosterHistoryOv">
+  <div class="modal sm">
+    <div class="mh"><h3>🗑️ Очистити журнал</h3><button class="mx" onclick="closeM('clearRosterHistoryOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="warn-box" style="border-color:rgba(255,68,68,.25);">
+      <div class="warn-title" style="color:#ff4444;">Дія видалить увесь журнал змін</div>
+      <div class="warn-desc">Потрібен код підтвердження для виконання дії.</div>
+    </div>
+    <div class="field" style="margin-bottom:12px;"><label>Код підтвердження</label><input class="inp" id="crhLogin" placeholder="Введіть код підтвердження..."></div>
+    <p id="crhErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p>
+    <div class="btns">
+      <button class="btn btn-g" style="flex:1" onclick="closeM('clearRosterHistoryOv')">Скасувати</button>
+      <button class="btn btn-d" style="flex:1" onclick="confirmClearRosterHistory()">Очистити журнал</button>
+    </div>
+  </div>
+</div>
+
+<!-- Leader Auth -->
+<div class="overlay" id="leaderAuthOv">
+  <div class="modal sm">
+    <div class="mh"><h3>👑 Призначення лідера</h3><button class="mx" onclick="closeM('leaderAuthOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="warn-box" style="border-color:rgba(245,158,11,.3);">
+      <div class="warn-title" style="color:var(--gold);">Підтвердження підвищеного доступу</div>
+      <div class="warn-desc">Для призначення лідера потрібні облікові дані керівника.</div>
+    </div>
+    <div class="field" style="margin-bottom:8px;"><label>Логін підтвердження</label><input class="inp" id="laLogin" placeholder="Введіть логін..."></div>
+    <div class="field" style="margin-bottom:12px;"><label>Пароль підтвердження</label><input class="inp" id="laPass" type="password" placeholder="Введіть пароль..."></div>
+    <p id="laErr" style="color:var(--c);font-size:11px;display:none;margin-bottom:10px;"></p>
+    <div class="btns">
+      <button class="btn btn-g" style="flex:1" onclick="closeM('leaderAuthOv')">Скасувати</button>
+      <button class="btn btn-p" style="flex:1" onclick="confirmLeaderAssign()">Підтвердити</button>
+    </div>
+  </div>
+</div>
+
+<!-- Initiator Stats -->
+<div class="overlay" id="initiatorOv">
+  <div class="modal sm">
+    <div class="mh"><h3 id="initiatorTitle">Статистика ініціатора</h3><button class="mx" onclick="closeM('initiatorOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div id="initiatorBody"></div>
+  </div>
+</div>
 
 <div id="toast"><span id="tIco"></span><span id="tMsg"></span></div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════════════════
-//  EMS СИСТЕМА УПРАВЛІННЯ — ФІНАЛЬНА ВЕРСІЯ З ПРАВИЛЬНИМ КД
-// ═══════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════
+   EMS — Повний JavaScript (виправлено: КД, відділи)
+   ══════════════════════════════════════════════════════════ */
 
 const API = 'https://script.google.com/macros/s/AKfycbxCxiJnwm1yuh7gfSsJRhb1ZnrYzHCE8MKa17G3qg3AYghuVpX-gr83OphnDVo9uchK/exec';
+
 const RANKS = ['Співбесіда','Студент','Інтерн','Парамедик','Фельдшер','Терапевт','Хірург','Спеціаліст','Заст.зав.відділу','Завідувач відділу','Заст.голов.лікаря','Головний лікар'];
 const ALBL = {hired:'✅ Прийнято на роботу',transfer:'🔄 Переведено',fired:'❌ Звільнено',leader:'👑 Призначення лідера'};
 const ABCL = {hired:'bh',transfer:'bt',fired:'bf'};
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  СИСТЕМА КД НА ПІДВИЩЕННЯ
+//  СИСТЕМА КД НА ПІДВИЩЕННЯ (НОВА, ПРАВИЛЬНА)
 // ═══════════════════════════════════════════════════════════════════════════
 
 const PROMO_COOLDOWN_HOURS = {1:0,2:24,3:24,4:48,5:48,6:72,7:96,8:96};
@@ -605,7 +1229,7 @@ async function openEmpPromotionHistory() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ОСНОВНІ ЗМІННІ ТА ФУНКЦІЇ
+//  ОСНОВНІ ЗМІННІ ТА ФУНКЦІЇ (БЕЗ ЗМІН)
 // ═══════════════════════════════════════════════════════════════════════════
 
 let me = null, players = [], allH = [], filtH = [], curHF = 'all', curHPg = 1;
@@ -651,6 +1275,7 @@ function enterSession(user) {
   document.getElementById('sideAv').textContent = (me.nick || me.login)[0].toUpperCase();
   document.getElementById('sideRole').textContent = me.isAdmin ? 'Керівник' : 'Співробітник';
   loadPlayers();
+  initCooldownSystem();
 }
 
 function goPage(page) {
@@ -815,6 +1440,7 @@ async function submitAudit() {
       btn.disabled = false; btn.innerHTML = 'Підтвердити і відправити';
       return;
     }
+    // ВАЖЛИВО: autoDep ТІЛЬКИ ПРИ ПРИЙНЯТТІ НА РОБОТУ
     const autoDep = curAct === 'hired' ? 'Академія' : undefined;
     const payload = {initNick, initSid, initLogin: me.login, empNick, empSid, act: curAct, prevRank, newRank, reason};
     if (autoDep) payload.autoDep = autoDep;
@@ -870,7 +1496,7 @@ function renderH() {
     const nR = r.newRank !== '' && r.newRank != null ? `[${r.newRank}] ${RANKS[r.newRank] || ''}` : null;
     const rs = pR && nR ? `${pR} → ${nR}` : nR || pR || '—';
     const dt = r.date ? fmtKyiv(new Date(r.date)) : '—';
-    return `<tr><td class="tmono">${dt}</td><td class="tbold">${r.initNick || '—'}</td><td class="tbold">${r.empNick || '—'}</td><td class="tmono">${r.empSid || '—'}</td><td class="tmono" style="font-size:11px;">${rs}</td><td class="racts"><button class="rbtn" onclick='viewH(${JSON.stringify(r)})' title="Деталі"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>${me && me.isArchiveAdmin ? `<button class="rbtn del" onclick="askDel('${r.ticket}',null)" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>` : ''}职务</td><tr>`;
+    return `<tr><td class="tmono">${dt}</td><td class="tbold">${r.initNick || '—'}</td><td class="tbold">${r.empNick || '—'}</td><td class="tmono">${r.empSid || '—'}</td><td class="tmono" style="font-size:11px;">${rs}</td><td class="racts"><button class="rbtn" onclick='viewH(${JSON.stringify(r)})' title="Деталі"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>${me && me.isArchiveAdmin ? `<button class="rbtn del" onclick="askDel('${r.ticket}',null)" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>` : ''}职务</td></table>`;
   }).join('');
   const tot = Math.ceil(filtH.length / PER);
   document.getElementById('hPager').innerHTML = tot <= 1 ? '' : Array.from({length: Math.min(tot, 10)}, (_, i) => `<button class="pgb${i + 1 === curHPg ? ' on' : ''}" onclick="goHP(${i + 1})">${i + 1}</button>`).join('');
@@ -1117,7 +1743,7 @@ function renderRH() {
   const sl = filtRH.slice((curRHPg - 1) * PER, curRHPg * PER);
   if (!filtRH.length) { document.getElementById('rhEmpty').style.display = 'block'; tb.innerHTML = ''; document.getElementById('rhPager').innerHTML = ''; return; }
   document.getElementById('rhEmpty').style.display = 'none';
-  tb.innerHTML = sl.map(r => { const dt = r.date ? fmtKyiv(new Date(r.date)) : '—'; const pInRoster = allR.find(x => x.nick === r.nick); const nickCell = pInRoster ? `<span class="tlink" onclick="openPlayer('${esc(r.nick)}')">${r.nick || '—'}</span>` : `<span class="tbold">${r.nick || '—'}</span>`; return `<tr><td class="tmono">${dt}</td><td class="tbold">${r.initiator || '—'}</td><td>${nickCell}</td><td><span class="badge bt">${r.change || '—'}</span></td><td class="tmono" style="font-size:11px;">${r.details || '—'}</td><td class="racts">${me && me.isArchiveAdmin ? `<button class="rbtn del" onclick="askDel(null,${r._idx})" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>` : ''}</td></table>`; }).join('');
+  tb.innerHTML = sl.map(r => { const dt = r.date ? fmtKyiv(new Date(r.date)) : '—'; const pInRoster = allR.find(x => x.nick === r.nick); const nickCell = pInRoster ? `<span class="tlink" onclick="openPlayer('${esc(r.nick)}')">${r.nick || '—'}</span>` : `<span class="tbold">${r.nick || '—'}</span>`; return `<tr><td class="tmono">${dt}</td><td class="tbold">${r.initiator || '—'}</td><td>${nickCell}</td><td><span class="badge bt">${r.change || '—'}</span></td><td class="tmono" style="font-size:11px;">${r.details || '—'}</td><td class="racts">${me && me.isArchiveAdmin ? `<button class="rbtn del" onclick="askDel(null,${r._idx})" title="Видалити"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>` : ''}</td></tr>`; }).join('');
   const tot = Math.ceil(filtRH.length / PER);
   document.getElementById('rhPager').innerHTML = tot <= 1 ? '' : Array.from({length: Math.min(tot, 10)}, (_, i) => `<button class="pgb${i + 1 === curRHPg ? ' on' : ''}" onclick="goRHP(${i + 1})">${i + 1}</button>`).join('');
 }
@@ -1128,7 +1754,7 @@ function exportCSV() { const rows = [['ID','Дата','Ініціатор','Ін
 function switchPlayerPane(id, btn) { document.querySelectorAll('.player-tab').forEach(x => x.classList.remove('on')); document.querySelectorAll('.player-pane').forEach(x => x.classList.remove('on')); if (btn) btn.classList.add('on'); const pane = document.getElementById(id); if (pane) pane.classList.add('on'); }
 function toRank(v) { const n = parseInt(v, 10); return Number.isFinite(n) ? n : -1; }
 
-// TREASURY
+// TREASURY (без змін)
 async function accessTreasury() {
   const login = document.getElementById('treasuryLogin').value.trim();
   const pass = document.getElementById('treasuryPass').value;
@@ -1217,9 +1843,6 @@ function initCooldownSystem() {
   if (empSidInput) empSidInput.addEventListener('input', checkPromotionCooldown);
   if (newRankSelect) newRankSelect.addEventListener('change', checkPromotionCooldown);
 }
-
-// Запускаємо систему після входу (додати в enterSession)
-// Вже додано в кінець enterSession: initCooldownSystem();
 </script>
 </body>
 </html>
