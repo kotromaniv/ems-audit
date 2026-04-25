@@ -270,6 +270,19 @@
   .toast.warning{border-color:var(--warning);}
   .toast.info{border-color:var(--info);}
 
+  /* ─── PLAYER CARD PRO ─── */
+  .player-card-pro{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start;}
+  .player-hero{background:linear-gradient(145deg,var(--primary-dim),rgba(255,77,109,.08));border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;}
+  .player-hero-av{width:64px;height:64px;border-radius:14px;background:linear-gradient(145deg,var(--primary),#ff4d6d);color:#fff;font-size:24px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;box-shadow:0 8px 24px rgba(220,20,60,.35);}
+  .player-hero-name{font-size:13px;font-weight:800;word-break:break-word;}
+  .player-hero-sid{font-size:10px;color:var(--text-secondary);font-family:'JetBrains Mono',monospace;margin-top:4px;}
+  .player-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 8px;}
+  .player-metric{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px;}
+  .player-metric .k{font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.8px;}
+  .player-metric .v{font-size:15px;font-weight:800;margin-top:3px;}
+  .player-events{margin-top:10px;}
+  .player-events-title{font-size:9px;font-weight:700;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+
   /* ─── LOGIN REGISTRY ─── */
   .login-reg-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border-light);font-size:12px;}
   .login-reg-row:hover{background:rgba(220,20,60,.03);}
@@ -292,6 +305,8 @@
     .roster-header div:nth-child(n+3),.roster-row div:nth-child(n+3){display:none;}
     .action-bar{flex-direction:column;align-items:stretch;}
     .btn{justify-content:center;}
+    .player-card-pro{grid-template-columns:1fr;}
+    .player-metrics{grid-template-columns:1fr;}
   }
 </style>
 </head>
@@ -310,7 +325,7 @@
     <h2>Вхід у систему</h2>
     <p>Введіть логін, виданий адміністратором</p>
     <div class="field" style="margin-bottom:14px;">
-      <input class="inp" id="loginInput" placeholder="Логін" autocomplete="off" onkeypress="if(event.key==='Enter')doLogin()">
+      <input class="inp" id="loginInput" placeholder="Логін" autocomplete="off" maxlength="30" data-allow="login" onkeypress="if(event.key==='Enter')doLogin()">
     </div>
     <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="doLogin()" id="loginBtn">
       <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
@@ -411,12 +426,12 @@
         <div class="grid-2" style="margin-top:12px;">
           <div class="field autocomplete">
             <label>Нікнейм</label>
-            <input class="inp" id="employeeNick" placeholder="Введіть нікнейм..." autocomplete="off">
+            <input class="inp" id="employeeNick" placeholder="Введіть нікнейм..." autocomplete="off" maxlength="24" data-allow="nick">
             <div class="ac-list" id="employeeSuggest"></div>
           </div>
           <div class="field">
             <label>Static ID</label>
-            <input class="inp" id="employeeSid" placeholder="#0000" inputmode="numeric">
+            <input class="inp" id="employeeSid" placeholder="#0000" inputmode="numeric" maxlength="6" data-allow="digits">
           </div>
         </div>
       </div>
@@ -665,18 +680,18 @@
           </div>
           <div class="field" id="fineAmountField">
             <label>Сума штрафу ($)</label>
-            <input class="inp" id="fineAmount" placeholder="0" inputmode="numeric">
+            <input class="inp" id="fineAmount" placeholder="0" inputmode="numeric" maxlength="9" data-allow="digits">
           </div>
         </div>
         <div class="grid-2" style="margin-top:12px;">
           <div class="field autocomplete">
             <label>Отримувач (нікнейм)</label>
-            <input class="inp" id="disciplineTargetNick" placeholder="Нікнейм..." autocomplete="off">
+            <input class="inp" id="disciplineTargetNick" placeholder="Нікнейм..." autocomplete="off" maxlength="24" data-allow="nick">
             <div class="ac-list" id="disciplineSuggest"></div>
           </div>
           <div class="field">
             <label>Static ID</label>
-            <input class="inp" id="disciplineTargetSid" placeholder="Static ID">
+            <input class="inp" id="disciplineTargetSid" placeholder="Static ID" inputmode="numeric" maxlength="6" data-allow="digits">
           </div>
         </div>
         <div class="field" style="margin-top:12px;">
@@ -708,17 +723,17 @@
         <div class="grid-2" style="margin-top:14px;">
           <div class="field autocomplete">
             <label>Отримувач (нікнейм)</label>
-            <input class="inp" id="adrenalineTargetNick" placeholder="Нікнейм..." autocomplete="off">
+            <input class="inp" id="adrenalineTargetNick" placeholder="Нікнейм..." autocomplete="off" maxlength="24" data-allow="nick">
             <div class="ac-list" id="adrenalineSuggest"></div>
           </div>
           <div class="field">
             <label>Static ID</label>
-            <input class="inp" id="adrenalineTargetSid" placeholder="Static ID">
+            <input class="inp" id="adrenalineTargetSid" placeholder="Static ID" inputmode="numeric" maxlength="6" data-allow="digits">
           </div>
         </div>
         <div class="field" style="margin-top:12px;">
           <label>Кількість</label>
-          <input class="inp" id="adrenalineAmount" placeholder="0" inputmode="numeric">
+          <input class="inp" id="adrenalineAmount" placeholder="0" inputmode="numeric" maxlength="3" data-allow="digits">
         </div>
         <div class="field" style="margin-top:12px;">
           <label>Коментар</label>
@@ -835,11 +850,11 @@
     </div>
     <div class="field" style="margin-bottom:12px;">
       <label>Логін користувача</label>
-      <input class="inp" id="forceLogoutLogin" placeholder="Логін...">
+      <input class="inp" id="forceLogoutLogin" placeholder="Логін..." maxlength="30" data-allow="login">
     </div>
     <div class="field">
       <label>Причина виключення</label>
-      <input class="inp" id="forceLogoutReason" placeholder="Причина...">
+      <input class="inp" id="forceLogoutReason" placeholder="Причина..." maxlength="120">
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('forceLogoutModal')">Скасувати</button>
@@ -904,6 +919,7 @@ let departmentFilter = 'all';
 let pendingDeleteTicket = null;
 let pendingResendData = null;
 let historyFiltered = [];
+let selectedHistoryRecord = null;
 
 // ╔══════════════════════════════════════════════════════════════╗
 // ║  HELPERS                                                     ║
@@ -918,6 +934,32 @@ function fmtDate(d) {
   const dt = new Date(d);
   if (isNaN(dt)) return String(d);
   return dt.toLocaleString('uk-UA', {timeZone:'Europe/Kyiv',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+
+function sanitizeDigits(v) { return String(v||'').replace(/\D+/g,''); }
+function sanitizeNick(v) { return String(v||'').replace(/[^a-zA-Zа-яА-ЯіІїЇєЄґҐ0-9_\-\s]/g,'').replace(/\s{2,}/g,' '); }
+function sanitizeLogin(v) { return String(v||'').replace(/[^a-zA-Z0-9_.-]/g,''); }
+function isProbablyOnline(row) {
+  const source = row.lastSeen || row.date || row.updatedAt || '';
+  const dt = new Date(source);
+  if (Number.isNaN(+dt)) return !!row.active;
+  return (Date.now() - dt.getTime()) <= 60000;
+}
+function uniqueLogins(records) {
+  const m = new Map();
+  (records||[]).forEach(r => {
+    const key = String(r.login||'').toLowerCase().trim();
+    if (!key) return;
+    const prev = m.get(key);
+    const d = new Date(r.lastSeen || r.date || r.updatedAt || 0).getTime() || 0;
+    const p = prev ? (new Date(prev.lastSeen || prev.date || prev.updatedAt || 0).getTime() || 0) : -1;
+    if (!prev || d >= p) m.set(key, r);
+  });
+  return Array.from(m.values()).sort((a,b)=>{
+    const da = new Date(a.lastSeen || a.date || a.updatedAt || 0).getTime() || 0;
+    const db = new Date(b.lastSeen || b.date || b.updatedAt || 0).getTime() || 0;
+    return db - da;
+  });
 }
 
 function showToast(msg, type='success') {
@@ -960,6 +1002,7 @@ async function doLogin() {
       localStorage.setItem('ems_session', JSON.stringify(currentUser));
       applySession();
       await loadInitialData();
+      updateSessionActivity();
       showToast('Вхід виконано успішно');
     } else {
       showLoginErr(r.error || 'Невірний логін');
@@ -996,6 +1039,11 @@ function logout() {
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
   document.getElementById('loginInput').value = '';
+}
+
+function updateSessionActivity() {
+  if (!currentUser?.login) return;
+  apiCall('touchSession', {login: currentUser.login}).catch(() => null);
 }
 
 // ╔══════════════════════════════════════════════════════════════╗
@@ -1175,18 +1223,18 @@ function renderHistoryTable() {
   const aLbl = {hired:'✅ Прийнято',transfer:'🔄 Переведено',fired:'❌ Звільнено',leader:'👑 Лідер'};
   const aCls = {hired:'badge-success',transfer:'badge-primary',fired:'badge-danger',leader:'badge-warning'};
 
-  tbody.innerHTML = pg.map(r => `
+  tbody.innerHTML = pg.map((r,idx) => `
     <tr>
       <td class="mono">${fmtDate(r.date)}</td>
       <td class="fw600">${esc(r.initNick)}</td>
-      <td class="fw600 lnk" onclick="viewDetails(${JSON.stringify(r)})">${esc(r.empNick)}</td>
+      <td class="fw600 lnk" onclick="viewDetailsByIndex(${start + idx})">${esc(r.empNick)}</td>
       <td class="mono">${esc(r.empSid)}</td>
       <td><span class="badge ${aCls[r.action]||'badge-info'}">${aLbl[r.action]||esc(r.action)}</span></td>
       <td class="mono">${esc(r.prevRank)||'—'} → ${esc(r.newRank)||'—'}</td>
       <td style="max-width:160px;font-size:11px;color:var(--text-secondary);">${esc((r.reason||'').substring(0,60))}${(r.reason||'').length>60?'…':''}</td>
       <td>
         <div class="row-acts">
-          <button class="row-btn" onclick="viewDetails(${JSON.stringify(r).replace(/"/g,'&quot;')})" title="Деталі">
+          <button class="row-btn" onclick="viewDetailsByIndex(${start + idx})" title="Деталі">
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
           ${currentUser?.isAdmin ? `<button class="row-btn del" onclick="openDeleteModal('${esc(r.ticket)}')" title="Видалити">
@@ -1216,6 +1264,12 @@ function setHistoryFilter(f, el) {
   document.querySelectorAll('#page-history .fpill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   filterHistory();
+}
+
+function viewDetailsByIndex(index) {
+  const rec = historyFiltered[index];
+  if (!rec) return;
+  viewDetails(rec);
 }
 
 function viewDetails(record) {
@@ -1321,17 +1375,34 @@ function setDepFilter(dep, el) {
 function openPlayerCard(nick) {
   const p = rosterData.find(x => x.nick === nick);
   if (!p) return;
-  const hRecords = historyData.filter(r => r.empNick === nick || r.empSid === p.staticId).slice(0,5);
-  document.getElementById('playerCardTitle').innerText = `👤 ${nick}`;
+  const hRecords = historyData.filter(r => r.empNick === nick || r.empSid === p.staticId).slice(0,7);
+  document.getElementById('playerCardTitle').innerText = `👤 Картка гравця`;
   const depClass = d => d==='S.S'?'dep-SS':'dep-'+d;
+  const totalHired = hRecords.filter(r => r.action==='hired').length;
+  const totalTransfer = hRecords.filter(r => r.action==='transfer').length;
+  const totalFired = hRecords.filter(r => r.action==='fired').length;
   document.getElementById('playerCardContent').innerHTML = `
-    <div class="detail-row"><span class="detail-label">Нікнейм</span><span class="detail-value fw600">${esc(p.nick)}</span></div>
-    <div class="detail-row"><span class="detail-label">Static ID</span><span class="detail-value mono">${esc(p.staticId)}</span></div>
-    <div class="detail-row"><span class="detail-label">Посада</span><span class="detail-value"><span class="rank-badge">[${esc(p.rank)}] ${RANKS[+p.rank]||'—'}</span></span></div>
-    <div class="detail-row"><span class="detail-label">Відділ</span><span class="detail-value"><span class="dep-badge ${depClass(p.dep||'')}">${esc(p.dep)||'—'}</span></span></div>
-    <div class="detail-row"><span class="detail-label">Догани</span><span class="detail-value" style="color:${(p.sanctions||0)>=3?'var(--danger)':'var(--text)'};">${p.sanctions||0}/3</span></div>
-    ${hRecords.length ? `<div style="margin-top:14px;"><div style="font-size:9px;font-weight:700;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Останні події</div>
-    ${hRecords.map(r=>`<div class="detail-row"><span class="detail-label mono">${fmtDate(r.date)}</span><span class="detail-value">${r.action==='hired'?'✅':r.action==='fired'?'❌':r.action==='transfer'?'🔄':'👑'} ${esc(r.initNick)}</span></div>`).join('')}</div>` : ''}
+    <div class="player-card-pro">
+      <div class="player-hero">
+        <div class="player-hero-av">${esc((p.nick||'?').slice(0,1).toUpperCase())}</div>
+        <div class="player-hero-name">${esc(p.nick)}</div>
+        <div class="player-hero-sid">SID: ${esc(p.staticId)}</div>
+      </div>
+      <div>
+        <div class="detail-row"><span class="detail-label">Посада</span><span class="detail-value"><span class="rank-badge">[${esc(p.rank)}] ${RANKS[+p.rank]||'—'}</span></span></div>
+        <div class="detail-row"><span class="detail-label">Відділ</span><span class="detail-value"><span class="dep-badge ${depClass(p.dep||'')}">${esc(p.dep)||'—'}</span></span></div>
+        <div class="detail-row"><span class="detail-label">Дисципліна</span><span class="detail-value" style="color:${(p.sanctions||0)>=3?'var(--danger)':'var(--text)'};">${p.sanctions||0}/3</span></div>
+        <div class="player-metrics">
+          <div class="player-metric"><div class="k">Прийняття</div><div class="v" style="color:var(--success)">${totalHired}</div></div>
+          <div class="player-metric"><div class="k">Переведення</div><div class="v" style="color:var(--primary)">${totalTransfer}</div></div>
+          <div class="player-metric"><div class="k">Звільнення</div><div class="v" style="color:var(--danger)">${totalFired}</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="player-events">
+      <div class="player-events-title">Останні події</div>
+      ${hRecords.length ? hRecords.map(r=>`<div class="detail-row"><span class="detail-label mono">${fmtDate(r.date)}</span><span class="detail-value">${r.action==='hired'?'✅':r.action==='fired'?'❌':r.action==='transfer'?'🔄':'👑'} ${esc(r.initNick)} • ${esc(r.reason||'Без опису')}</span></div>`).join('') : '<div class="empty-state" style="padding:16px 0;"><p>Історія для цього гравця відсутня</p></div>'}
+    </div>
   `;
   openModal('playerCardModal');
 }
@@ -1413,7 +1484,7 @@ function renderDisciplines() {
           <span class="badge badge-warning">Догана ${r.status||1}/3</span>
         </div>
         <div class="hist-row-reason">${esc(r.reason||'—')}</div>
-        <div class="hist-row-initiator">Ініціатор: <b>${esc(r.initNick)}</b> → <b>${esc(r.targetNick)}</b> (${esc(r.targetSid)})</div>
+        <div class="hist-row-initiator">Ініціатор: <b>${esc(r.initNick || r.initiator || 'Невідомо')}</b> → <b>${esc(r.targetNick)}</b> (${esc(r.targetSid)})</div>
       </div>
     `).join('');
   }
@@ -1429,7 +1500,7 @@ function renderDisciplines() {
           <span class="hist-row-amount" style="color:var(--warning);">$${esc(f.amount)}</span>
         </div>
         <div class="hist-row-reason">${esc(f.reason||'—')}</div>
-        <div class="hist-row-initiator">Ініціатор: <b>${esc(f.initNick)}</b> → <b>${esc(f.targetNick)}</b> (${esc(f.targetSid)})</div>
+        <div class="hist-row-initiator">Ініціатор: <b>${esc(f.initNick || f.initiator || 'Невідомо')}</b> → <b>${esc(f.targetNick)}</b> (${esc(f.targetSid)})</div>
       </div>
     `).join('');
   }
@@ -1442,12 +1513,13 @@ async function submitDiscipline() {
   const reason = document.getElementById('disciplineReason').value.trim();
   const amount = document.getElementById('fineAmount').value.trim();
   if (!tNick||!tSid) { showToast('Введіть дані отримувача','error'); return; }
+  if (!/^\d+$/.test(tSid)) { showToast('Static ID — лише цифри','error'); return; }
   if (!reason) { showToast('Вкажіть причину','error'); return; }
   if (type==='fine' && (!amount||isNaN(amount)||+amount<=0)) { showToast('Введіть коректну суму','error'); return; }
   const me = playersList.find(p => p.login===currentUser.login);
   if (!me) { showToast('Помилка визначення ініціатора','error'); return; }
   try {
-    const r = await apiCall('addDiscipline', {type,initNick:me.nick,initSid:me.staticId,targetNick:tNick,targetSid:tSid,reason,amount:amount||'0'});
+    const r = await apiCall('addDiscipline', {type,initNick:me.nick,initSid:me.staticId,initLogin:currentUser.login,targetNick:tNick,targetSid:tSid,reason,amount:amount||'0'});
     if (r.success) {
       showToast('Покарання зафіксовано');
       document.getElementById('disciplineTargetNick').value='';
@@ -1482,7 +1554,7 @@ function renderAdrenaline() {
         <span class="hist-row-amount" style="color:var(--primary);">${esc(a.amount)} шт</span>
       </div>
       <div class="hist-row-reason">${esc(a.comment||'—')}</div>
-      <div class="hist-row-initiator">Ініціатор: <b>${esc(a.initNick)}</b> → <b>${esc(a.targetNick)}</b> (${esc(a.targetSid)})</div>
+      <div class="hist-row-initiator">Ініціатор: <b>${esc(a.initNick || a.initiator || 'Невідомо')}</b> → <b>${esc(a.targetNick)}</b> (${esc(a.targetSid)})</div>
     </div>
   `).join('');
 }
@@ -1493,11 +1565,12 @@ async function submitAdrenaline() {
   const amount = document.getElementById('adrenalineAmount').value.trim();
   const comment = document.getElementById('adrenalineComment').value.trim();
   if (!tNick||!tSid) { showToast('Введіть дані отримувача','error'); return; }
+  if (!/^\d+$/.test(tSid)) { showToast('Static ID — лише цифри','error'); return; }
   if (!amount||isNaN(amount)||+amount<=0) { showToast('Введіть коректну кількість','error'); return; }
   const me = playersList.find(p => p.login===currentUser.login);
   if (!me) { showToast('Помилка визначення ініціатора','error'); return; }
   try {
-    const r = await apiCall('addAdrenaline', {initNick:me.nick,initSid:me.staticId,targetNick:tNick,targetSid:tSid,amount,comment});
+    const r = await apiCall('addAdrenaline', {initNick:me.nick,initSid:me.staticId,initLogin:currentUser.login,targetNick:tNick,targetSid:tSid,amount,comment});
     if (r.success) {
       showToast('Адреналін видано');
       document.getElementById('adrenalineTargetNick').value='';
@@ -1577,7 +1650,7 @@ async function loadLoginRegistry() {
   try {
     const r = await apiCall('getLoginRegistry');
     if (r.success) {
-      loginRegistryData = r.records||[];
+      loginRegistryData = uniqueLogins(r.records||[]);
       renderLoginRegistry();
     }
   } catch { showToast('Помилка реєстру логінів','error'); }
@@ -1591,13 +1664,15 @@ function renderLoginRegistry() {
   const c = document.getElementById('loginRegistryList');
   if (!loginRegistryData.length) { document.getElementById('loginsEmpty').style.display='block'; c.innerHTML=''; return; }
   document.getElementById('loginsEmpty').style.display = 'none';
-  c.innerHTML = loginRegistryData.map(r => `
+  c.innerHTML = loginRegistryData.map(r => {
+    const live = isProbablyOnline(r);
+    return `
     <div class="login-reg-row">
       <div class="mono">${esc(r.login)}</div>
       <div class="fw600">${esc(r.nick||'—')}</div>
       <div class="mono" style="font-size:10px;">${fmtDate(r.date)}</div>
       <div>
-        <span class="badge ${r.active?'badge-success':'badge-info'}">${r.active?'Онлайн':'Офлайн'}</span>
+        <span class="badge ${live?'badge-success':'badge-info'}">${live?'Онлайн':'Офлайн'}</span>
         ${r.ip ? `<span class="mono" style="margin-left:6px;font-size:9px;">${esc(r.ip)}</span>` : ''}
       </div>
       <div>
@@ -1606,7 +1681,7 @@ function renderLoginRegistry() {
         </button>` : ''}
       </div>
     </div>
-  `).join('');
+  `; }).join('');
 }
 
 function openForceLogoutModal() {
@@ -1625,8 +1700,9 @@ async function executeForceLogout() {
   const login = document.getElementById('forceLogoutLogin').value.trim();
   const reason = document.getElementById('forceLogoutReason').value.trim();
   if (!login) { showToast('Введіть логін','error'); return; }
+  const cleanReason = reason || 'Адміністративне виключення';
   try {
-    const r = await apiCall('forceLogout', {login, reason, byLogin: currentUser.login});
+    const r = await apiCall('forceLogout', {login, targetLogin: login, reason: cleanReason, byLogin: currentUser.login, initiatorLogin: currentUser.login});
     showToast(r.success ? `${login} виключено із системи` : (r.error||'Помилка'), r.success?'success':'error');
     if (r.success) { closeModal('forceLogoutModal'); loadLoginRegistry(); }
   } catch { showToast('Помилка з\'єднання','error'); }
@@ -1789,6 +1865,23 @@ setupAC('disciplineTargetNick','disciplineSuggest','disciplineTargetSid');
 setupAC('adrenalineTargetNick','adrenalineSuggest','adrenalineTargetSid');
 
 toggleDisciplineFields();
+
+
+function enforceInputRules() {
+  document.querySelectorAll('input[data-allow]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const mode = inp.dataset.allow;
+      const before = inp.value;
+      if (mode === 'digits') inp.value = sanitizeDigits(before);
+      if (mode === 'nick') inp.value = sanitizeNick(before);
+      if (mode === 'login') inp.value = sanitizeLogin(before);
+    });
+  });
+}
+
+enforceInputRules();
+['click','keydown','mousemove','touchstart'].forEach(evt => document.addEventListener(evt, () => updateSessionActivity(), {passive:true}));
+setInterval(updateSessionActivity, 30000);
 
 // Restore session
 const saved = localStorage.getItem('ems_session');
