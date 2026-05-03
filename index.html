@@ -273,6 +273,7 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
 .treasury-hist-icon.sync{background:var(--gdim);}
 .treasury-hist-icon.employee{background:var(--cdim);}
 .treasury-hist-icon.department{background:var(--golddim);}
+.treasury-hist-icon.withdraw{background:rgba(255,68,68,.1);color:#ff4444;}
 .treasury-hist-details{flex:1;min-width:0;}
 .treasury-hist-type{font-size:12px;font-weight:700;color:var(--txt);margin-bottom:2px;}
 .treasury-hist-meta{font-size:10px;color:var(--txt3);}
@@ -604,7 +605,7 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
   <div class="card" style="padding:0;overflow:hidden;">
     <div id="rhLoad" class="loading"><div class="spin"></div><br>Завантаження...</div>
     <div id="rhWrap" style="display:none;">
-      <div class="tbl-wrap"><table><thead><tr><th>Дата (Київ)</th><th>Ініціатор</th><th>Гравець</th><th>Зміна</th><th>Деталі</th><th></th></tr></thead><tbody id="rhBody"></tbody></table></div>
+      <div class="tbl-wrap"></table><thead><tr><th>Дата (Київ)</th><th>Ініціатор</th><th>Гравець</th><th>Зміна</th><th>Деталі</th><th></th></tr></thead><tbody id="rhBody"></tbody></table></div>
       <div id="rhEmpty" class="empty" style="display:none;"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Записів не знайдено</div>
       <div id="rhPager" class="pager"></div>
     </div>
@@ -647,6 +648,10 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
           <button class="btn btn-o" onclick="openSyncModal()">
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
             Поповнити казну
+          </button>
+          <button class="btn btn-d" onclick="openWithdrawModal()">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 4H3v16h18V4z"/><line x1="12" y1="12" x2="12" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="12" y1="16" x2="12" y2="20"/></svg>
+            Списати кошти
           </button>
           <button class="btn btn-g btn-sm" onclick="loadTreasuryBalance();loadTreasuryHistory()">
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
@@ -979,6 +984,19 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle;}
     <div class="field" style="margin-bottom:12px;"><label>Дата-час (Київ)</label><input class="inp" id="syncDatetime" readonly></div>
     <div class="field" style="margin-bottom:16px;"><label>Причина поповнення</label><textarea class="ta" id="syncReason" placeholder="Звідки кошти..." style="min-height:56px;"></textarea></div>
     <div class="btns" style="margin-top:20px;"><button class="btn btn-g" onclick="closeM('syncTreasuryOv')">Скасувати</button><button class="btn btn-o" onclick="confirmSyncTreasury()">✅ Поповнити</button></div>
+  </div>
+</div>
+<!-- Withdraw modal -->
+<div class="overlay" id="withdrawTreasuryOv">
+  <div class="modal sm">
+    <div class="mh"><h3>💰 Списання коштів з казни</h3><button class="mx" onclick="closeM('withdrawTreasuryOv')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="field" style="margin-bottom:12px;"><label>Ваш нікнейм</label><input class="inp" id="withdrawNick" readonly></div>
+    <div class="field" style="margin-bottom:12px;"><label>Static ID</label><input class="inp" id="withdrawSid" readonly></div>
+    <div class="field" style="margin-bottom:12px;"><label>Сума списання ($)</label>
+      <div class="inp-num-wrap"><input class="inp inp-num" id="withdrawAmount" type="text" placeholder="0" oninput="onNumInput(this)"><span class="unit">$</span></div>
+    </div>
+    <div class="field" style="margin-bottom:16px;"><label>Причина списання</label><textarea class="ta" id="withdrawReason" placeholder="На що витрачаються кошти..." style="min-height:56px;"></textarea></div>
+    <div class="btns"><button class="btn btn-g" onclick="closeM('withdrawTreasuryOv')">Скасувати</button><button class="btn btn-d" onclick="confirmWithdrawTreasury()">✖ Списати</button></div>
   </div>
 </div>
 <div class="overlay" id="removeRosterOv">
@@ -1514,6 +1532,7 @@ function syncTreasuryUserInfo(){
   const nick=mp?mp.nick||me.nick||'':me?.nick||me?.login||'';
   const sid=mp?mp.staticId||'':'';
   document.getElementById('syncNick').value=nick;document.getElementById('syncSid').value=sid;
+  document.getElementById('withdrawNick').value=nick;document.getElementById('withdrawSid').value=sid;
 }
 async function loadTreasuryBalance(){
   try{
@@ -1531,7 +1550,6 @@ async function loadTreasuryHistory(){
     if(r.success&&r.history){
       const list=r.history||[];
       document.getElementById('tHistCount').textContent=list.length+' операцій';
-      // Stats
       let tIn=0,tOut=0;
       list.forEach(h=>{if(h.type==='sync')tIn+=h.amount||0;else tOut+=h.amount||0;});
       document.getElementById('tStatIn').textContent='$'+Number(tIn).toLocaleString('en-US');
@@ -1542,6 +1560,7 @@ async function loadTreasuryHistory(){
         const dt=fmtKyiv(h.date);let icon='💰',cls='',amtCls='',title='',sign='-';
         if(h.type==='sync'){icon='➕';cls='sync';amtCls='plus';title=`Поповнення казни`;sign='+';}
         else if(h.type==='employee'){icon='💵';cls='employee';amtCls='minus';title=`Виплата: ${h.empNick||h.empSid||'—'}`;}
+        else if(h.type==='withdraw'){icon='📉';cls='withdraw';amtCls='minus';title=`Списання коштів`;}
         else{icon='🏢';cls='department';amtCls='minus';title=`${h.department||'—'}`;}
         return`<div class="treasury-hist-item"><div class="treasury-hist-icon ${cls}">${icon}</div><div class="treasury-hist-details"><div class="treasury-hist-type">${title}</div><div class="treasury-hist-meta">Ініціатор: ${h.initNick||h.initSid||'—'}${h.reason?` · ${h.reason}`:''}</div><div class="treasury-hist-date">${dt}</div></div><div class="treasury-hist-amount ${amtCls}">${sign}$${Number(h.amount||0).toLocaleString('en-US')}</div></div>`;
       }).join('');
@@ -1612,19 +1631,40 @@ function openSyncModal(){
 }
 async function confirmSyncTreasury(){
   const initNick=document.getElementById('syncNick').value.trim(),initSid=document.getElementById('syncSid').value.trim();
-  const currentBalance=unformat(document.getElementById('syncCurrentBalance').value);
   const addAmount=unformat(document.getElementById('syncAddAmount').value);
   const reason=document.getElementById('syncReason').value.trim();
   if(!initNick||!initSid)return toast('Не вдалося визначити ініціатора','err');
   if(addAmount<=0)return toast('Сума має бути більше 0','err');
-  const newBalance=currentBalance+addAmount;
   const btn=document.querySelector('#syncTreasuryOv .btn-o');if(btn){btn.disabled=true;btn.innerHTML='<span class="spin"></span> Поповнення...';}
   try{
-    const r=await call('syncTreasury',{initNick,initSid,currentBalance,addAmount,newBalance,reason:reason||'Поповнення казни'});
+    const r=await call('syncTreasury',{initNick,initSid,addAmount,newBalance:currentTreasuryBalance+addAmount,reason:reason||'Поповнення казни'});
     if(r.success){toast('Казну поповнено! ✅','ok');closeM('syncTreasuryOv');await loadTreasuryBalance();await loadTreasuryHistory();}
     else toast(r.error||'Помилка','err');
   }catch(e){toast('Помилка з\'єднання','err');}
   finally{if(btn){btn.disabled=false;btn.innerHTML='✅ Поповнити';}}
+}
+
+/* Withdraw */
+function openWithdrawModal(){
+  syncTreasuryUserInfo();
+  document.getElementById('withdrawAmount').value='';document.getElementById('withdrawReason').value='';
+  openM('withdrawTreasuryOv');
+}
+async function confirmWithdrawTreasury(){
+  const initNick=document.getElementById('withdrawNick').value.trim();
+  const initSid=document.getElementById('withdrawSid').value.trim();
+  const amount=unformat(document.getElementById('withdrawAmount').value);
+  const reason=document.getElementById('withdrawReason').value.trim();
+  if(!initNick||!initSid)return toast('Не вдалося визначити ініціатора','err');
+  if(amount<=0)return toast('Сума має бути більше 0','err');
+  if(currentTreasuryBalance<amount)return toast('Недостатньо коштів на балансі','err');
+  const btn=document.querySelector('#withdrawTreasuryOv .btn-d');if(btn){btn.disabled=true;btn.innerHTML='<span class="spin"></span> Списання...';}
+  try{
+    const r=await call('withdrawTreasury',{initNick,initSid,amount,reason:reason||'Списання'});
+    if(r.success){toast(`Списано $${amount} ✅`,'ok');closeM('withdrawTreasuryOv');await loadTreasuryBalance();await loadTreasuryHistory();}
+    else toast(r.error||'Помилка','err');
+  }catch(e){toast('Помилка з\'єднання','err');}
+  finally{if(btn){btn.disabled=false;btn.innerHTML='✖ Списати';}}
 }
 
 /* ─── ADRENALINE ────────────────────────────────── */
@@ -1662,7 +1702,7 @@ async function submitAdrenaline(){
   if(!proof.startsWith('http'))return toast('Доказ має бути посиланням (https://...)','err');
   const btn=event.currentTarget;btn.disabled=true;btn.innerHTML='<span class="spin"></span> Фіксація...';
   try{
-    const r=await call('submitAdrenaline',{initNick,initSid,recipNick,recipSid,amount,proof,note});
+    const r=await call('addAdrenaline',{initNick,initSid,recipNick,recipSid,amount,proof,note});
     if(r.success){
       toast(`Видачу ${amount} од. зафіксовано ✅`,'ok');
       document.getElementById('adrenRecipNick').value='';document.getElementById('adrenRecipSid').value='';
@@ -1677,8 +1717,8 @@ async function loadAdrenalineHistory(force=false){
   document.getElementById('adrenLoad').style.display='block';document.getElementById('adrenWrap').style.display='none';
   try{
     curAdrenPg=1;
-    const r=await call('getAdrenalineHistory');
-    allAdren=(r.records||[]);
+    const r=await call('getAdrenaline');
+    allAdren=(r.records||[]).map((item,idx)=>({...item,_idx:idx}));
     updateAdrenStats();filterAdren();
     document.getElementById('adrenLoad').style.display='none';document.getElementById('adrenWrap').style.display='block';
   }catch(e){
